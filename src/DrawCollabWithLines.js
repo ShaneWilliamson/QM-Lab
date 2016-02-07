@@ -41,13 +41,20 @@ function start() {
 	gapi.drive.realtime.custom.registerType(Box, 'Box');
 	Box.prototype.x=gapi.drive.realtime.custom.collaborativeField('x');
 	Box.prototype.y=gapi.drive.realtime.custom.collaborativeField('y');
+	Box.prototype.selected = gapi.drive.realtime.custom.collaborativeField('selected');
 	gapi.drive.realtime.custom.setInitializer(Box, doInitialize);
-	Box.prototype.draw= function(){
-		var c= document.getElementById("myCanvas");
+	Box.prototype.draw = function(){
+		var c = document.getElementById("myCanvas");
 		var ctx = c.getContext("2d");
-		ctx.fillStyle="#FF0000";
+		ctx.fillStyle ="#FF0000";
 		ctx.fillRect(this.x, this.y, 150,75);
-		ctx.fillStyle="black";
+		
+		if (this.selected) { // is the current box selected
+			ctx.strokeStyle = "#99ff99";
+		} else {
+			ctx.strokeStyle = "black";
+		}
+
 		ctx.strokeRect(this.x,this.y,150,75);
 	};
 	Box.prototype.move= function(x, y){
@@ -89,7 +96,7 @@ function onFileLoaded(doc) {
 	var collaborativeList = doc.getModel().getRoot().get('box_list');
 	collaborativeList.addEventListener(gapi.drive.realtime.EventType.VALUES_ADDED, doValueAdded);
 	rootModel = doc.getModel();
-	rootList=rootModel.getRoot().get('box_list');
+	rootList = rootModel.getRoot().get('box_list');
 	reDraw();
 	
 }
@@ -101,6 +108,7 @@ function doInitialize(x, y){
 	var model = gapi.drive.realtime.custom.getModel(this);
 	this.x=x;
 	this.y=y;
+	this.selected = false;
 }
 
 function doOnLoaded(){
@@ -140,10 +148,13 @@ function Box(x, y){
 
 
 //Mouse Events and Object Creation
-function onClick(){
+function onMouseDown() {
 	
 	var x= event.clientX;
 	var y= event.clientY;
+	var results = getCoords(x, y);
+	x = results[0];
+	y = results[1];
 	var flag= 0;
 	for(i=0; i<rootList.length; i++){
 		var temp =rootList.get(i);
@@ -151,14 +162,23 @@ function onClick(){
 			if(y<=temp.y+75 && y>=temp.y){
 				currentBox=rootList.get(i);
 				flag=1;
-				difx=x-temp.x;
+				difx=x-temp.x; // ensures that the box doesn't snap to the mouse location
 				dify=y-temp.y;
+				break;
 			}
 		}
 	}
-	if(flag==0){
+	if(flag == 0) { // if there isn't a box on the clicked location
 		drawRect();
-	}else{
+
+	} else { // if there is a box on the clicked location
+		
+		for (var i = 0; i < rootList.length; i++) {
+			rootList.get(i).selected = false;
+		}
+		currentBox.selected = true;
+		clearScreen();
+		reDraw();
 		document.getElementById("myCanvas").addEventListener("mouseup",onMouseUp);
 		document.getElementById("myCanvas").addEventListener("mousemove",moving);
 	}
@@ -166,16 +186,24 @@ function onClick(){
 function onMouseUp(){
 	var x= event.clientX;
 	var y= event.clientY;
+	var results = getCoords(x, y);
+	x = results[0];
+	y = results[1];
 	currentBox.move(x-difx,y-dify);
 	document.getElementById("myCanvas").removeEventListener("mousemove",moving);
 	document.getElementById("myCanvas").removeEventListener("mouseup",onMouseUp);
 	for(i=0; i<rootList.length; i++){
 		rootList.get(i).draw();
 	}
+
+
 }
 function moving(){
 	var x= event.clientX;
 	var y= event.clientY;
+	var results = getCoords(x, y);
+	x = results[0];
+	y = results[1];
 	currentBox.move(x-difx,y-dify);
 	for(i=0; i<rootList.length; i++){
 		rootList.get(i).draw();
@@ -184,6 +212,10 @@ function moving(){
 function drawRect(){;
 	var x= event.clientX;
 	var y= event.clientY;
+	var results = getCoords(x, y);
+	x = results[0];
+	y = results[1];
+
 	var temp = rootModel.create(Box, x, y);
 	rootList.push(temp);
 	temp.draw();
@@ -199,10 +231,16 @@ function menuClick(){
 
 //Attach mouse listener on page load
 function onstartRun(){
-	document.getElementById("myCanvas").addEventListener("mousedown",onClick);
+	document.getElementById("myCanvas").addEventListener("mousedown",onMouseDown);
 	document.getElementById("box").addEventListener("mousedown",menuClick);
 	document.getElementById("line").addEventListener("mousedown",menuClick);
 	document.getElementById("circle").addEventListener("mousedown",menuClick);
+}
+
+function getCoords(x, y){
+	var xOffset = x - document.getElementById("myCanvas").offsetLeft;
+	var yOffset = y - document.getElementById("myCanvas").offsetTop;
+	return [xOffset, yOffset];
 }
 
 window.onload=onstartRun;
