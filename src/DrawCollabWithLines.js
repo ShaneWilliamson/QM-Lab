@@ -41,7 +41,6 @@ function start() {
 	gapi.drive.realtime.custom.registerType(Box, 'Box');
 	Box.prototype.x=gapi.drive.realtime.custom.collaborativeField('x');
 	Box.prototype.y=gapi.drive.realtime.custom.collaborativeField('y');
-	Box.prototype.selected = gapi.drive.realtime.custom.collaborativeField('selected');
 	gapi.drive.realtime.custom.setInitializer(Box, doInitialize);
 	Box.prototype.draw = function(){
 		var c = document.getElementById("myCanvas");
@@ -144,6 +143,7 @@ function reDraw(){
 
 //Class definition of a Box
 function Box(x, y){
+	this.selected = false;
 }
 
 
