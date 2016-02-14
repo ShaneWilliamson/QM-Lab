@@ -1,0 +1,33 @@
+<DOCTYPE html>
+<html>
+<head>
+	<title>Draw</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="draw.css">
+	<script src="https://apis.google.com/js/api.js"></script>
+	<script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
+	<script src="box.js"></script>
+	<script src="mouseListeners.js"></script>
+	<script src="utility.js"></script>
+	<script src="startup.js"></script>
+</head>
+<body>
+	<header>
+		<ul>
+			<li id="circle">Circle</li>
+			<li id="box">Box</li>
+			<li id="line">Line</li>
+		</ul>
+	</header>
+	<div id="cover"></div>
+	<canvas id="myCanvas" width="1100" height="600" style= "border: 1px solid #000000; display: none;"></canvas>
+	<div id = "state">Loading</div>
+	<div id="progress">
+		<div id="bar"></div>
+	</div>
+	<button id="auth_button" style="visibility: hidden">Authorize</button>
+	
+	
+
+</body>
+</html>
