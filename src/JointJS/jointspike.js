@@ -7,6 +7,8 @@
 	var loading;
 	var clientId = '1073945779594-bpprsdgic2haajdb3ghqfcsuodnrc6ss.apps.googleusercontent.com';
 	var activeID;
+
+	var globalState;
 	
 
 	
@@ -16,6 +18,22 @@
 	function onstartRun(){
 		authorize();
 		freeze = setInterval(checkAndFreeze, 1000);
+
+
+		$('stockButton').click(function () {
+			globalState = "ADDSTOCK";
+		});
+
+		$('linkButton').click(function () {
+			globalState = "ADDLINK";
+		});
+
+		$('editButton').click(function () {
+			globalState = "EDIT";
+		});
+
+
+
 	}
 	
 	//Animates the loading bar
@@ -195,7 +213,25 @@
 		});
 		link.set('router', { name: 'manhattan' });
 
-		graph.addCells([rect, rect2, link]);
+		var rect3 = new joint.shapes.basic.Rect({
+			position: { x: 100, y: 30 },
+			size: { width: 100, height: 30 },
+			attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
+		});
+
+		var rect4 = rect.clone();
+		rect2.translate(300);
+
+		var link2 = new joint.dia.Link({
+			source: { id: rect3.id },
+			target: { id: rect4.id },
+			smooth: true 
+		});
+		// link2.set('smooth', true);
+
+
+
+		graph.addCells([rect, rect2, rect3, rect4, link, link2]);
 		colGraph.graph = JSON.stringify(graph);
 		
 	}
@@ -213,6 +249,8 @@
 		paperScale = 1;
 		
 		paper.$el.on('wheel', onMouseWheel);
+		paper.$el.on('up', paperOnMouseUp);
+		paper.$el.on('click', paperOnMouseDown);
 	}
 	
 	
@@ -227,6 +265,36 @@
 		}
 		paper.scale(paperScale, paperScale);
 		
-		console.log(colGraph.graph);
-		console.log(graph);
+		// console.log(colGraph.graph);
+		// console.log(graph);
 	}
+
+	function paperOnMouseDown(e) {
+		console.log(e);
+	}
+
+	function paperOnMouseUp(e) {
+		var mousePos = offsetToLocalPoint(e.pageX, e.pageY, paper);
+		if (globalState == "ADDSTOCK") {
+			var rect = new joint.shapes.basic.Rect({
+				position: { x: mousePos.x, y: mousePos.y },
+				size: { width: 100, height: 30 },
+				attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
+			});	
+			graph.addCells(rect);
+		} else if (globalState == "ADDLINK") {
+
+		}
+	}
+
+
+	function offsetToLocalPoint(offsetX, offsetY, paper) {
+	    var svgPoint = paper.svg.createSVGPoint();
+	    svgPoint.x = offsetX;
+	    svgPoint.y = offsetY;
+	    var offsetTransformed = svgPoint.matrixTransform(paper.viewport.getCTM().inverse());
+	    return offsetTransformed
+	}	
+
+
+
