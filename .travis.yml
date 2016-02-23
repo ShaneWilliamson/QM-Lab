@@ -1,0 +1,6 @@
+language: node_js
+node_js:
+  - "node"
+  
+# Add "before_install", "install", "before_script", "script", "after_success"/"after_failure"
+# (optional "before_deploy", "deploy", "after_deploy" steps go in this position), and "after_script"
