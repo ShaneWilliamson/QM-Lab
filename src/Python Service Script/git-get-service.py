@@ -8,7 +8,7 @@ def start():
   os.chdir("/home/saw056/QM-Lab")
   while True:
     gitPull()
-    time.sleep(120)
+    time.sleep(121)
 
 def gitPull():
   call(["git", "pull", "https://371GitBot:gitbot371@github.com/ShaneWilliamson/QM-Lab.git"])
