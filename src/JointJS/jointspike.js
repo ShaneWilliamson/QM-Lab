@@ -19,6 +19,35 @@
 
 	
 	
+	
+	
+	joint.shapes.basic.DecoratedRect = joint.shapes.basic.Generic.extend({
+
+		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'basic.DecoratedRect',
+			size: { width: 200, height: 120 },
+			attrs: {
+				'rect': { 'fill-opacity': 0, 'stroke-opacity': 0, width: 200, height: 120 },
+				'text': { 'font-size': 14, text: '', 'ref-x': 100, 'ref-y': 130, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle', fill: 'black' },
+				'image': { width: 200, height: 120 }
+			}
+
+		}, joint.shapes.basic.Generic.prototype.defaults)
+	});
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
 	window.onload=onstartRun;
 
 	function onstartRun(){
@@ -35,6 +64,10 @@
 
 		document.getElementById("linkButton").addEventListener('mousedown', function () {
 			globalState = "ADDLINK";
+		});
+		
+		document.getElementById("imageButton").addEventListener('mousedown', function () {
+			globalState = "ADDIMAGE";
 		});
 		
 		document.addEventListener('keydown', handleKeyInput);
@@ -239,8 +272,18 @@
 		link2.set('connector', { name: 'smooth' });
 
 
+		var decoratedRect = new joint.shapes.basic.DecoratedRect({
+			position: { x: 150, y: 80 },
+			size: { width: 200, height: 120 },
+			attrs: { 
+				text: { text: 'Vader Is Back' , 'x-alignment': 'middle'},
+				image: { 'xlink:href': 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg' }
+			}
+		});
+		graph.addCell(decoratedRect);
 
-		graph.addCells([rect, rect2, rect3, rect4, link, link2]);
+
+		graph.addCells([rect, rect2, rect3, rect4, link, link2, decoratedRect]);
 		colGraph.graph = JSON.stringify(graph);
 		
 	}
@@ -297,7 +340,7 @@
 				size: { width: 100, height: 30 },
 				attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
 			});	
-			graph.addCells([rect]);
+			graph.addCell(rect);
 			
 		} else if (globalState == "ADDLINK") {
 			var newLink = new joint.dia.Link();
@@ -319,8 +362,20 @@
 				newLink.set('target', { x: curMousePos.x, y: curMousePos.y });
 			}
 
+			newLink.set('connector', { name: 'smooth' });
+			
 			graph.addCell(newLink);
 			
+		} else if (globalState == "ADDIMAGE") {
+			var decoratedRect = new joint.shapes.basic.DecoratedRect({
+				position: { x: curMousePos.x, y: curMousePos.y },
+				size: { width: 200, height: 120 },
+				attrs: { 
+					text: { text: 'Vader Is Back' , 'x-alignment': 'middle'},
+					image: { 'xlink:href': 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg' }
+				}
+			});
+			graph.addCell(decoratedRect);
 		} else if (globalState == "EDIT") {
 			
 		}
