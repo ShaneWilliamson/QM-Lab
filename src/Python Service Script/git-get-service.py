@@ -1,6 +1,5 @@
 import time
 import os
-import git
 from subprocess import call
 
 #The routine to run, every 120 seconds it pulls from GitHub
