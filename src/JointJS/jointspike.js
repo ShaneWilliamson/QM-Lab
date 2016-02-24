@@ -9,6 +9,12 @@
 	var activeID;
 
 	var globalState;
+	var selected;
+	
+	var movingViewPort;
+	
+	var oldMousePos;
+	var curMousePos;
 	
 
 	
@@ -19,21 +25,20 @@
 		authorize();
 		freeze = setInterval(checkAndFreeze, 1000);
 
-
-		$('stockButton').click(function () {
+		globalState = "EDIT";
+		movingViewPort = false;
+		
+		var stockButton = document.getElementById("stockButton");
+		stockButton.addEventListener('mousedown', function () {
 			globalState = "ADDSTOCK";
 		});
 
-		$('linkButton').click(function () {
+		document.getElementById("linkButton").addEventListener('mousedown', function () {
 			globalState = "ADDLINK";
 		});
-
-		$('editButton').click(function () {
-			globalState = "EDIT";
-		});
-
-
-
+		
+		document.addEventListener('keydown', handleKeyInput);
+		document.addEventListener('mousemove', handleMouseMove);
 	}
 	
 	//Animates the loading bar
@@ -163,11 +168,15 @@
 		console.log("We loaded the document.");
 		
 		// Update the collaborative object whenever the user finishes making a change
-		graph.on('batch:stop', function(eventName, cell) {
-			colGraph.graph = JSON.stringify(graph);
-		});
+		paper.on('cell:pointerup', updateCollabGraph);
+		paper.on('blank:pointerup', updateCollabGraph);
+		
 		updateGraph();
 		clearLoadingScreen();
+	}
+	
+	function updateCollabGraph() {
+		colGraph.graph = JSON.stringify(graph);
 	}
 
 
@@ -214,20 +223,20 @@
 		link.set('router', { name: 'manhattan' });
 
 		var rect3 = new joint.shapes.basic.Rect({
-			position: { x: 100, y: 30 },
+			position: { x: 100, y: 300 },
 			size: { width: 100, height: 30 },
 			attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
 		});
 
-		var rect4 = rect.clone();
-		rect2.translate(300);
+		var rect4 = rect3.clone();
+		rect4.translate(300);
 
 		var link2 = new joint.dia.Link({
 			source: { id: rect3.id },
 			target: { id: rect4.id },
 			smooth: true 
 		});
-		// link2.set('smooth', true);
+		link2.set('connector', { name: 'smooth' });
 
 
 
@@ -249,8 +258,11 @@
 		paperScale = 1;
 		
 		paper.$el.on('wheel', onMouseWheel);
-		paper.$el.on('up', paperOnMouseUp);
-		paper.$el.on('click', paperOnMouseDown);
+		paper.$el.on('mouseup', paperOnMouseUp);
+		
+		paper.on('blank:pointerdown', paperOnMouseDown);
+		
+		
 	}
 	
 	
@@ -265,36 +277,94 @@
 		}
 		paper.scale(paperScale, paperScale);
 		
+		e.originalEvent.preventDefault();
 		// console.log(colGraph.graph);
 		// console.log(graph);
 	}
 
 	function paperOnMouseDown(e) {
-		console.log(e);
+		updateMousePos(e)
+		movingViewPort = true;	
 	}
 
 	function paperOnMouseUp(e) {
-		var mousePos = offsetToLocalPoint(e.pageX, e.pageY, paper);
+		updateMousePos(e)
+		selected = graph.findModelsFromPoint(curMousePos);
+		
 		if (globalState == "ADDSTOCK") {
 			var rect = new joint.shapes.basic.Rect({
-				position: { x: mousePos.x, y: mousePos.y },
+				position: { x: curMousePos.x, y: curMousePos.y },
 				size: { width: 100, height: 30 },
 				attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
 			});	
-			graph.addCells(rect);
+			graph.addCells([rect]);
+			
 		} else if (globalState == "ADDLINK") {
+			var newLink = new joint.dia.Link();
 
+			if (selected[0]) {
+				newLink.set('source', { id: selected[0].id });
+			} 
+			else {
+				newLink.set('source', { x: curMousePos.x, y: curMousePos.y });
+			}
+			
+			curMousePos.x += 300;
+			
+			var targetOfLink = graph.findModelsFromPoint(curMousePos);
+			if (targetOfLink[0]) {
+				newLink.set('target', { id: selected[0].id });
+			} 
+			else {
+				newLink.set('target', { x: curMousePos.x, y: curMousePos.y });
+			}
+
+			graph.addCell(newLink);
+			
+		} else if (globalState == "EDIT") {
+			
+		}
+		
+		globalState = "EDIT";
+		movingViewPort = false;
+	}
+	
+	function handleKeyInput(e) {
+		if (e.keyCode == 46) {
+			deleteSelectedCell(e);
+		}
+		else {
+			console.log("");
+		}
+		
+	}
+	
+	function deleteSelectedCell(e) {
+		if (selected[0]) {
+			selected[0].remove();
+			selected.shift();
+		}
+		updateCollabGraph();	
+	}
+	
+	function handleMouseMove(e) {
+		if (movingViewPort) {
+			moveViewPort(e);
 		}
 	}
+	
+	function moveViewPort(e) {
+		updateMousePos(e);
+		var origin = paper.options.origin;
+		paper.setOrigin((curMousePos.x - oldMousePos.x) + origin.x, (curMousePos.y - oldMousePos.y) + origin.y);
+		updateMousePos(e);
+	}
 
-
-	function offsetToLocalPoint(offsetX, offsetY, paper) {
-	    var svgPoint = paper.svg.createSVGPoint();
-	    svgPoint.x = offsetX;
-	    svgPoint.y = offsetY;
-	    var offsetTransformed = svgPoint.matrixTransform(paper.viewport.getCTM().inverse());
-	    return offsetTransformed
-	}	
+	function updateMousePos(e) {
+		oldMousePos = curMousePos;
+		offset =  $('#paperView').offset();
+		curMousePos = paper.clientToLocalPoint({ x: e.clientX, y: e.clientY });
+	}
 
 
 

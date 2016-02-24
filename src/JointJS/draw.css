@@ -61,3 +61,8 @@ li.active{
 	left: 45%;
 	display: none;
 }
+
+#paperView {
+	display: block;
+	
+}
