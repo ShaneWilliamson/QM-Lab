@@ -32,7 +32,7 @@ def pushContentToWeb(curPath, targetPath):
   #Delete the contents of targetPath
   call(["rm", "-rf", targetPath + "/*"])
   #Copy new src/ contents into targetPath
-  call(["cp", curPath + "src/*", targetPath])
+  call(["cp", "-r", curPath + "src/*", targetPath])
 
 # Routine to create a new directory in /var/www/html/ based on input
 def setupBranch(newPath, branchName):
