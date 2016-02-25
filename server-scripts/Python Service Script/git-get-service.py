@@ -48,7 +48,7 @@ def setupBranch(newPath, branchName):
   #Clone the remote repo
   call(["git", "clone", "https://371GitBot:gitbot371@github.com/ShaneWilliamson/QM-Lab.git"])
   #Move into the repo
-  os.chdir(newPath + "QM-Lab")
+  os.chdir(newPath + "/QM-Lab")
   #Checkout the desired branch
   call(["git", "checkout", branchName])
   #Set up the webpage directory:
