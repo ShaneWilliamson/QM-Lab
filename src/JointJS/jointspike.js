@@ -16,11 +16,7 @@
 	var oldMousePos;
 	var curMousePos;
 	
-
-	
-	
-	
-	
+	// Type declaration for a node that will be the basis of an arbitrary image.
 	joint.shapes.basic.DecoratedRect = joint.shapes.basic.Generic.extend({
 
 		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
@@ -39,17 +35,10 @@
 	});
 	
 	
-		
-	
-	
-	
-	
-	
-	
-	
 	
 	window.onload=onstartRun;
 
+	// Attach event listeners to all buttons, start Google's Realtime API.
 	function onstartRun(){
 		authorize();
 		freeze = setInterval(checkAndFreeze, 1000);
@@ -70,8 +59,7 @@
 			globalState = "ADDIMAGE";
 		});
 		
-		document.addEventListener('keydown', handleKeyInput);
-		document.addEventListener('mousemove', handleMouseMove);
+		
 	}
 	
 	//Animates the loading bar
@@ -90,6 +78,7 @@
 		}
 	}
 	
+	//Once the API has sent back confirmation, hide the loading bar.
 	function clearLoadingScreen() {
 		document.getElementById("state").style.display = "none";
 		clearInterval(loading);
@@ -129,7 +118,6 @@
 	// Create a new instance of the realtime utility with your client ID.
 	var realtimeUtils = new utils.RealtimeUtils({ clientId: clientId });
 	
-
 	function authorize() {
 		// Attempt to authorize
 		realtimeUtils.authorize(function(response){
@@ -148,6 +136,8 @@
 			}
 		}, false);
 	}
+	
+	//
 	function start() {
 		//Display loading screen
 		document.getElementById("state").style.display = "block";
@@ -206,6 +196,9 @@
 		
 		updateGraph();
 		clearLoadingScreen();
+		
+		document.addEventListener('keydown', handleKeyInput);
+		document.addEventListener('mousemove', handleMouseMove);
 	}
 	
 	function updateCollabGraph() {
@@ -236,18 +229,17 @@
 
 	}
 
-	//Create a default graph-state for the document
+	//Create a default graph-state for the document (will be empty, but for spike test showcases functionality with place holders)
 	function initializeGraph() {
 		graph = new joint.dia.Graph;
-
-		var rect = new joint.shapes.basic.Rect({
-			position: { x: 100, y: 30 },
-			size: { width: 100, height: 30 },
-			attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
-		});
-
-		var rect2 = rect.clone();
-		rect2.translate(300);
+		
+		
+		var decoratedRect = createImage({x: 150, y: 150})
+		
+		var rect = createStock( {x: 100, y: 30} );
+		var rect2 = createStock( {x: 300, y: 30} );
+		var rect3 = createStock( {x: 100, y: 300} );
+		var rect4 = createStock( {x: 300, y: 300} );
 
 		var link = new joint.dia.Link({
 			source: { id: rect.id },
@@ -255,35 +247,16 @@
 		});
 		link.set('router', { name: 'manhattan' });
 
-		var rect3 = new joint.shapes.basic.Rect({
-			position: { x: 100, y: 300 },
-			size: { width: 100, height: 30 },
-			attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
-		});
-
-		var rect4 = rect3.clone();
-		rect4.translate(300);
-
 		var link2 = new joint.dia.Link({
 			source: { id: rect3.id },
 			target: { id: rect4.id },
-			smooth: true 
 		});
 		link2.set('connector', { name: 'smooth' });
 
 
-		var decoratedRect = new joint.shapes.basic.DecoratedRect({
-			position: { x: 150, y: 80 },
-			size: { width: 200, height: 120 },
-			attrs: { 
-				text: { text: 'Vader Is Back' , 'x-alignment': 'middle'},
-				image: { 'xlink:href': 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg' }
-			}
-		});
-		graph.addCell(decoratedRect);
-
-
-		graph.addCells([rect, rect2, rect3, rect4, link, link2, decoratedRect]);
+		graph.addCells([link, link2]);
+		
+		
 		colGraph.graph = JSON.stringify(graph);
 		
 	}
@@ -300,16 +273,16 @@
 		});
 		paperScale = 1;
 		
-		paper.$el.on('wheel', onMouseWheel);
+		paper.$el.on('wheel', paperZoom);
 		paper.$el.on('mouseup', paperOnMouseUp);
 		
-		paper.on('blank:pointerdown', paperOnMouseDown);
+		paper.on('blank:pointerdown', paperEmptySelectionPressed);
 		
 		
 	}
 	
-	
-	function onMouseWheel(e) {
+	// Zoom the viewport in or out based on user mouse wheel input.
+	function paperZoom(e) {
 		var delta = Math.max(-1, Math.min(1, (-e.originalEvent.deltaY || e.originalEvent.wheelDelta || -e.originalEvent.detail)));
 		if (delta > 0) {
 			paperScale += 0.1;
@@ -321,61 +294,28 @@
 		paper.scale(paperScale, paperScale);
 		
 		e.originalEvent.preventDefault();
-		// console.log(colGraph.graph);
-		// console.log(graph);
 	}
 
-	function paperOnMouseDown(e) {
+	// When a user clicks where there no elements are present, start letting them pan the view.
+	function paperEmptySelectionPressed(e) {
 		updateMousePos(e)
 		movingViewPort = true;	
 	}
 
+	// Based on state, possibly create. Then change state back to editing.
 	function paperOnMouseUp(e) {
 		updateMousePos(e)
-		selected = graph.findModelsFromPoint(curMousePos);
+		selectSingleOnPoint(curMousePos);
 		
 		if (globalState == "ADDSTOCK") {
-			var rect = new joint.shapes.basic.Rect({
-				position: { x: curMousePos.x, y: curMousePos.y },
-				size: { width: 100, height: 30 },
-				attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
-			});	
-			graph.addCell(rect);
+			createStock(curMousePos);
 			
 		} else if (globalState == "ADDLINK") {
-			var newLink = new joint.dia.Link();
-
-			if (selected[0]) {
-				newLink.set('source', { id: selected[0].id });
-			} 
-			else {
-				newLink.set('source', { x: curMousePos.x, y: curMousePos.y });
-			}
-			
-			curMousePos.x += 300;
-			
-			var targetOfLink = graph.findModelsFromPoint(curMousePos);
-			if (targetOfLink[0]) {
-				newLink.set('target', { id: selected[0].id });
-			} 
-			else {
-				newLink.set('target', { x: curMousePos.x, y: curMousePos.y });
-			}
-
-			newLink.set('connector', { name: 'smooth' });
-			
-			graph.addCell(newLink);
+			createLink(curMousePos);
 			
 		} else if (globalState == "ADDIMAGE") {
-			var decoratedRect = new joint.shapes.basic.DecoratedRect({
-				position: { x: curMousePos.x, y: curMousePos.y },
-				size: { width: 200, height: 120 },
-				attrs: { 
-					text: { text: 'Vader Is Back' , 'x-alignment': 'middle'},
-					image: { 'xlink:href': 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg' }
-				}
-			});
-			graph.addCell(decoratedRect);
+			createImage(curMousePos);
+			
 		} else if (globalState == "EDIT") {
 			
 		}
@@ -384,6 +324,65 @@
 		movingViewPort = false;
 	}
 	
+	function selectSingleOnPoint(pos) {
+		selected = graph.findModelsFromPoint(pos);
+	}
+	
+	// Create a stock at the given position.
+	function createStock(pos) {
+		var newStock = new joint.shapes.basic.Rect({
+			position: { x: pos.x, y: pos.y },
+			size: { width: 100, height: 30 },
+			attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
+		});	
+		graph.addCell(newStock);
+		
+		return newStock;
+	}
+	
+	// Create a link at the given position, extending towards the right.
+	function createLink(pos) {
+		var newLink = new joint.dia.Link();
+			if (selected[0]) {
+				newLink.set('source', { id: selected[0].id });
+			} 
+			else {
+				newLink.set('source', { x: pos.x, y: pos.y });
+			}
+			
+			pos.x += 300;
+			
+			var targetOfLink = graph.findModelsFromPoint(pos);
+			if (targetOfLink[0]) {
+				newLink.set('target', { id: selected[0].id });
+			} 
+			else {
+				newLink.set('target', { x: pos.x, y: pos.y });
+			}
+
+			newLink.set('connector', { name: 'smooth' });
+			
+			graph.addCell(newLink);
+			
+			return newLink;
+	}
+	
+	// Create an image at the given position.
+	function createImage(pos) {
+		var newImage = new joint.shapes.basic.DecoratedRect({
+			position: { x: pos.x, y: pos.y },
+			size: { width: 200, height: 120 },
+			attrs: { 
+				text: { text: 'Vader Is Back' , 'x-alignment': 'middle'},
+				image: { 'xlink:href': 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg' }
+			}
+		});
+		graph.addCell(newImage);
+		
+		return newImage;
+	}
+	
+	// Check if the user hit a significant key. Proceed based on answer.
 	function handleKeyInput(e) {
 		if (e.keyCode == 46) {
 			deleteSelectedCell(e);
@@ -394,6 +393,7 @@
 		
 	}
 	
+	//Delete the currently selected node.
 	function deleteSelectedCell(e) {
 		if (selected[0]) {
 			selected[0].remove();
@@ -401,6 +401,7 @@
 		}
 		updateCollabGraph();	
 	}
+	
 	
 	function handleMouseMove(e) {
 		if (movingViewPort) {
@@ -421,5 +422,11 @@
 		curMousePos = paper.clientToLocalPoint({ x: e.clientX, y: e.clientY });
 	}
 
+	
+	
+	
+	
+	
+	
 
 
