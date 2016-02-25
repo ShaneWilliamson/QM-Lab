@@ -8,7 +8,7 @@ from subprocess import call
 repoPath = ""
 webPath = ""
 
-#The routine to run, every 120 seconds it pulls from GitHub
+#The routine to run, every hour it pulls from GitHub
 #This causes everything in the src folder to be put on display on the webserver
 def start():
   #Using global variables repoPath, webPath
@@ -33,7 +33,7 @@ def start():
   while True:
     gitPull()
     pushContentToWeb()
-    time.sleep(120)
+    time.sleep(3600)
 
 
 def gitPull():
