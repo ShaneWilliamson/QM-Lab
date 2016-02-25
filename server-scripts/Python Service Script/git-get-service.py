@@ -22,17 +22,17 @@ def start():
   #Loop forever!
   while True:
     gitPull()
-    pushContentToWeb(webPath)
+    pushContentToWeb(repoPath + "/QM-Lab/", webPath)
     time.sleep(120)
 
 def gitPull():
   call(["git", "pull"])
 
-def pushContentToWeb(targetPath):
+def pushContentToWeb(curPath, targetPath):
   #Delete the contents of targetPath
   call(["rm", "-rf", targetPath + "/*"])
   #Copy new src/ contents into targetPath
-  call(["cp", "src/*", targetPath])
+  call(["cp", curPath + "src/*", targetPath])
 
 # Routine to create a new directory in /var/www/html/ based on input
 def setupBranch(newPath, branchName):
