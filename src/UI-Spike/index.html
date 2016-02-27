@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="webix.css" type="text/css" media="screen" charset="utf-8">
+		<script src="webix.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="testdata.js"></script>
+		<style>
+			#areaA, #areaB {
+				margin: 50px 10px;
+				width:320px;
+				height:400px;
+				float: left;
+			}
+			.webix_layout_space{
+				background-color: #fff;
+			}
+        </style>
+		<title>Tabbar</title>
+	</head>
+	<body>
+		<div id="areaA"></div>
+		
+		<script type="text/javascript" charset="utf-8">
+			webix.ui({
+			    container: "areaA",
+			    type:"space", padding:8,
+
+                rows:[
+                    {
+                        type:"clean",
+                        rows:[
+
+                            {
+                                borderless:true, view:"tabbar", id:'tabbar', value: 'nodeListView', multiview:true, 
+                                options: [
+                                    { value: 'List', id: 'nodeListView'},
+                                    { value: 'List', id: 'linkListView'},
+                                ]
+                            },
+                            {
+                                cells:[
+                                    {
+                                        id:"nodeListView",
+                                        view:"list",
+                                        template:"#rank#. #title# <div style='padding-left:18px'> Year:#year#, votes:#votes# </div>",
+                                        type:{
+                                            height:60
+                                        },
+                                        select:true,
+
+                                        data:big_film_set
+                                    },
+                                    {
+                                        id:"linkListView",
+                                        view:"list",
+                                        template:"#rank#. #title# <div style='padding-left:18px'> Year:#year#, votes:#votes# </div>",
+                                        type:{
+                                            height:60
+                                        },
+                                        select:true,
+
+                                        data:big_film_set
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
+		</script>
+	</body>
+</html>
