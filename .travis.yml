@@ -1,22 +1,21 @@
 language: node_js
 node_js:
-  - "node"
+- node
 
 branches:
   only:
-    - development
+  - development
+
+before_script:
+- mkdir travis-phantomjs
+- wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+  -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+- tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
+- export PATH=$PWD/travis-phantomjs:$PATH
 
 notifications:
   slack:
-    secure: Bg3x09BvSH0nh1cDqG7hkM7oZhX4TskKcKLFmJoj2M9yqKrJL7KHPKU2f8ICWu2V3DVigKzUvasm16HyFvSl8Naz2H9Vp8j9q0xHHQd6i3TaUabAse8yNPzvxQVrQE05obbguGM8IQYD0A04CqDAsxjhwKpqlfP1kXeIWby+IqyN79m4mQamkKRt4BGzDhg5cxhQ0NoXm1ROopMqV4edkB9MMM50kUlyRUpf5YBuFz7xxGB7IyciGrMQGqbx1rk5LJkD8Gf6Dx+pGgmR19TlJ+XzudI9UyKph//8K+xy0eW1A2gJiimeLmsWP/ntAVFYXISmk9EQeAsI4kV/VhF7h0im/JX6Q2qfOpoNw0hOao67Ebnne+WES4oppIhH1fUsiisTxAwk/Mhc21HEQSpD8ZOzjLqmJHOaMcuXc0vQbJtTqF6HOQMlGoNKYloe23JlEa66sSFOO0gqaHU7uUvQ16iY7PF7YosdXYxnsN+7xjxBu9N3dCLBAWZF085dxqreh3d0xbHPB5XZGLi+pfnVeIVNsvkPwzyw2IL2HgE0TXa5Vv95bgLlsNbWNoZHEip0ZPjXUNr9A4e3YCra/xbsWP/9ZAPJC5yjcaBngQQuZsXITFGXL8qcBtpH9T6s356q/j+ESSoJTaM8mkg9VH5nnGUQXVHxROP+6LP6TD2vcY4=
     on_success: always
     on_failure: always
-
-before_script:
-  - mkdir travis-phantomjs
-  - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-  - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
-  - export PATH=$PWD/travis-phantomjs:$PATH
-
-# Add "before_install", "install", "before_script", "script", "after_success"/"after_failure"
-# (optional "before_deploy", "deploy", "after_deploy" steps go in this position), and "after_script"
+    rooms:
+      secure: AwAgtHszC/fIpA8fK3KYmX2cVa74cREvW/MgK2dcD/BDPiNuaIUTTb+5sy8tZPIv/yTxEkD2d1qHrRBMoXQtG8JAy8/XZzSjFe5CtJNk/YqF+ZugBXspB1yivUWAkp7Cuolqyjk7XjLpqRObsIzpLP6xyVT5WRsFaOXSF7GiiORgUFGUQcIw0bX9l8Hima/0Qx3CUSNB6QepOv0Y2dNxwk21ZK2sGtTcjVcCrDIPzYea6c4IUVlaL7oNTcKrQd2FVjkPFwsKVpcrHnZx7y9AKWmw1OD6Z7j/wwOXjKN0z78L94EZjOJ0weFWcKFV3PwLHQLJsKNHT8lSIyPF5uGzgceBewOekvwWJbAym3uKpep3feAOv/calIFsxiWPbpybV13EUVN6MVsCkBWrN4cwNakkz2jak2s/v8Gimsgxkv6oA7+AMkfhNUYU4xSMsWpXW7AoDUaGT2YOjiBAm3yfCaLc0RW2LNTXkDjNkPlRqh6JA58kcZIbV+psICOgL2s59UBBc818DihZaadLveus0UqT0yO/R30SKWe+MLvBeeF5fUqNpoyvvcIJKGQxgiE22PPMJf51QJDtfNaymH9ufem5eb6Dbq+OQF8Y41DvdRT+0YXZ2vOelq57+Q4OyI2ZM0+AdPz9492v/ERLgv4qiTiVX5zBg4htIOBsmAE83OI=
