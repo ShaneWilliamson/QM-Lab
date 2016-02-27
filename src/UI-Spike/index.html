@@ -5,6 +5,7 @@
 		<link rel="stylesheet" href="webix.css" type="text/css" media="screen" charset="utf-8">
 		<script src="webix.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="testdata.js"></script>
+		<script type="text/javascript" src="genUI.js"></script>
 		<style>
 			#objectSelectTabbar, #areaB {
 				margin: 50px 10px;
@@ -20,75 +21,6 @@
 	</head>
 	<body>
 		<div id="mainToolbar"></div>
-		<script type="text/javascript" charset="utf-8">
-
-			webix.ui({
-				container:"mainToolbar",
-				view:"toolbar",
-				elements: [
-						{ view:"segmented", width:200, 
-							options:[
-								{id:"save", value:"Save"},
-								{id:"load", value:"Load"}
-							]
-						},
-						{ view:"button", width: 100, value: "Share"
-						}
-					],
-				elementsConfig:{
-					width: 150,
-					labelAlign:"right",
-					value:"edit"}
-			});	
-		</script>
 		<div id="objectSelectTabbar"></div>
-		<script type="text/javascript" charset="utf-8">
-			webix.ui({
-			    container: "objectSelectTabbar",
-			    type:"space", padding:8,
-
-                rows:[
-                    {
-                        type:"clean",
-                        rows:[
-
-                            {
-                                borderless:true, view:"tabbar", id:'tabbar', value: 'nodeListView', multiview:true, 
-                                options: [
-                                    { value: 'Nodes', id: 'nodeListView'},
-                                    { value: 'Links', id: 'linkListView'},
-                                ]
-                            },
-                            {
-                                cells:[
-                                    {
-                                        id:"nodeListView",
-                                        view:"list",
-                                        template:"#value#",
-                                        type:{
-                                            height:60
-                                        },
-                                        select:true,
-
-                                        data:sample_nodes
-                                    },
-                                    {
-                                        id:"linkListView",
-                                        view:"list",
-                                        template:"#value#",
-                                        type:{
-                                            height:60
-                                        },
-                                        select:true,
-
-                                        data:sample_links
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            });
-		</script>
 	</body>
 </html>
