@@ -28,7 +28,7 @@ window.onload = function() {
                 rows:[
 
                     {
-                        borderless:true, view:"tabbar", id:'tabbar', value: 'nodeListView', multiview:true, 
+                        borderless:true, view:"tabbar", id:'tabbarSelect', value: 'nodeListView', multiview:true, 
                         options: [
                             { value: 'Nodes', id: 'nodeListView'},
                             { value: 'Links', id: 'linkListView'},
@@ -63,5 +63,11 @@ window.onload = function() {
                 ]
             }
         ]
+    });  
+
+
+    $$("nodeListView").attachEvent("onItemClick", function(id, e){
+        console.log("Value changed from: to: ");
     });
 };
+
