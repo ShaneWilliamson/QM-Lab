@@ -44,6 +44,7 @@ li.active{
 	position: absolute;
 	background-color: #ddd;
 	overflow: hidden;
+	display: none;
 }
 
 #bar {
@@ -52,9 +53,16 @@ li.active{
 	width: 40%;
 	height: 30px;
 	position: relative;
+	display: none;
 }
 #state {
 	position: absolute;
 	top: 50%;
 	left: 45%;
+	display: none;
+}
+
+#paperView {
+	display: block;
+	
 }
