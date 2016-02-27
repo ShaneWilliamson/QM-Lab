@@ -6,7 +6,7 @@
 		<script src="webix.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="testdata.js"></script>
 		<style>
-			#areaA, #areaB {
+			#objectSelectTabbar, #areaB {
 				margin: 50px 10px;
 				width:320px;
 				height:400px;
@@ -19,11 +19,32 @@
 		<title>Tabbar</title>
 	</head>
 	<body>
-		<div id="areaA"></div>
-		
+		<div id="mainToolbar"></div>
+		<script type="text/javascript" charset="utf-8">
+
+			webix.ui({
+				container:"mainToolbar",
+				view:"toolbar",
+				elements: [
+						{ view:"segmented", width:200, 
+							options:[
+								{id:"save", value:"Save"},
+								{id:"load", value:"Load"}
+							]
+						},
+						{ view:"button", width: 100, value: "Share"
+						}
+					],
+				elementsConfig:{
+					width: 150,
+					labelAlign:"right",
+					value:"edit"}
+			});	
+		</script>
+		<div id="objectSelectTabbar"></div>
 		<script type="text/javascript" charset="utf-8">
 			webix.ui({
-			    container: "areaA",
+			    container: "objectSelectTabbar",
 			    type:"space", padding:8,
 
                 rows:[
@@ -34,8 +55,8 @@
                             {
                                 borderless:true, view:"tabbar", id:'tabbar', value: 'nodeListView', multiview:true, 
                                 options: [
-                                    { value: 'List', id: 'nodeListView'},
-                                    { value: 'List', id: 'linkListView'},
+                                    { value: 'Nodes', id: 'nodeListView'},
+                                    { value: 'Links', id: 'linkListView'},
                                 ]
                             },
                             {
@@ -43,24 +64,24 @@
                                     {
                                         id:"nodeListView",
                                         view:"list",
-                                        template:"#rank#. #title# <div style='padding-left:18px'> Year:#year#, votes:#votes# </div>",
+                                        template:"#value#",
                                         type:{
                                             height:60
                                         },
                                         select:true,
 
-                                        data:big_film_set
+                                        data:sample_nodes
                                     },
                                     {
                                         id:"linkListView",
                                         view:"list",
-                                        template:"#rank#. #title# <div style='padding-left:18px'> Year:#year#, votes:#votes# </div>",
+                                        template:"#value#",
                                         type:{
                                             height:60
                                         },
                                         select:true,
 
-                                        data:big_film_set
+                                        data:sample_links
                                     }
                                 ]
                             }
