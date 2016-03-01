@@ -1,0 +1,10 @@
+#objectSelectTabbar, #areaB {
+	margin: 50px 10px;
+	width:320px;
+	height:400px;
+	float: left;
+}
+
+.webix_layout_space{
+	background-color: #fff;
+}
