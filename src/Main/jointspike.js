@@ -163,16 +163,16 @@
 		} else {
 		//Check if it was loaded from google drive
 			//The section in the path that contains the ID is enclosed with %5B"..."%5D
-			var openDelim = "%5B\"";
-			var closeDelim = "\"%5D";
-			var path = window.location.href;
-			var openIndex = path.indexOf(openDelim);
-			var closeIndex = path.indexOf(closeDelim);
+			var openDelim = "%5B%22";
+			var closeDelim = "%22%5D";
+			var url = window.location.href;
+			var openIndex = url.indexOf(openDelim);
+			var closeIndex = url.indexOf(closeDelim);
 			if((openIndex != -1) && (closeIndex != -1)){
 				//Slices out the id from the end of the open delimiter to the beginning of the end delimiter
 				id = path.slice(openIndex + openDelim.length, closeIndex);
 				//navigate to the existing page and re-run existing code for loading the page
-				window.location.assign(window.location.hostname + "/demo/release-1.2/src/JointJS/?id=" + id);
+				window.location.assign(window.location.hostname + window.location.pathname + "/?id=" + id);
 				//existing code for loading the page
 				id = realtimeUtils.getParam('id');
 				realtimeUtils.load(id.replace('/', ''), onFileLoaded, onFileInitialize);
