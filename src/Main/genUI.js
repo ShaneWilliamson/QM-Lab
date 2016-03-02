@@ -1,4 +1,6 @@
-window.onload = function() {
+var lastClickedValue;
+
+function genUI() {
 	webix.ui({
 		container:"mainToolbar",
 		view:"toolbar",
@@ -67,7 +69,19 @@ window.onload = function() {
 
 
     $$("nodeListView").attachEvent("onItemClick", function(id, e){
-        console.log("Value changed from: to: ");
+        console.log("Value changed in the node list view");
+        var index = $$("nodeListView").getIndexById(id);
+        lastClickedValue = sample_nodes[index].value;
+    });
+
+    $$("linkListView").attachEvent("onItemClick", function(id, e){
+        console.log("Value changed in the link list view");
+        var index = $$("linkListView").getIndexById(id);
+        lastClickedValue = sample_links[index].value;
     });
 };
 
+function deselectUIElements() {
+    $$("nodeListView").unselectAll();
+    $$("linkListView").unselectAll();
+}
