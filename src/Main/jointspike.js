@@ -46,20 +46,18 @@
 		globalState = "EDIT";
 		movingViewPort = false;
 		
-		var stockButton = document.getElementById("stockButton");
-		stockButton.addEventListener('mousedown', function () {
-			globalState = "ADDSTOCK";
-		});
+		// var stockButton = document.getElementById("stockButton");
+		// stockButton.addEventListener('mousedown', function () {
+		// 	globalState = "ADDSTOCK";
+		// });
 
-		document.getElementById("linkButton").addEventListener('mousedown', function () {
-			globalState = "ADDLINK";
-		});
+		// document.getElementById("linkButton").addEventListener('mousedown', function () {
+		// 	globalState = "ADDLINK";
+		// });
 		
-		document.getElementById("imageButton").addEventListener('mousedown', function () {
-			globalState = "ADDIMAGE";
-		});
-		
-		
+		// document.getElementById("imageButton").addEventListener('mousedown', function () {
+		// 	globalState = "ADDIMAGE";
+		// });
 	}
 	
 	//Animates the loading bar
@@ -167,6 +165,10 @@
 				realtimeUtils.load(createResponse.id, onFileLoaded, onFileInitialize);
 			});
 		}
+
+
+		genUI(); // function loads the toolbars and menus required for the user interface
+				// function is declared in genUI.js
 	}
 	// The first time a file is opened, it must be initialized with the
 	// document structure. This function will add a collaborative string
@@ -307,20 +309,18 @@
 		updateMousePos(e)
 		selectSingleOnPoint(curMousePos);
 		
-		if (globalState == "ADDSTOCK") {
+		if (lastClickedValue == "Stock") {
 			createStock(curMousePos);
 			
-		} else if (globalState == "ADDLINK") {
+		} else if (lastClickedValue == "Flow") {
 			createLink(curMousePos);
 			
-		} else if (globalState == "ADDIMAGE") {
-			createImage(curMousePos);
-			
-		} else if (globalState == "EDIT") {
-			
+		} else if (lastClickedValue == "Image") {
+			createImage(curMousePos);	
 		}
 		
-		globalState = "EDIT";
+		deselectUIElements();
+		lastClickedValue = "EDIT"; // reset the cursor back to editing
 		movingViewPort = false;
 	}
 	
