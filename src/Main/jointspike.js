@@ -5,7 +5,7 @@
 	var rootModel;
 	var realDoc;
 	var loading;
-	var clientId = '1073945779594-bpprsdgic2haajdb3ghqfcsuodnrc6ss.apps.googleusercontent.com';
+	var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercontent.com';
 	var activeID;
 
 	var globalState;
@@ -161,11 +161,28 @@
 		// Load the document id from the URL
 			realtimeUtils.load(id.replace('/', ''), onFileLoaded, onFileInitialize);
 		} else {
-			// Create a new document, add it to the URL
-			realtimeUtils.createRealtimeFile('New Draw File', function(createResponse) {
-				window.history.pushState(null, null, '?id=' + createResponse.id);
-				realtimeUtils.load(createResponse.id, onFileLoaded, onFileInitialize);
-			});
+		//Check if it was loaded from google drive
+			//The section in the path that contains the ID is enclosed with %5B"..."%5D
+			var openDelim = "%5B\"";
+			var closeDelim = "\"%5D";
+			var path = window.location.href;
+			var openIndex = path.indexOf(openDelim);
+			var closeIndex = path.indexOf(closeDelim);
+			if((openIndex != -1) && (closeIndex != -1)){
+				//Slices out the id from the end of the open delimiter to the beginning of the end delimiter
+				id = path.slice(openIndex + openDelim.length, closeIndex);
+				//navigate to the existing page and re-run existing code for loading the page
+				window.location.assign(window.location.hostname + "/demo/release-1.2/src/JointJS/?id=" + id);
+				//existing code for loading the page
+				id = realtimeUtils.getParam('id');
+				realtimeUtils.load(id.replace('/', ''), onFileLoaded, onFileInitialize);
+			}else {
+				// Create a new document, add it to the URL
+				realtimeUtils.createRealtimeFile('New QM-Lab File', function(createResponse) {
+					window.history.pushState(null, null, '?id=' + createResponse.id);
+					realtimeUtils.load(createResponse.id, onFileLoaded, onFileInitialize);
+				});
+			}
 		}
 	}
 	// The first time a file is opened, it must be initialized with the
