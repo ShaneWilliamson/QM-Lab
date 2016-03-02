@@ -1,3 +1,4 @@
+// data that is loaded into the nodes tab of the selection tabBar
 var sample_nodes = [
 	{ id:0, value:"Stock"},
 	{ id:1, value:"Image"},
@@ -8,6 +9,7 @@ var sample_nodes = [
 	{ id:6, value:"Text Area"}
 ];
 
+// data that is loaded into the links tab of the selection tabBar
 var sample_links = [
 	{ id:0, value:"Flow"},
 	{ id:1, value:"UML Inheritance"},
