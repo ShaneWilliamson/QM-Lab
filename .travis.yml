@@ -8,9 +8,8 @@ branches:
   - development
   - selenium_experimental
 
-before_install:
-  - sudo apt-get -y install nodejs
-  - ./selenium_setup.sh
-
 notifications:
   slack: 371team3:TB8PmfcQFNgUvytSnno8zVUZ
+
+before_install:
+  - ./selenium_setup.sh
