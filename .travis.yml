@@ -12,4 +12,4 @@ notifications:
   slack: 371team3:TB8PmfcQFNgUvytSnno8zVUZ
 
 before_install:
-  - ./selenium_setup.sh
+  - sudo bash selenium_setup.sh
