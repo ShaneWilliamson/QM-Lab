@@ -7,8 +7,8 @@
 	var loading;
 	var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercontent.com';
 	var activeID;
+	var collaborativeChangeReceived;
 
-	var globalState;
 	var selected;
 	
 	var movingViewPort;
@@ -40,24 +40,11 @@
 
 	// Attach event listeners to all buttons, start Google's Realtime API.
 	function onstartRun(){
+		selected = {}
 		authorize();
 		freeze = setInterval(checkAndFreeze, 1000);
 
-		globalState = "EDIT";
 		movingViewPort = false;
-		
-		// var stockButton = document.getElementById("stockButton");
-		// stockButton.addEventListener('mousedown', function () {
-		// 	globalState = "ADDSTOCK";
-		// });
-
-		// document.getElementById("linkButton").addEventListener('mousedown', function () {
-		// 	globalState = "ADDLINK";
-		// });
-		
-		// document.getElementById("imageButton").addEventListener('mousedown', function () {
-		// 	globalState = "ADDIMAGE";
-		// });
 	}
 	
 	//Animates the loading bar
@@ -148,8 +135,15 @@
 		//Register the CollaborativeGraph object
 		gapi.drive.realtime.custom.registerType(CollaborativeGraph, 'CollaborativeGraph');
 		CollaborativeGraph.prototype.graph=gapi.drive.realtime.custom.collaborativeField('graph');
-		gapi.drive.realtime.custom.setInitializer(CollaborativeGraph, doInitialize);
-		gapi.drive.realtime.custom.setOnLoaded(CollaborativeGraph, doOnLoaded);
+		gapi.drive.realtime.custom.setInitializer(CollaborativeGraph, doGraphInitialize);
+		gapi.drive.realtime.custom.setOnLoaded(CollaborativeGraph, doGraphOnLoaded);
+		
+		gapi.drive.realtime.custom.registerType(CollaborativeCell, 'CollaborativeCell');
+		CollaborativeCell.prototype.JSON=gapi.drive.realtime.custom.collaborativeField('JSON');
+		CollaborativeCell.prototype.action=gapi.drive.realtime.custom.collaborativeField('action');
+		gapi.drive.realtime.custom.setInitializer(CollaborativeCell, doCellInitialize);
+		gapi.drive.realtime.custom.setOnLoaded(CollaborativeCell, doCellOnLoaded);
+			
 			
 		
 		// With auth taken care of, load a file, or create one if there
@@ -184,30 +178,34 @@
 		}
 
 
-		genUI(); // function loads the toolbars and menus required for the user interface
+		genUI.genUI(); // function loads the toolbars and menus required for the user interface
 				// function is declared in genUI.js
 	}
 	// The first time a file is opened, it must be initialized with the
 	// document structure. This function will add a collaborative string
 	// to our model at the root.
 	function onFileInitialize(model) {
+		rootModel = model;
 		
 		var cGraph = model.create('CollaborativeGraph');
 		model.getRoot().set("graph", cGraph);
 		colGraph = model.getRoot().get('graph');
 		initializeGraph();
 		console.log("Initialize complete");
+		
+		updateGraph();
 	}
 
 	// After a file has been initialized and loaded, we can access the
 	// document. We will wire up the data model to the UI.
 	function onFileLoaded(doc) {
 		graph = new joint.dia.Graph;
+		
 		rootModel = doc.getModel();
 		realDoc = doc;
 		colGraph = rootModel.getRoot().get('graph');
 		initializePaper();
-		console.log("We loaded the document.");
+		
 		
 		// Update the collaborative object whenever the user finishes making a change
 		paper.on('cell:pointerup', updateCollabGraph);
@@ -218,66 +216,74 @@
 		
 		document.addEventListener('keydown', handleKeyInput);
 		document.addEventListener('mousemove', handleMouseMove);
+		
+		
+		var cells = graph.getCells();
+
+		
+		for (i = 0; i < cells.length; i++) {
+			addCollabEventToCell(cells[i]);
+		}
+
+		
+		collaborativeChangeReceived = false;
+		
+		
+		var people = realDoc.getCollaborators();
+		for (i = 0; i < people.length; i++) {
+			if (people[i].isMe) {
+				sessionId = people[i].sessionId;
+				console.log(sessionId);
+			}
+		}
+		
+		
+		
+		console.log("We loaded the document.");
+	}
+	
+	
+	//Allows Google's API to handle the cell
+	function addCollabEventToCell(cell) {
+		cell.on('change', (function() {
+			return function(event) {updateCellByEventID(event);};
+		}) ());
+	}
+	
+	//Class definition of a collaborative object to hold the graph
+	function CollaborativeGraph(){
+
 	}
 	
 	function updateCollabGraph() {
 		colGraph.graph = JSON.stringify(graph);
+		console.log('collab graph updated');
 	}
 
-
-
 	//OBject Initialization and Load functions
-	function doInitialize(){
+	function doGraphInitialize(){
 		var model = gapi.drive.realtime.custom.getModel(this);
 		console.log("The graph was initialized.")
 	}
 
-	function doOnLoaded(){
-		this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateGraph);
+	function doGraphOnLoaded(){
+		//this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateGraph);
 		console.log("We've loaded the graph");
 	}
 
 	function updateGraph() {
 		graph.fromJSON(JSON.parse(colGraph.graph))
+		console.log('Built new graph');
 	}
 
 
 
-	//Class definition of a collaborative object to hold the graph
-	function CollaborativeGraph(){
-
-	}
+	
 
 	//Create a default graph-state for the document (will be empty, but for spike test showcases functionality with place holders)
 	function initializeGraph() {
 		graph = new joint.dia.Graph;
-		
-		
-		var decoratedRect = createImage({x: 150, y: 150})
-		
-		var rect = createStock( {x: 100, y: 30} );
-		var rect2 = createStock( {x: 300, y: 30} );
-		var rect3 = createStock( {x: 100, y: 300} );
-		var rect4 = createStock( {x: 300, y: 300} );
-
-		var link = new joint.dia.Link({
-			source: { id: rect.id },
-			target: { id: rect2.id }
-		});
-		link.set('router', { name: 'manhattan' });
-
-		var link2 = new joint.dia.Link({
-			source: { id: rect3.id },
-			target: { id: rect4.id },
-		});
-		link2.set('connector', { name: 'smooth' });
-
-
-		graph.addCells([link, link2]);
-		
-		
 		colGraph.graph = JSON.stringify(graph);
-		
 	}
 	
 	//Initialize the view of the graph and set up it's event listeners
@@ -307,7 +313,7 @@
 			paperScale += 0.1;
 			
 		}
-		else {
+		else if (paperScale > 0.1){
 			paperScale -= 0.1;
 		}
 		paper.scale(paperScale, paperScale);
@@ -326,18 +332,18 @@
 		updateMousePos(e)
 		selectSingleOnPoint(curMousePos);
 		
-		if (lastClickedValue == "Stock") {
+		if (genUI.lastClickedValue == "Stock") {
 			createStock(curMousePos);
 			
-		} else if (lastClickedValue == "Flow") {
+		} else if (genUI.lastClickedValue == "Flow") {
 			createLink(curMousePos);
 			
-		} else if (lastClickedValue == "Image") {
+		} else if (genUI.lastClickedValue == "Image") {
 			createImage(curMousePos);	
 		}
 		
-		deselectUIElements();
-		lastClickedValue = "EDIT"; // reset the cursor back to editing
+		genUI.deselectUIElements();
+		genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 		movingViewPort = false;
 	}
 	
@@ -345,57 +351,55 @@
 		selected = graph.findModelsFromPoint(pos);
 	}
 	
+	
+	function createCollabCell(cell) {
+		var newCell = rootModel.create('CollaborativeCell', cell.toJSON());
+		rootModel.getRoot().set(cell.id, newCell);
+		addCollabEventToCell(cell);
+		rootModel.getRoot().get(cell.id).action = 'add';
+	}
+	
 	// Create a stock at the given position.
 	function createStock(pos) {
-		var newStock = new joint.shapes.basic.Rect({
-			position: { x: pos.x, y: pos.y },
-			size: { width: 100, height: 30 },
-			attrs: { rect: { fill: 'blue' }, text: { text: 'Pretend Stock', fill: 'white' } }
-		});	
+		var newStock = new localNode(pos, "Stock");
 		graph.addCell(newStock);
+		createCollabCell(newStock);
 		
+		updateCollabGraph()
+		console.log("Stock added")
 		return newStock;
 	}
 	
 	// Create a link at the given position, extending towards the right.
 	function createLink(pos) {
-		var newLink = new joint.dia.Link();
-			if (selected[0]) {
-				newLink.set('source', { id: selected[0].id });
-			} 
-			else {
-				newLink.set('source', { x: pos.x, y: pos.y });
-			}
-			
-			pos.x += 300;
-			
-			var targetOfLink = graph.findModelsFromPoint(pos);
-			if (targetOfLink[0]) {
-				newLink.set('target', { id: selected[0].id });
-			} 
-			else {
-				newLink.set('target', { x: pos.x, y: pos.y });
-			}
-
-			newLink.set('connector', { name: 'smooth' });
-			
-			graph.addCell(newLink);
-			
-			return newLink;
+		var newLink = new localLink(pos);
+		
+		graph.addCell(newLink);
+		createCollabCell(newLink);
+		updateCollabGraph();	
+		
+		console.log('New cell added');
+		return newLink;
 	}
 	
 	// Create an image at the given position.
-	function createImage(pos) {
+	function createImage(pos, pictureURL, label) {
+		var pic = (pictureURL) ? pictureURL : 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg';
+		var text = (label) ? label : 'Vaer Is Back';
+		
 		var newImage = new joint.shapes.basic.DecoratedRect({
 			position: { x: pos.x, y: pos.y },
 			size: { width: 200, height: 120 },
 			attrs: { 
-				text: { text: 'Vader Is Back' , 'x-alignment': 'middle'},
-				image: { 'xlink:href': 'http://img.moviepilot.com/assets/tarantulaV2/long_form_background_images/1386062573_darth-vader-16086-1680x1050.jpg' }
+				text: { text: text , 'x-alignment': 'middle'},
+				image: { 'xlink:href': pic }
 			}
 		});
 		graph.addCell(newImage);
+		createCollabCell(newImage); 
+		updateCollabGraph();	
 		
+		console.log('New cell added');
 		return newImage;
 	}
 	
@@ -413,6 +417,7 @@
 	//Delete the currently selected node.
 	function deleteSelectedCell(e) {
 		if (selected[0]) {
+			rootModel.getRoot().get(selected[0].id).action = 'remove';
 			selected[0].remove();
 			selected.shift();
 		}
@@ -441,9 +446,173 @@
 
 	
 	
+	function CollaborativeCell() {
+		
+	}
+	
+	function doCellInitialize (JSONdata) {
+		console.log(this);
+		var model = gapi.drive.realtime.custom.getModel(this);
+		this.JSON = JSONdata;
+		this.action = "update";
+		console.log('cell created');
+	}
+	
+	function doCellOnLoaded () {
+		var that = this;
+		this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, (function() {
+				return function(cell) {updateCellByJSON(cell, that);};
+			}) ());		
+		console.log('cell was loaded');
+	}
+	
+	function updateCellByJSON(event, that) {
+
+		collaborativeChangeReceived = true;
+		
+		if(that.action === "update") {
+			var localCell = graph.getCell(that.JSON.id);
+			if (localCell) {
+				localCell.set(that.JSON);
+			}
+		}
+		else if (that.action === "remove") {
+			graph.getCell(that.JSON.id).remove();
+		}
+		else if (that.action === "add") {
+			graph.addCell(that.JSON);
+			addCollabEventToCell(graph.getCell(that.JSON.id));
+		}	
+	}
+	
+	function updateCellByEventID(cell) {
+		if (!collaborativeChangeReceived) {
+			rootModel.getRoot().get(cell.id).action = 'update';
+			rootModel.getRoot().get(cell.toJSON().id).JSON = cell.toJSON();
+		}
+		collaborativeChangeReceived = false;
+	}
 	
 	
 	
+	
+	
+	
+	function localNode (pos, label) {
+		var text = "Stock";
+		if (label) {
+			text = label;
+		}
+		return new joint.shapes.basic.Rect({
+			position: { x: pos.x, y: pos.y },
+			size: { width: 100, height: 30 },
+			attrs: { rect: { fill: 'grey' }, text: { text: text, fill: 'white' } }
+		});	
+	}
+	
+	joint.shapes.basic.Rect.prototype.getXPos = function() {
+		return this.attributes.position.x;
+	}
+	
+	joint.shapes.basic.Rect.prototype.getYPos = function() {
+		return this.attributes.position.y;
+	}
+	
+	joint.shapes.basic.Rect.prototype.setPos = function(x, y) {
+		this.attributes.position = {x: x, y: y};
+	}
+	
+	
+	joint.shapes.basic.Rect.prototype.getXSize = function() {
+		return this.attributes.size.width;
+	}
+	
+	joint.shapes.basic.Rect.prototype.getYSize = function() {
+		return this.attributes.size.height;
+	}
+	
+	joint.shapes.basic.Rect.prototype.setSize = function(x, y) {
+		this.attributes.size = {width: x, height: y};
+	}
+	
+	joint.shapes.basic.Rect.prototype.getZOrder = function() {
+		return this.attributes.z;
+	}
+	
+	joint.shapes.basic.Rect.prototype.setZOrder = function(z) {
+		this.attributes.z = z;
+	}
+	
+	joint.shapes.basic.Rect.prototype.getLabel = function() {
+		return this.attributes.attrs.text.text;
+	}
+	
+	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
+		this.attributes.attrs.text.text = text;
+	}
 	
 
+	
+	
+	function localLink (pos, label) {
+		var newLink = new joint.dia.Link();
+
+		if (selected[0]) {
+			newLink.set('source', { id: selected[0].id });
+		} 
+		else {
+			newLink.set('source', { x: pos.x, y: pos.y });
+		}
+
+		newLink.set('target', { x: pos.x + 200, y: pos.y });
+		
+		newLink.set('connector', { name: "smooth" });
+		
+		return newLink;
+	}
+	
+	
+	joint.dia.Link.prototype.getStartNode = function() {
+		return this.attributes.source;
+	}
+	
+	joint.dia.Link.prototype.setStartNodeFromCell = function(source) {
+		this.set('source', source.id);
+	}
+	
+	joint.dia.Link.prototype.setStartNodeFromPoint = function(source) {
+		this.set('source', { x: source.x, y: source.y });
+	}
+	
+	joint.dia.Link.prototype.getEndNode = function() {
+		return this.attributes.target;
+	}
+	
+	joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
+		this.set('target', target.id);
+	}
+	
+	joint.dia.Link.prototype.setEndNodeFromPoint = function(source) {
+		this.set('target', { x: target.x, y: target.y });
+	}
+	
+	joint.dia.Link.prototype.setEndNodeFromCell = function(source) {
+		this.set('target', { x: target.x, y: target.y });
+	}
+	
+	
+	joint.dia.Link.prototype.setLabel = function(text) {
+		this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
+	}
+	
+	joint.dia.Link.prototype.getLabel = function(text) {
+		if (this.attributes.labels) {
+			if (this.attributes.labels[0]) {
+				return this.attributes.labels[0].attrs.text.text;
+			}
+		}
+		else {
+			return "";
+		}
+	}
 
