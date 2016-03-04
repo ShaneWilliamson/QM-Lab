@@ -14,5 +14,3 @@ before_install:
 
 notifications:
   slack: 371team3:TB8PmfcQFNgUvytSnno8zVUZ
-    on_success: always
-    on_failure: always
