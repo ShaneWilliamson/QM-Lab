@@ -9,7 +9,7 @@ branches:
   - selenium_experimental
 
 before_install:
-  - sudo apt-get -y install node npm
+  - sudo apt-get -y install nodejs
   - ./selenium_setup.sh
 
 notifications:
