@@ -168,7 +168,7 @@
 			var closeIndex = url.indexOf(closeDelim);
 			if((openIndex != -1) && (closeIndex != -1)){
 				//Slices out the id from the end of the open delimiter to the beginning of the end delimiter
-				id = path.slice(openIndex + openDelim.length, closeIndex);
+				id = url.slice(openIndex + openDelim.length, closeIndex);
 				//navigate to the existing page and re-run existing code for loading the page
 				window.location.assign(window.location.hostname + window.location.pathname + "/?id=" + id);
 				//existing code for loading the page
