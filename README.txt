@@ -1,4 +1,4 @@
-QM-Lab 
+QM-Lab (README best viewed on Notepad or Notepad++; not formatted for Wordpad)
 
 For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/development/src/Main. 
 	- Here you can see what we currently have implemented. There are several aspects of the IU that show fet=atures that are 
