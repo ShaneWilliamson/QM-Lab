@@ -1,19 +1,23 @@
-language: node_js
-node_js:
-- node
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk7
 
 branches:
   only:
   - development
+  - selenium_experimental
+  - selenium
 
-before_script:
-- mkdir travis-phantomjs
-- wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-  -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-- tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
-- export PATH=$PWD/travis-phantomjs:$PATH
+sudo: true
 
 notifications:
-  slack: 371team3:TB8PmfcQFNgUvytSnno8zVUZ
+  slack:
+    rooms:
+      - 371team3:TB8PmfcQFNgUvytSnno8zVUZ
     on_success: always
     on_failure: always
+
+before_install:
+  - sudo apt-get -y install nodejs
+  - bash selenium_setup.sh
