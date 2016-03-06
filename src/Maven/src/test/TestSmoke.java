@@ -107,7 +107,58 @@ public class TestSmoke {
       }
     };
     wait.until(e);
+    // Create new items, then check that they were actually created.
+    driver.findElement(By.xpath("//div[contains(text(),'Stock')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    assertTrue(isElementPresent(By.cssSelector(".Stock")));
     
+    driver.findElement(By.xpath("//div[contains(text(),'Image')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    assertTrue(isElementPresent(By.cssSelector(".ImageNode")));
+    
+    driver.findElement(By.xpath("//div[contains(text(),'Variable')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    assertTrue(isElementPresent(By.cssSelector(".Variable")));
+    
+    driver.findElement(By.xpath("//div[contains(text(),'Parameter')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    assertTrue(isElementPresent(By.cssSelector(".Parameter")));
+    
+    // Switch to Links tab, and wait for it to finish switching.
+    driver.findElement(By.xpath("//div[contains(text(),'Links')]")).click();
+    for (int second = 0;; second++) {
+        if (second >= 60) fail("timeout");
+        try { if ("Flow".equals(driver.findElement(By.cssSelector("div.webix_list_item")).getText())) break; } catch (Exception e2) {}
+        Thread.sleep(1000);
+    }
+
+    // All the links are of the same class, so count the number of links to make sure a new one is being
+    // created each time.
+    int numLinks;
+    
+    driver.findElement(By.xpath("//div[contains(text(),'Flow')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    numLinks = driver.findElements(By.className("localLink")).size();
+    assertTrue(numLinks == 1);
+    
+    driver.findElement(By.xpath("//div[contains(text(),'Simple Straight')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    numLinks = driver.findElements(By.className("localLink")).size();
+    assertTrue(numLinks == 2);
+    
+    driver.findElement(By.xpath("//div[contains(text(),'Simple Curved')]")).click();
+    driver.findElement(By.id("paperView")).click();
+    numLinks = driver.findElements(By.className("localLink")).size();
+    assertTrue(numLinks == 3);
+  }
+  
+  private boolean isElementPresent(By by) {
+    try {
+      driver.findElement(by);
+      return true;
+    } catch (NoSuchElementException e) {
+      return false;
+    }
   }
 
 
