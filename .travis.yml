@@ -7,11 +7,16 @@ branches:
   only:
   - development
   - selenium_experimental
+  - selenium
 
 sudo: true
 
 notifications:
-  slack: 371team3:TB8PmfcQFNgUvytSnno8zVUZ
+  slack:
+    rooms:
+      - 371team3:TB8PmfcQFNgUvytSnno8zVUZ
+    on_success: always
+    on_failure: always
 
 before_install:
   - sudo apt-get -y install nodejs
