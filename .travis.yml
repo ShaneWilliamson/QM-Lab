@@ -12,7 +12,11 @@ branches:
 sudo: true
 
 notifications:
-  slack: '371team3:TB8PmfcQFNgUvytSnno8zVUZ'
+  slack: 
+    rooms:
+        - '371team3:R6TEyOqBzUzFY13wyDs3OXJZ'
+    on_success: always
+    on_failure: always
 
 before_install:
   - sudo apt-get -y install nodejs
