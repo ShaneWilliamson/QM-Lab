@@ -19,7 +19,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class TestSmoke {
   private String baseUrl;
   private StringBuffer verificationErrors = new StringBuffer();
-  private WebDriverWait wait;  
+  private WebDriverWait wait;
+  
   // After every run the browser will switch to a new one
   // and be placed into the driver to use
   private WebDriver browser;
@@ -40,16 +41,17 @@ public class TestSmoke {
     * @return An array containing all the webDrivers to test
     */
    public static Collection<Object[] > data(){
+    // TODO: Change this to the ssh path 
     System.setProperty("webdriver.chrome.driver", "src/test/resources/selenium_standalone_binaries/osx/googlechrome/64bit/chromedriver");
     Object[][] data = new Object[][] { { new ChromeDriver() }, { new FirefoxDriver() }};
     assert data != null;
     return Arrays.asList(data);
   }
 
-  
   @Before
   public void setUp() throws Exception {
     driver = browser;
+    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     baseUrl = "http://cmpt371g3.usask.ca/";
   }
 
@@ -58,16 +60,16 @@ public class TestSmoke {
     // Note: Thread.sleep is to let things load. Measured in milliseconds.
     // Get the web page and go to it
     wait = new WebDriverWait(driver, 10);
-    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     driver.get(baseUrl + "/demo/development/src/Main/");
     final String previousURL = driver.getCurrentUrl();
-    
-    Thread.sleep(2500);
+    Thread.sleep(2000);
+
+
     // Store the current window handle
     String winHandleBefore = driver.getWindowHandle();
 
     // Perform the click operation that opens new window
-    driver.findElement(By.xpath("//button[contains(text(),'Authorize')]")).click();
+    driver.findElement(By.id("auth_button")).click();
     
     // Switch to new window opened
     for(String winHandle : driver.getWindowHandles()){
@@ -107,9 +109,8 @@ public class TestSmoke {
       }
     };
     wait.until(e);
-    
   }
-
+  
 
   @After
   public void tearDown() throws Exception {
