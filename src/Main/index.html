@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<link rel="stylesheet" type="text/css" href="draw.css" />
+    <link rel="stylesheet" href="joint.css" />
+    <link rel="stylesheet" href="webix.css" />
+    <link rel="stylesheet" href="main.css" />
+	<script src="https://apis.google.com/js/api.js"></script>
+	<script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
+    <script src="jquery.js"></script>
+    <script src="lodash.js"></script>
+    <script src="backbone.js"></script>
+    <script src="joint.js"></script>
+    <script src="webix.js"></script>
+	
+    <script src="displayData.js"></script>
+    <script src="genUI.js"></script>
+	<script src="grapiauth.js"></script>
+	<script src="checkcollaballowed.js"></script>
+	<script src="collabobjectssetup.js"></script>
+	<script src="connectioncheck.js"></script>
+	<script src="createobjects.js"></script>
+	<script src="initialzediagram.js"></script>
+	<script src="loadingbar.js"></script>
+	<script src="qmlabfileopened.js"></script>
+	<script src="qmlabjointclasses.js"></script>
+	<script src="initialzewebpage.js"></script>
+	
+</head>
+<body>
+	<div id="mainToolbar" class="center">
+		<div id="cover"></div>
+	</div>
+	<div class="container">
+		<div class="fixed">
+			<div id="objectSelectTabbar"></div>
+		</div>
+		<div class="flexible">
+			<div id="paperView"></div>
+			<div id = "state">Loading</div>
+			<div id="progress">
+				<div id="bar"></div>
+			</div>
+		</div>
+	</div>
+	<button id="auth_button">Authorize</button>
+</body>
+</html>
