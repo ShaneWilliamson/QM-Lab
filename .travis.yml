@@ -1,7 +1,6 @@
 language: java
 jdk:
   - oraclejdk8
-  - oraclejdk7
 
 branches:
   only:
@@ -20,5 +19,7 @@ notifications:
 before_install:
   - sudo apt-get -y install nodejs
   - bash selenium_setup.sh
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
 
 script: mvn test -f ./src/Maven/pom.xml
