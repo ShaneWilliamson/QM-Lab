@@ -13,13 +13,22 @@ echo "\r\nCreating folder to place selenium in ...\r\n"
 sudo mkdir ~/selenium
 cd ~/selenium
 
-
 # Get Selenium and install headless Java runtime
 #
 echo "\r\nInstalling Selenium and headless Java runtime ...\r\n"
 sudo wget http://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.52.0.jar
 sudo apt-get -y install openjdk-8-jre-headless
 
+# Add Google public key to apt
+sudo wget -q -O - "https://dl-ssl.google.com/linux/linux_signing_key.pub" | sudo apt-key add -
+
+# Add Google to the apt-get source list
+sudo echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list
+
+# Install Chrome, and unzip
+sudo apt-get -y install google-chrome-stable unzip
+sudo wget "https://chromedriver.googlecode.com/files/chromedriver_linux64_2.21.zip"
+sudo unzip chromedriver_linux64_2.21.zip
 
 # Install Firefox
 #
@@ -32,6 +41,8 @@ sudo apt-get -y install firefox
 echo "\r\nInstalling XVFB (headless GUI for Firefox) ...\r\n"
 sudo apt-get -y install xvfb
 
+echo "Starting Google Chrome ..."
+sudo google-chrome --remote-debugging-port=9222 &
 
 # Finally, starting up Selenium server
 #
