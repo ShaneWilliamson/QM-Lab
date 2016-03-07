@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 @RunWith(Parameterized.class)
-public class TestSmoke {
+public class SmokeTest {
   private String baseUrl;
   private StringBuffer verificationErrors = new StringBuffer();
   private WebDriverWait wait;  
@@ -29,7 +29,7 @@ public class TestSmoke {
    * Constructor class for the smoke test
    * @param browser - The new browser 
    */
-  public TestSmoke(WebDriver browser){
+  public SmokeTest(WebDriver browser){
     assert browser != null;
     this.browser = browser;
   }
@@ -75,7 +75,6 @@ public class TestSmoke {
     }
     // Wait two seconds for the authentication window and then enter email
     Thread.sleep(2000);
-    assert "Sign in - Google Accounts" == driver.getTitle();
     Thread.sleep(500);
     driver.findElement(By.id("Email")).clear();
     driver.findElement(By.id("Email")).sendKeys("cmpt371testingemail");
