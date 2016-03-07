@@ -8,8 +8,9 @@ As well, please make sure that before you begin work you refer to the set of [Gi
 Please see the [wiki](https://github.com/ShaneWilliamson/QM-Lab/wiki) for an in-depth project description.
 
 The wiki pages are pretty barren at the moment, so if you have something to add please do so!
-=============
-=====ID3=====
+
+ID3
+=====
 For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/development/src/Main. 
 	- Here you can see what we currently have implemented. There are several aspects of the IU that show features that are 
 		not yet implemented. 
@@ -41,14 +42,14 @@ For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/
 ID3 is a large step in that we're finally workin on the actual project, as opposed to spikes. This brings in a large number of things
 			that need to be considered/included that didn't with the previous spikes. 
 			
-We now have continuous build integration. This is handled by our BI master, Shane Williamson:
+We now have continuous build integration. This is handled by our CI master, Shane Williamson:
 		"Upon push/pull request to the remote repository Travis will begin execution based on the 
 			instructions present in a '.travis.yml' file at the root level of the repository [development branch].
 
 		It's a yaml file so it takes that format, customization of the build is in steps, which are 
 			displayed nicely here: https://docs.travis-ci.com/user/customizing-the-build/#The-Build-Lifecycle"
 		
-		After loggin in with git, you can go here:https://travis-ci.com/ShaneWilliamson/QM-Lab/builds/22068619 to see the
+		After logging in with git, you can go here:https://travis-ci.com/ShaneWilliamson/QM-Lab/builds/22068619 to see the
 			builds that have been done and when. 
 		
 On the Github wiki, we have some information on the teams, for which there have been some changes:
@@ -70,7 +71,8 @@ There were some things added by the design team; diagrams and documents, which w
 
 ____________________________________
 
-=====For the coming deliverable=====
+For the coming deliverable
+=====
 ____________________________________
 
 The main thing is that we are going to do be working through the requirements document, setting several mini-milestone dates,
