@@ -1,7 +1,7 @@
 QM-Lab (README best viewed on Notepad or Notepad++; not formatted for Wordpad)
 
 For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/development/src/Main. 
-	- Here you can see what we currently have implemented. There are several aspects of the IU that show fet=atures that are 
+	- Here you can see what we currently have implemented. There are several aspects of the IU that show features that are 
 		not yet implemented. 
 	Implemented:
 		Nodes: (with the caviat that you can simply place pre-existing nodes; they are not yet customizable)
@@ -23,6 +23,10 @@ For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/
 		Links:
 		- Directional Arrow
 		- Dashed Line
+		Buttons:
+		-Save
+		-Load
+		-Share
 		
 ID3 is a large step in that we're finally workin on the actual project, as opposed to spikes. This brings in a large number of things
 			that need to be considered/included that didn't with the previous spikes. 
@@ -75,7 +79,8 @@ The main thing is that we are going to do be working through the requirements do
 	- We will also begin our first serious triage for the coming deliverable. Now that we have the infrastructure in place, 
 		issue tracking will see a lot more use, as well as its own validation and triage process as discussed in class. 
 
-	- We wanted to see more logging this ID, but it didn't happen. 
+	- We wanted to see more logging this ID, but it didn't happen. However, we have looked into log4javascript, and it
+		WILL be in the next deliverable. 
 	
 	- We will incorporate more assertions throughout the code as well as complete the started effort of putting
 		method contracts with each method, with pre and postconditions. 
