@@ -26,11 +26,18 @@ sudo apt-get -y install openjdk-8-jre-headless
 echo "\r\nInstalling Firefox ...\r\n"
 sudo apt-get -y install firefox
 
+# Install Chrome
+#
+echo "\r\nInstalling Chrome ...\r\n"
+sudo apt-get install -y libappindicator1 fonts-liberation
+sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome*.deb
 
 # Install headless GUI for firefox.  'Xvfb is a display server that performs graphical operations in memory'
 #
 echo "\r\nInstalling XVFB (headless GUI for Firefox) ...\r\n"
 sudo apt-get -y install xvfb
+sh -e /etc/init.d/xvfb start
 
 
 # Finally, starting up Selenium server
