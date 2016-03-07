@@ -40,7 +40,11 @@ public class SmokeTest {
     * @return An array containing all the webDrivers to test
     */
    public static Collection<Object[] > data(){
-    System.setProperty("webdriver.chrome.driver", "src/test/resources/selenium_standalone_binaries/osx/googlechrome/64bit/chromedriver");
+    if(OSValidator.isMac())
+      System.setProperty("webdriver.chrome.driver", "src/test/resources/selenium_standalone_binaries/osx/googlechrome/64bit/chromedriver");
+    else if(OSValidator.isUnix())
+      System.setProperty("webdriver.chrome.driver", "src/test/resources/selenium_standalone_binaries/linux/googlechrome/64bit/chromedriver");
+
     Object[][] data = new Object[][] { { new ChromeDriver() }, { new FirefoxDriver() }};
     assert data != null;
     return Arrays.asList(data);

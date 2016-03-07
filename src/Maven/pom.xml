@@ -111,6 +111,11 @@
 	                            <downloadedZipFileDirectory>${project.basedir}/src/test/resources/selenium_standalone_zips</downloadedZipFileDirectory>
 	                            <customRepositoryMap>${project.basedir}/src/test/resources/RepositoryMap.xml</customRepositoryMap>
 	                            <overwriteFilesThatExist>${overwrite.binaries}</overwriteFilesThatExist>
+	                            <operatingSystems>
+                    				<windows>true</windows>
+                    				<linux>true</linux>
+                    				<mac>true</mac>
+                				</operatingSystems>
 	                        </configuration>
 	                        <executions>
 	                            <execution>
