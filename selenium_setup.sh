@@ -36,4 +36,4 @@ sudo apt-get -y install xvfb
 # Finally, starting up Selenium server
 #
 echo "\r\nStarting up Selenium server ...\r\n"
-DISPLAY=:1 xvfb-run java -jar ~/selenium/selenium-server-standalone-2.52.0.jar
+DISPLAY=:1 xvfb-run java -jar ~/selenium/selenium-server-standalone-2.52.0.jar &

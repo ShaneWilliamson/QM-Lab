@@ -6,7 +6,6 @@ jdk:
 branches:
   only:
   - development
-  - selenium_experimental
   - selenium
 
 sudo: true
