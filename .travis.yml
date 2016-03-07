@@ -20,3 +20,5 @@ notifications:
 before_install:
   - sudo apt-get -y install nodejs
   - bash selenium_setup.sh
+
+script: mvn clean verify
