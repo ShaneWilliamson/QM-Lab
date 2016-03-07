@@ -52,7 +52,7 @@ We have gone through the meeting minutes and separated out the mini-milestones a
 	
 All the major backend has been implemented for the system as of ID3, including the connecting of joint.js and the Google API
 
-
+There were some things added by the design team; diagrams and documents, which will be available on the repo as well as with google.
 
 ____________________________________
 
