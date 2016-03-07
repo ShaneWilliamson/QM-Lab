@@ -1,5 +1,15 @@
-QM-Lab (README best viewed on Notepad or Notepad++; not formatted for Wordpad)
+QM-Lab Qualitative Modelling Collaboratively
 
+===Git Use===
+After cloning, please run **git-setup.sh**. It is located in the root of the git repository. This will set up the commit template for your new repository. 
+
+As well, please make sure that before you begin work you refer to the set of [Git Standard Practices](https://github.com/ShaneWilliamson/QM-Lab/wiki/Git-Standard-Practices).
+
+Please see the [wiki](https://github.com/ShaneWilliamson/QM-Lab/wiki) for an in-depth project description.
+
+The wiki pages are pretty barren at the moment, so if you have something to add please do so!
+=============
+=====ID3=====
 For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/development/src/Main. 
 	- Here you can see what we currently have implemented. There are several aspects of the IU that show features that are 
 		not yet implemented. 
