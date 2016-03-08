@@ -66,10 +66,11 @@
 		allowCollabRecording();
 
 		clearLoadingScreen();
-		dispatchUnitTests();
 
 		console.log("We loaded the document.");
+		dispatchUnitTests();
 	}
+
 
 
 	/*

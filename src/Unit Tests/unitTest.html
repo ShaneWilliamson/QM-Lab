@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -9,12 +9,20 @@
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
   <script src="jquery.js"></script>
-  <script src="backbone.js"></script>
   <script src="lodash.js"></script>
+  <script src="backbone.js"></script>
   <script src="joint.js"></script>
   <script src="webix.js"></script>
 
-  <script src="jointspike.js"></script>
+  <script src="displayData.js"></script>
+  <script src="genUI.js"></script>
+  <script src="checkcollaballowed.js"></script>
+  <script src="collabobjectssetup.js"></script>
+  <script src="connectioncheck.js"></script>
+  <script src="createobjects.js"></script>
+  <script src="initialzediagram.js"></script>
+  <script src="qmlabfileopened.js"></script>
+  <script src="qmlabjointclasses.js"></script>
 
   <script src="qunit.js"></script>
   <script src="sinon.js"></script>
@@ -25,8 +33,11 @@
   <script>
 
   QUnit.test("Joint Spike Test", function( assert ) {
-    var pos = {x:2, y:2};
-    // Create a stock outside of createStock
+    var pos = {x: 3, y: 2};
+    var model = gapi.drive.realtime.custom.getModel(this);
+    var mock = sinon.mock(model);
+    onFileInitialize(model);
+    initializeGraph();
     createStock(pos);
   });
 </script>

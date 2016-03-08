@@ -44,6 +44,7 @@ public class SmokeTest {
       System.setProperty("webdriver.chrome.driver", "src/test/resources/selenium_standalone_binaries/osx/googlechrome/64bit/chromedriver");
     else if(OSValidator.isUnix())
       System.setProperty("webdriver.chrome.driver", "src/test/resources/selenium_standalone_binaries/linux/googlechrome/64bit/chromedriver");
+    //TODO add windows
 
     Object[][] data = new Object[][] { { new ChromeDriver() }, { new FirefoxDriver() }};
     assert data != null;
@@ -110,7 +111,9 @@ public class SmokeTest {
       }
     };
     wait.until(e);
+    
     // Create new items, then check that they were actually created.
+    // TODO Turn into function
     driver.findElement(By.xpath("//div[contains(text(),'Stock')]")).click();
     driver.findElement(By.id("paperView")).click();
     assertTrue(isElementPresent(By.cssSelector(".Stock")));
