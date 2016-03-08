@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Joint Spike Tests</title>
+
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.22.0.css">
+
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
+  <script src="jquery.js"></script>
+  <script src="backbone.js"></script>
+  <script src="lodash.js"></script>
+  <script src="joint.js"></script>
+  <script src="webix.js"></script>
+
+  <script src="jointspike.js"></script>
+
+  <script src="qunit.js"></script>
+  <script src="sinon.js"></script>
+  <script src="sinon-qunit.js"></script>
+
+
+
+  <script>
+
+  QUnit.test("Joint Spike Test", function( assert ) {
+    var pos = {x:2, y:2};
+    // Create a stock outside of createStock
+    createStock(pos);
+  });
+</script>
+</head>
+<body>
+
+  <div id="qunit"></div>
+
+
+</body>
+</html>
