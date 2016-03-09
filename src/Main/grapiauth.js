@@ -35,7 +35,7 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
 				// Authorization failed because this is the first time the user has used your application,
 				// show the authorize button to prompt them to authorize manually.
 				var button = document.getElementById('auth_button');
-				button.classList.add('visible');
+				document.getElementById('landing').style.display = "block";
 				button.addEventListener('click', function () {
 					realtimeUtils.authorize(function(response){
 						startQM_DocumentLoad();
