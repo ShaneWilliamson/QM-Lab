@@ -13,7 +13,6 @@
 		newNode = new joint.shapes.QMLab.Stock({
 			position: { x: pos.x, y: pos.y },
 		});
-		
 		if (label) {
 			newNode.setLabel(label);
 		}
@@ -29,7 +28,7 @@
 	return: The x position of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getXPos = function() {
-		return this.position.x;
+		return this.attributes.position.x;
 	}
 
 	
@@ -41,7 +40,7 @@
 	return: The y position of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getYPos = function() {
-		return this.position.y;
+		return this.attributes.position.y;
 	}
 
 	/*
@@ -52,7 +51,7 @@
 	post: The localCell's position has been updated to {x, y}
 	*/
 	joint.shapes.basic.Rect.prototype.setPos = function(x, y) {
-		this.position = {x: x, y: y};
+		this.attributes.position = {x: x, y: y};
 	}
 
 
@@ -64,7 +63,7 @@
 	return: The x size (width) of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getXSize = function() {
-		return this.size.width;
+		return this.attributes.size.width;
 	}
 
 
@@ -76,7 +75,7 @@
 	return: The y size (height) of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getYSize = function() {
-		return this.size.height;
+		return this.attributes.size.height;
 	}
 
 	/*
@@ -87,7 +86,7 @@
 	post: The localCell's size has been updated to {width, height}
 	*/
 	joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
-		this.size = {width: x, height: y};
+		this.attributes.size = {width: x, height: y};
 	}
 
 	/*
@@ -99,7 +98,7 @@
 	return: The z-order of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getZOrder = function() {
-		return this.z;
+		return this.attributes.z;
 	}
 
 	/*
@@ -110,7 +109,7 @@
 	post: The localCell's z-order has been updated to z
 	*/
 	joint.shapes.basic.Rect.prototype.setZOrder = function(z) {
-		this.z = z;
+		this.attributes.z = z;
 	}
 
 	/*
@@ -121,7 +120,7 @@
 	return: The label text of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getLabel = function() {
-		return this.attrs.text.text;
+		return this.attributes.attrs.text.text;
 	}
 
 	/*
@@ -132,7 +131,7 @@
 	return: The z-order of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
-		this.attrs.text.text = text;
+		this.attributes.attrs.text.text = text;
 	}
 
 	
@@ -300,7 +299,7 @@
 	return: The source of the localLink
 	*/
 	joint.dia.Link.prototype.getStartNode = function() {
-		return this.source;
+		return this.attributes.source;
 	}
 
 	/*
@@ -363,7 +362,7 @@
 	return: The target of the localLink
 	*/
 	joint.dia.Link.prototype.getEndNode = function() {
-		return this.target;
+		return this.attributes.target;
 	}
 
 	/*
@@ -418,9 +417,9 @@
 	return: The label text of the localLink
 	*/
 	joint.dia.Link.prototype.getLabel = function(text) {
-		if (this.labels) {
-			if (this.labels[0]) {
-				return this.labels[0].attrs.text.text;
+		if (this.attributes.labels) {
+			if (this.attributes.labels[0]) {
+				return this.attributes.labels[0].attrs.text.text;
 			}
 		}
 		else {
