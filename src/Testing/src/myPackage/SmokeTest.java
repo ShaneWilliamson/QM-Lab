@@ -75,7 +75,7 @@ public class SmokeTest {
     for(String winHandle : driver.getWindowHandles()){
         driver.switchTo().window(winHandle);
     }
-    // Wait two seconds for the authentication window and then enter email
+    // Wait two seconds for the authentication window and then enter email and password
     Thread.sleep(2000);
     assert "Sign in - Google Accounts" == driver.getTitle();
     Thread.sleep(500);
@@ -107,7 +107,8 @@ public class SmokeTest {
     String elementPath;
     String elementName;
     
-    // Create new items, then check that they were actually created.
+    // Create new items
+    // Count number of elements to check that an item was actually created.
     for (int i = 1; i <= 8; i++) {
     	elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
     	elementName = driver.findElement(By.xpath(elementPath)).getText();
@@ -130,8 +131,7 @@ public class SmokeTest {
     	Thread.sleep(1000);
     }
 
-    // All the links are of the same class, so count the number of links to make sure a new one is being
-    // created each time.
+    // Repeat test for links.
     for (int i = 1; i <= 5; i++) {
     	elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
     	elementName = driver.findElement(By.xpath(elementPath)).getText();
@@ -154,7 +154,6 @@ public class SmokeTest {
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
-      //fail(verificationErrorString);
       System.out.println(verificationErrorString);
     }
   }

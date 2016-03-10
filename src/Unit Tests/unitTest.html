@@ -5,6 +5,11 @@
   <title>Joint Spike Tests</title>
 
   <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.22.0.css">
+  <script src="qunit.js"></script>
+
+  <script src="sinon.js"></script>
+  <script src="sinon-qunit.js"></script>
+  <script src="blanket.min.js" ></script>
 
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
@@ -15,22 +20,15 @@
   <script src="../main/webix.js"></script>
 
 
-
   <script src="../main/displayData.js"></script>
   <script src="../main/genUI.js"></script>
   <script src="../main/checkcollaballowed.js"></script>
   <script src="../main/collabobjectssetup.js"></script>
   <script src="../main/connectioncheck.js"></script>
-  <script src="../main/createobjects.js"></script>
+  <script src="../main/createobjects.js" data-cover></script>
   <script src="../main/initialzediagram.js"></script>
   <script src="../main/qmlabfileopened.js"></script>
   <script src="../main/qmlabjointclasses.js"></script>
-
-  <script src="qunit.js"></script>
-  <script src="sinon.js"></script>
-  <script src="sinon-qunit.js"></script>
-
-
 
   <script>
 
@@ -63,6 +61,7 @@
 <body>
 
   <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
 
 
 </body>
