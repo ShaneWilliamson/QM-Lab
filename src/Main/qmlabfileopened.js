@@ -45,7 +45,7 @@
 	function onFileLoaded(doc) {
 		genUI.genUI(); // function loads the toolbars and menus required for the user interface
 				// function is declared in genUI.js
-
+		
 		graph = new joint.dia.Graph;
 
 		rootModel = doc.getModel();
@@ -59,26 +59,25 @@
 		paper.on('blank:pointerup', updateCollabGraph);
 
 		updateGraph();
-
+	
 		addGlobalEventListeners();
 
 		addCollabEventToAllCells();
 		allowCollabRecording();
-
+		
 		clearLoadingScreen();
-		dispatchUnitTests();
-
+		
 		console.log("We loaded the document.");
 	}
-
-
+	
+	
 	/*
-	This function adds neccesary event listeners to the html document itself, giving a generic
+	This function adds neccesary event listeners to the html document itself, giving a generic 
 	handler function to decide what to do with the event from there.
 	These include:
 	    When the mouse moves
 		When a key on the keyboard is pressed
-
+	
 	pre: the html document has been loaded
 	post: the html document has global event listeners waiting for user input
 	*/
@@ -86,14 +85,14 @@
 		document.addEventListener('keydown', handleKeyInput);
 		document.addEventListener('mousemove', handleMouseMove);
 	}
-
-
+	
+	
 	/*
-	This function grabs all local cells currently in a the graph, then adds event listeners
+	This function grabs all local cells currently in a the graph, then adds event listeners 
 	to them that will ensures they updates their collaborative counterparts
 
 	pre: the local graph must exist
-	post: any local cell contained by the local graph will have had an event listener attached
+	post: any local cell contained by the local graph will have had an event listener attached 
 	      to itself that will make it update its collaborative counterpart on change
 	*/
 	function addCollabEventToAllCells() {

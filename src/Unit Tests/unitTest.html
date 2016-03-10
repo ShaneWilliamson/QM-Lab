@@ -8,21 +8,23 @@
 
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
-  <script src="jquery.js"></script>
-  <script src="lodash.js"></script>
-  <script src="backbone.js"></script>
-  <script src="joint.js"></script>
-  <script src="webix.js"></script>
+  <script src="../main/jquery.js"></script>
+  <script src="../main/lodash.js"></script>
+  <script src="../main/backbone.js"></script>
+  <script src="../main/joint.js"></script>
+  <script src="../main/webix.js"></script>
 
-  <script src="displayData.js"></script>
-  <script src="genUI.js"></script>
-  <script src="checkcollaballowed.js"></script>
-  <script src="collabobjectssetup.js"></script>
-  <script src="connectioncheck.js"></script>
-  <script src="createobjects.js"></script>
-  <script src="initialzediagram.js"></script>
-  <script src="qmlabfileopened.js"></script>
-  <script src="qmlabjointclasses.js"></script>
+
+
+  <script src="../main/displayData.js"></script>
+  <script src="../main/genUI.js"></script>
+  <script src="../main/checkcollaballowed.js"></script>
+  <script src="../main/collabobjectssetup.js"></script>
+  <script src="../main/connectioncheck.js"></script>
+  <script src="../main/createobjects.js"></script>
+  <script src="../main/initialzediagram.js"></script>
+  <script src="../main/qmlabfileopened.js"></script>
+  <script src="../main/qmlabjointclasses.js"></script>
 
   <script src="qunit.js"></script>
   <script src="sinon.js"></script>
@@ -32,15 +34,31 @@
 
   <script>
 
+  window.onerror = function(){
+   return true;
+  }
+
+  window.gapi.load('auth:client,drive-realtime,drive-share', start);
+
+
+  function start() {
+    var doc = gapi.drive.realtime.newInMemoryDocument();
+    var model = doc.getModel();
+    onFileInitialize(model);
+    onFileLoaded(doc);
+  }
+
   QUnit.test("Joint Spike Test", function( assert ) {
     var pos = {x: 3, y: 2};
-    var model = gapi.drive.realtime.custom.getModel(this);
-    var mock = sinon.mock(model);
-    onFileInitialize(model);
-    initializeGraph();
-    createStock(pos);
+    var newStock = new localNode(pos, "Stock");
+    assert.deepEqual(createStock(pos).attributes.position, newStock.attributes.position);
+
   });
+
+
 </script>
+
+
 </head>
 <body>
 

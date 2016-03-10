@@ -13,7 +13,6 @@
 		newNode = new joint.shapes.QMLab.Stock({
 			position: { x: pos.x, y: pos.y },
 		});
-		
 		if (label) {
 			newNode.setLabel(label);
 		}

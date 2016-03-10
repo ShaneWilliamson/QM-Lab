@@ -1,3 +1,3 @@
 function dispatchUnitTests(){
-  console.log.("DDDSAJKDF");
+  console.log("DDDSAJKDF");
 }

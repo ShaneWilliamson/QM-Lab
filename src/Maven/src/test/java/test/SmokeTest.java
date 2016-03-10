@@ -156,6 +156,9 @@ public class SmokeTest {
     driver.findElement(By.id("paperView")).click();
     numLinks = driver.findElements(By.className("localLink")).size();
     assertTrue(numLinks == 3);
+    
+    // TODO Test if a file is made in google drive. 
+    // Click the file, then delete the file
   }
   
   private boolean isElementPresent(By by) {

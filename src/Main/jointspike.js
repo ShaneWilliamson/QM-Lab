@@ -16,7 +16,7 @@
 	var oldMousePos;
 	var curMousePos;
 
-
+	
 
 
 
@@ -58,15 +58,15 @@
 			}
 		}
 	}
-
+	
 	/*
-	This function shows the animated loading bar and starts it animating.
-
+	This function shows the animated loading bar and starts it animating. 
+	
 	pre: An HTML element with id="state" must exist
 	     An HTML element with id="bar" must exist
 		 An HTML element with id="progress" must exist
 		 An HTML element with id="auth_button" must exist
-	post: The loading bar will be made visible, it's animation started,
+	post: The loading bar will be made visible, it's animation started, 
 
 	*/
 	function displayLoadingScreen() {
@@ -77,16 +77,16 @@
 	}
 
 	/*
-	This function hides the animated loading bar and stops it from further animating.
-
-	In addition, since it is assumed that the loading bar being stopped means that the document has finished
+	This function hides the animated loading bar and stops it from further animating. 
+	
+	In addition, since it is assumed that the loading bar being stopped means that the document has finished 
 	loading, the Authenication Button for Google's Realtime API is hidden.
-
+	
 	pre: An HTML element with id="state" must exist
 	     An HTML element with id="bar" must exist
 		 An HTML element with id="progress" must exist
 		 An HTML element with id="auth_button" must exist
-	post: The loading bar will be hidden, it's animation stopped,
+	post: The loading bar will be hidden, it's animation stopped, 
 	      and the authenication button will be hidden.
 
 	*/
@@ -101,14 +101,14 @@
 	/*
 	This function uses an interval to check and see if the user has lost their internet connection.
 	If this is the case, this function hides the diagram to prevent the user from making any more edits,
-	then displays an alert telling them they've been disconnected.
-
+	then displays an alert telling them they've been disconnected. 
+	
 	It then clears the interval it was using, and sets up a new one to check if the user has reconnected.
-
-	pre: The html page should be loaded.
+	
+	pre: The html page should be loaded. 
 	     The user should not already be known to be offline.
-
-	post: The user's online status has been checked.
+	      
+	post: The user's online status has been checked. 
 	      If they are offline, the interval checking their offline status stops, the paper is hidden,
 		  and a new interval is set up to check whether the user has re-established the connection
 
@@ -122,20 +122,20 @@
 		}
 
 	}
-
+	
 	/*
 	This function uses an interval to check and see if the user has regained their internet connection.
 	If this is the case, this function updates the graph, shows the diagram and allows them to continue editting,
-	then displays an alert telling them they've been reconnected.
-
+	then displays an alert telling them they've been reconnected. 
+	
 	It then clears the interval it was using, and sets up a new one to check if the user has disconnected again.
-
+	
 	This function generally should never be called if the user isn't detected to have lost internet connectivity.
-
-	pre: The html page should be loaded.
+	
+	pre: The html page should be loaded. 
 	     The user should have been known to be offline.
-
-	post: The user's online status has been checked.
+	      
+	post: The user's online status has been checked. 
 	      If they are online, the interval checking their offline status stops, the paper is shown,
 		  the graph is updated, and a new interval is set up to check whether the user has re-established the connection
 
@@ -150,16 +150,16 @@
 		}
 	}
 
-
+	
 	/*
 	Google Realtime API check to ensure the application has been properly set up.
-	Alerts the user if something has gone horribly wrong and no functionality
+	Alerts the user if something has gone horribly wrong and no functionality 
 	related to real-time collaboration will function.
 	*/
 	if (!/^([0-9])$/.test(clientId[0])) {
 		alert('Invalid Client ID - did you forget to insert your application Client ID?');
 	}
-
+	
 	/*
 	Creates a new instance of Google's Realtime API utility with the client ID of QM-Lab
 	This is used to shorten a great many function calls and document startup basics.
@@ -167,15 +167,15 @@
 	var realtimeUtils = new utils.RealtimeUtils({ clientId: clientId });
 
 	/*
-	The Google Realtime API is called to ensure that the user is logged into a Google Account.
+	The Google Realtime API is called to ensure that the user is logged into a Google Account. 
 	If the user is logged into a Google Account, attempts to load the QM-Lab document.
 	If not logged in, the "Authorize" button has functionality added to it that prompts
-	the user to log in.
-
-	pre: The HTML document should have just loaded when running this function.
+	the user to log in. 
+	
+	pre: The HTML document should have just loaded when running this function. 
 	     It should run at no other time
-    post: Either the QM-Lab document loading has begun,
-	      or the "Authorize" button has had functionality added to it that allows
+    post: Either the QM-Lab document loading has begun, 
+	      or the "Authorize" button has had functionality added to it that allows 
 		  the user to log in and then start the QM-Lab document loading.
 	*/
 	function authorize() {
@@ -200,8 +200,8 @@
 	/*
 	This function gives the user feedback that Google's Realtime API is attempting to load a document,
 	initiates the back-end set up for properly using Google's Realtime API, then actually calls said API
-	to load a document.
-
+	to load a document. 
+	
 	pre: The user MUST be logged into a Google Account
 	post: A QM-Lab document will be loaded, and the page will have full use of Google's Realtime API
 	*/
@@ -210,15 +210,15 @@
 		registerCollaborativeObjectTypes();
 		loadQM_Document();
 	}
-
+	
 	/*
-	This function is in charge of loading or creating the QM-Lab document.
+	This function is in charge of loading or creating the QM-Lab document. 
 	If it finds an "id" in the URL query, it will attempt to load that already made document.
-	If it does not, it will create a new document and give it a unique "id".
-
+	If it does not, it will create a new document and give it a unique "id". 
+	
 	pre: The HTML document has finished loading
-	post: The GoogleRealtime document should be loaded and all collaborative functionality
-	      be properly engaged.
+	post: The GoogleRealtime document should be loaded and all collaborative functionality 
+	      be properly engaged. 
 	*/
 	function loadQM_Document(){
 		// With auth taken care of, load a file, or create one if there
@@ -252,16 +252,16 @@
 			}
 		}
 	}
-
+	
 	/*
 	Before the Google Realtime API can interact with the javascript on this page, this
-	function needs to be run. It registers all the object types, without which the
+	function needs to be run. It registers all the object types, without which the 
 	collaboration will thrown undefined errors or simply edit local fields only.
+	
+	This function should only be run before the Google Realtime API has finished 
+	preparing itself. 
 
-	This function should only be run before the Google Realtime API has finished
-	preparing itself.
-
-	pre: Google Realtime API has not completed its loading yet!
+	pre: Google Realtime API has not completed its loading yet! 
 	post: The Google Realtime API will be able to interact with the custom object types
 	      defined for this page.
 	*/
@@ -327,7 +327,7 @@
 	function onFileLoaded(doc) {
 		genUI.genUI(); // function loads the toolbars and menus required for the user interface
 				// function is declared in genUI.js
-
+		
 		graph = new joint.dia.Graph;
 
 		rootModel = doc.getModel();
@@ -341,25 +341,25 @@
 		paper.on('blank:pointerup', updateCollabGraph);
 
 		updateGraph();
-
+	
 		addGlobalEventListeners();
 
 		addCollabEventToAllCells();
 		allowCollabRecording();
-
+		
 		clearLoadingScreen();
-
+		
 		console.log("We loaded the document.");
 	}
-
-
+	
+	
 	/*
-	This function adds neccesary event listeners to the html document itself, giving a generic
+	This function adds neccesary event listeners to the html document itself, giving a generic 
 	handler function to decide what to do with the event from there.
 	These include:
 	    When the mouse moves
 		When a key on the keyboard is pressed
-
+	
 	pre: the html document has been loaded
 	post: the html document has global event listeners waiting for user input
 	*/
@@ -367,51 +367,51 @@
 		document.addEventListener('keydown', handleKeyInput);
 		document.addEventListener('mousemove', handleMouseMove);
 	}
-
-
-
+	
+	
+	
 	/*
 	This function resets the global state logic to allow changes made to cells to
 	update their respective collaborative object once more.
-
-	pre:
+	
+	pre: 
 	post: the global state should once more allow updates to collab objects
 	*/
 	function allowCollabRecording() {
 		collaborativeChangeReceived = false;
 	}
-
+	
 	/*
 	This function changes the global state logic to not allow changes made to cells to
 	update their respective collaborative object any more.
-
-	pre:
+	
+	pre: 
 	post: the global state should not allow updates to collab objects
 	*/
 	function stopCollabRecording() {
 		collaborativeChangeReceived = true;
 	}
-
+	
 	/*
 	This function returns true if the global state is currently set to allow local objects
 	to update their collab counterparts.
-
-	pre:
-	post:
+	
+	pre: 
+	post: 
 	return: if updates to collab objects are currently allowed
 	*/
 	function isCollabRecordingAllowed() {
 		return collaborativeChangeReceived;
 	}
+	
 
-
-
+	
 	/*
-	This function grabs all local cells currently in a the graph, then adds event listeners
+	This function grabs all local cells currently in a the graph, then adds event listeners 
 	to them that will ensures they updates their collaborative counterparts
 
 	pre: the local graph must exist
-	post: any local cell contained by the local graph will have had an event listener attached
+	post: any local cell contained by the local graph will have had an event listener attached 
 	      to itself that will make it update its collaborative counterpart on change
 	*/
 	function addCollabEventToAllCells() {
@@ -420,7 +420,7 @@
 			addCollabEventToCell(cells[i]);
 		}
 	}
-
+	
 
 	/*
 	This take in a joint.js "cell", which, from a general perspective,  is either
@@ -511,8 +511,8 @@
 	*/
 	function updateGraph() {
 		graph.fromJSON(JSON.parse(colGraph.graph))
-
-		graph.on('remove', function(cell) {
+		
+		graph.on('remove', function(cell) { 
 			rootModel.getRoot().get(cell.id).action = "remove";
 		})
 		console.log('Built new graph');
@@ -604,17 +604,17 @@
 	}
 
 	/*
-	When the user lets go of the mouse over the paper, call this function.
+	When the user lets go of the mouse over the paper, call this function. 
 	Based on previous state logic, this function decides how to handle said mouse event
-
+	
 	Possible ways of handling it currently only include creating an object based on user button selections
 	At the end of the function, it resets the UI selections and resets the global state to "EDIT" mode.
-
+	
 	pre: The user's mouse is over the paper.
 	post: The user's mouse position on the paper has been updated
 	      The internal logic has handled any object creation
 		  The internal state has been reset to "EDIT" mode
-
+		
 	*/
 	function paperOnMouseUp(e) {
 		updateMousePos(e)
@@ -625,19 +625,19 @@
 
 		} else if (genUI.lastClickedValue == "Simple Straight") {
 			createLink(curMousePos, "normal");
-
+			
 		} else if (genUI.lastClickedValue == "Simple Curved") {
 			createLink(curMousePos, "smooth");
-
+			
 		} else if (genUI.lastClickedValue == "Image") {
 			createImage(curMousePos);
-
+			
 		} else if (genUI.lastClickedValue == "Variable") {
 			createVariable(curMousePos);
-
+			
 		} else if (genUI.lastClickedValue == "Parameter"){
 			createParameter(curMousePos);
-
+			
 		} else if (genUI.lastClickedValue == "Flow"){
 			createFlow(curMousePos);
 		} else {
@@ -652,10 +652,10 @@
 	/*
 	Update the "selected" array to hold all cells that are under a single point on the paper.
 	This point should generally be the user's mouse position.
-
+	
 	pre: "pos" is a valid coordinate object that holds an "x" and a "y" field
 	post: selected is an array that holds all cells with parts that appear at point "pos"
-
+		
 	*/
 	function selectSingleOnPoint(pos) {
 		selected = graph.findModelsFromPoint(pos);
@@ -663,15 +663,15 @@
 
 
 	/*
-	This takes a local joint.js cell and uses it to create a collaborative cell.
+	This takes a local joint.js cell and uses it to create a collaborative cell. 
 	It also adds a collaborative event listener to the local cell so that it stays in sync with
 	the collaborative version of it.
-
+	
 	pre: "cell" is a valid joint.js cell
 	     rootModel contains a valid reference to Google's Realtime API collaborative model
     post: a collaborative cell has been created that parallels the local cell passed in
           "cell" has had collaborative event listeners put on it so that it keeps itself up
-          to date with the collab cell
+          to date with the collab cell		  
 	*/
 	function createCollabCell(cell) {
 		console.log(cell);
@@ -682,8 +682,8 @@
 	}
 
 	/*
-	Creates a stock at the given location
-
+	Creates a stock at the given location 
+	
 	pre: "pos" is a valid coordinate that contains "x" and "y" fields
 	post: A collaborative stock has been created with its top-left corner positioned at point "pos"
 	      The collaborative graph has been updated
@@ -691,7 +691,7 @@
 	function createStock(pos) {
 		var newStock = new localNode(pos, "Stock");
 		setUpNewCell(newStock);
-
+		
 		console.log("Stock added")
 		return newStock;
 	}
@@ -699,7 +699,7 @@
 	/*
 	Creates a generic link at the given location. If the user clicked to have the link positioned over a node, it will
 	position its "source" as coming from the selected node
-
+	
 	pre: "pos" is a valid coordinate that contains "x" and "y" fields
 	post: A collaborative link has been created with its source positioned at point "pos"
 	      In the event that the user created this link by selecting a node at point "pos", the node shall be the source instead.
@@ -716,7 +716,7 @@
 	/*
 	Creates a generic image at the given location. This image may have both an image and text label associated with it.
 	However, if not set, this image node will set it's text and image to default settings.
-
+	
 	pre: "pos" is a valid coordinate that contains "x" and "y" fields
 	     If "pictureURL" has been passed, it contains a URL link to a valid image
 	post: A collaborative image has been created with its top-left corner positioned at point "pos"
@@ -731,24 +731,24 @@
 			newImage.setSize(sizeX, sizeY);
 		}
 		if (pictureURL) {
-
+			
 		}
 		if (label) {
-
+			
 		}
 		setUpNewCell(newImage);
 
 		console.log('New cell added');
 		return newImage;
 	}
-
-
-
-
-
+	
+	
+	
+	
+	
 	/*
-	Creates a variable at the given location
-
+	Creates a variable at the given location 
+	
 	pre: "pos" is a valid coordinate that contains "x" and "y" fields
 	post: A collaborative variable has been created with its top-left corner positioned at point "pos"
 	      The collaborative graph has been updated
@@ -758,14 +758,14 @@
 			position: {x: pos.x, y: pos.y}
 		});
 		setUpNewCell(newVariable);
-
+		
 		console.log("A variable was created.");
 		return newVariable;
 	}
-
+	
 	/*
-	Creates a parameter at the given location
-
+	Creates a parameter at the given location 
+	
 	pre: "pos" is a valid coordinate that contains "x" and "y" fields
 	post: A collaborative parameter has been created with its top-left corner positioned at point "pos"
 	      The collaborative graph has been updated
@@ -775,14 +775,14 @@
 			position: {x: pos.x, y: pos.y}
 		});
 		setUpNewCell(newParameter);
-
+		
 		console.log("A parameter was created.");
 		return newParameter;
 	}
-
+	
 	/*
-	Creates a flow at the given location
-
+	Creates a flow at the given location 
+	
 	pre: "pos" is a valid coordinate that contains "x" and "y" fields
 	post: A collaborative variable has been created with its top-left corner positioned at point "pos"
 	      The collaborative graph has been updated
@@ -790,37 +790,37 @@
 	function createFlow(pos) {
 		var newFlow = new localFlow(pos, false, false, false, false);
 		setUpNewCell(newFlow);
-
+		
 		console.log("A flow was created.");
 		return newFlow;
 	}
-
+	
 	/*
 	Adds initialzed cell to the graph, then creates a collab cell to parallel it. Updates the collab graph at the same time.
-
+	
 	This function should be called no more than once per cell. And only by the collaborator who originally made the cell.
-
+	
 	pre: "cell" has never been put in the collab graph before
 	     "cell" is a valid cell
 	post: "cell" is registered for collaborative interactions and added to the local graph
 	      the collaborative graph has been updated to the current state
-
+	
 	*/
 	function setUpNewCell(cell){
 		graph.addCell(cell);
 		createCollabCell(cell);
 		updateCollabGraph();
 	}
-
-
-
+	
+	
+	
 
 	/*
 	When the user hits a key, check which key was pressed. Handle state accordingly.
-
+	
 	Currently, the only key this function accounts for is the "delete key". Works on both Windows and Mac
 	However, further functionality planned includes adding a "when panning key has been pressed", among others
-
+	
 	pre: "keyDown" event has fired with a valid, non empty keyCode
 	post: The "keyDown" key has been checked, and any behaviour associated with that key have been dispatched
 	      Current behaviour dispatch includes:
@@ -838,11 +838,11 @@
 
 	/*
 	Deletes the currently selected node, as well as ensures other collaborators have the node deleted as well
-
-	pre: There should be some cell at index 0 of "selected" for something to happen.
+	
+	pre: There should be some cell at index 0 of "selected" for something to happen. 
 	     However, if there is not, nothing happens
-	post: Whatever cell was at index 0 of selected has been removed from the graph and view.
-	      The removed cell is also removed from the "selected" array, and everything in
+	post: Whatever cell was at index 0 of selected has been removed from the graph and view. 
+	      The removed cell is also removed from the "selected" array, and everything in 
 		  the selected array is shifted one down
 	*/
 	function deleteSelectedCell(e) {
@@ -854,17 +854,17 @@
 				updateCollabGraph();
 			}
 		}
-
+		
 	}
 
 
 	/*
 	When the mouse moves, handle the logic of figuring out what further methods need to be
-	dispatched.
-
-	Currently, this logic is limited to when the user is panning the view of the diagram.
+	dispatched. 
+	
+	Currently, this logic is limited to when the user is panning the view of the diagram. 
 	Planned changes include handling of "click-and-drag" to select multiple objects at once
-
+	
 	pre: A mouseMove event has fired off with the valid "x" and "y" position of the mouse
 	post: The appropriate behaviour has been dispatched based off what the global internal-state is
 	      This behavious currently handles:
@@ -876,11 +876,11 @@
 		}
 	}
 
-
+	
 	/*
 	This function checks where the mouse currently is, and where it used to be in relation to a position
-	on the paper. It then alters the view of the diagram by that measurement.
-
+	on the paper. It then alters the view of the diagram by that measurement. 
+	
 	pre: A mouseMove event has fired off with the valid "x" and "y" position of the mouse
 	post: curMousePos holds the current mouse position in relation to the diagram's new display position
 	      oldMousePos holds the previous mouse position in relation to the diagram's new display position
@@ -895,7 +895,7 @@
 	/*
 	This function updates the current and previous mouse positions in relation to where it is in regards to the diagram
 	The previous mouse position will store what is the current mouse position prior to this function being called
-
+	
 	pre: A mouseMove event has fired off with the valid "x" and "y" position of the current mouse
 	post: curMousePos holds the current mouse position in relation to the diagram
 	      oldMousePos holds the previous mouse position in relation to the diagram
@@ -909,8 +909,8 @@
 	/*
 	This is the local constructor of the collaborative cell class. As there is no information that needs to be stored
 	locally without being passed on to the collaborator's peers, this constructor is empty.
-
-	pre:
+	
+	pre: 
 	post: A local copy of the collaborative cell has been created
 	*/
 	function CollaborativeCell() {
@@ -920,11 +920,11 @@
 	/*
 	This is the collaborative constructor of the collaborative cell. It creates a collaborative version of a local cell
 	based off of the JSON data passed in.
-
-	pre: JSONdata contains the JSON created from a joint.js cell
-	post: A collaborative cell has been created to keep the local copy of this cell up to date
-	      for all collaborators
-
+	
+	pre: JSONdata contains the JSON created from a joint.js cell 
+	post: A collaborative cell has been created to keep the local copy of this cell up to date 
+	      for all collaborators 
+	
 	*/
 	function doCellInitialize (JSONdata) {
 		var model = gapi.drive.realtime.custom.getModel(this);
@@ -934,12 +934,12 @@
 	}
 
 	/*
-	This function is run whenever a collaborative cell has been loaded by a document. This includes the first
+	This function is run whenever a collaborative cell has been loaded by a document. This includes the first 
 	time it is initialzed, and every time a user connects to it via Google's Realtime API
-
+	
 	It adds an event listener to the collaborative cell that, on change, updates the local cell
-
-	pre: The collaborative cell must have loaded
+	
+	pre: The collaborative cell must have loaded 
 	post: The collaborative cell has had an event listener attached that will keep the local
 	      copy of the cell up to date
 	*/
@@ -954,10 +954,10 @@
 	/*
 	This function is called whenever a collaborative cell has been updated. It updates the local copy of the cell.
 	In some cases, this includes adding the cell to the graph, or removing it from the graph.
-
+	
 	It also prevents the local client from deciding to update the collaborative cell to the state it already changed to.
 	This prevents latency issues from making the collab object update to states prior to its most recent one.
-
+	
 	pre: The collaborative cell has a value in its JSON field that represents a joint.js cell.
 	post: The local cell represented by the JSON field has been properly updated
 	      The global state has been changed to understand that the next change it makes
@@ -986,13 +986,13 @@
 		}
 	}
 
-
+	
 	/*
 	This function occurs whenever a joint.js cell has been updated. It checks to see if that update
 	was of local origin, and, if yes, updates the collaborative version of itself
-
-	Also, if the change came from a collaborator, it then sets the global state to start recording changes again
-
+	
+	Also, if the change came from a collaborator, it then sets the global state to start recording changes again 
+	
 	pre: The local cell has had a collaborative cell already created to parallel it
 	     rootModel points to the document collaborative graph from Google's Realtime API
 	post: The local cell's state has been recorded in the collaborative cell if this state didn't already come from there
@@ -1012,10 +1012,10 @@
 
 	/*
 	This is the constructor of the localNode class.
-
+	
 	From a technical standpoint, this function simply wraps a joint.js cell. However, it allows us
 	to easily add and modify it without breaking anything else.
-
+	
 	pre: "pos" is a valid point with an "x" and "y" field
 	post: Returns a local node at the position "pos"
 	      If a label parameter has been passed in, text on the node will default to that
@@ -1025,17 +1025,17 @@
 		newNode = new joint.shapes.QMLab.Stock({
 			position: { x: pos.x, y: pos.y },
 		});
-
+		
 		if (label) {
 			newNode.setLabel(label);
 		}
 		return newNode
 	}
 
-
+	
 	/*
 	Getter for localNode x position. Will return the x coordinate of the node.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The x position of the localNode
@@ -1044,10 +1044,10 @@
 		return this.attributes.position.x;
 	}
 
-
+	
 	/*
 	Getter for localNode y position. Will return the y coordinate of the node.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The y position of the localNode
@@ -1057,8 +1057,8 @@
 	}
 
 	/*
-	Setter for localNode position.
-
+	Setter for localNode position. 
+	
 	pre: The localNode exists
 	     x and y are valid ints
 	post: The localCell's position has been updated to {x, y}
@@ -1070,7 +1070,7 @@
 
 	/*
 	Getter for localNode width attribute. Will return the x size of the node.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The x size (width) of the localNode
@@ -1082,7 +1082,7 @@
 
 	/*
 	Getter for localNode height attribute. Will return the y size of the node.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The y size (height) of the localNode
@@ -1092,8 +1092,8 @@
 	}
 
 	/*
-	Setter for localNode size.
-
+	Setter for localNode size. 
+	
 	pre: The localNode exists
 	     width and height are valid ints
 	post: The localCell's size has been updated to {width, height}
@@ -1103,9 +1103,9 @@
 	}
 
 	/*
-	Getter for localNode z-order attribute. Will return the
+	Getter for localNode z-order attribute. Will return the 
 	order in which it is drawn on the screen.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The z-order of the localNode
@@ -1115,8 +1115,8 @@
 	}
 
 	/*
-	Setter for localNode z-order. Changes what order it is drawn on the screen
-
+	Setter for localNode z-order. Changes what order it is drawn on the screen 
+	
 	pre: The localNode exists
 	     z is a valid int
 	post: The localCell's z-order has been updated to z
@@ -1127,7 +1127,7 @@
 
 	/*
 	Getter for localNode label attribute. Will return the text associated with this node.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The label text of the localNode
@@ -1138,7 +1138,7 @@
 
 	/*
 	Getter for localNode z-order attribute. Will return order in which it is drawn on the screen.
-
+	
 	pre: The localNode exists
 	post: No change
 	return: The z-order of the localNode
@@ -1147,17 +1147,17 @@
 		this.attributes.attrs.text.text = text;
 	}
 
-
-
-
-
+	
+	
+	
+	
 
 	/*
 	This is the constructor of the localLink class.
-
+	
 	From a technical standpoint, this function simply wraps a joint.js link. However, it allows us
 	to easily add and modify it without breaking anything else.
-
+	
 	pre: "pos" is a valid point with an "x" and "y" field
 	     If any other parameters are passed, it will set the appropriate field in the link
 		    label : if passed, must be a valid stringify
@@ -1169,14 +1169,14 @@
 						           However, this causes the angles to "round" themselves
 					    "smooth" - This causes the link to have no straight edges, and instead
 						           gradually curve its way between vertices
-
+								   
 	post: Returns a local link with source at the position "pos"
 	      If any other parameters are not undefined or false, it will set the appropriate field
 		    label : sets the text to display halfway along the link
-            source: sets the node that this link comes out from.
-            target: sets the node that this link goes to.
+            source: sets the node that this link comes out from. 		
+            target: sets the node that this link goes to. 
             connector: sets the connector of the style of the link
-
+                       			
 	*/
 	function localLink (pos, label, source, target, connector) {
 		var newLink = new joint.shapes.QMLab.localLink();
@@ -1185,18 +1185,18 @@
 		if (source) {
 			if (graph.getCell(source.id)) {
 				newLink.setStartNodeFromCell(source)
-			}
+			}	
 		}
 		//Otherwise, use the passed in point
 		else {
 			newLink.set('source', { x: pos.x, y: pos.y });
 		}
-
+		
 		//If a target was passed, set the link's target to that
 		if (target) {
 			if (graph.getCell(target.id)) {
 				newLink.setEndNodeFromCell(target)
-			}
+			}	
 		}
 		//Otherwise, use the passed in point
 		else {
@@ -1204,12 +1204,12 @@
 			pos.x += 400;
 			newLink.setEndNodeFromPoint(pos);
 		}
-
+		
 		//If a label was passed in, set the link's text to that
 		if (label) {
 			newLink.setLabel(label);
 		}
-
+		
 		//If a valid connector was passed in, set this link's connector to that
 		if (connector == "normal" || connector == "rounded" || connector == "smooth") {
 			newLink.set('connector', { name: connector });
@@ -1217,18 +1217,18 @@
 
 		return newLink;
 	}
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
 	/*
 	This is the constructor of the localFlow class.
-
+	
 	From a technical standpoint, this function simply wraps a joint.js link. However, it allows us
 	to easily add and modify it without breaking anything else.
-
+	
 	pre: "pos" is a valid point with an "x" and "y" field
 	     If any other parameters are passed, it will set the appropriate field in the link
 		    label : if passed, must be a valid stringify
@@ -1240,14 +1240,14 @@
 						           However, this causes the angles to "round" themselves
 					    "smooth" - This causes the link to have no straight edges, and instead
 						           gradually curve its way between vertices
-
+								   
 	post: Returns a local link with source at the position "pos"
 	      If any other parameters are not undefined or false, it will set the appropriate field
 		    label : sets the text to display halfway along the link
-            source: sets the node that this link comes out from.
-            target: sets the node that this link goes to.
+            source: sets the node that this link comes out from. 		
+            target: sets the node that this link goes to. 
             connector: sets the connector of the style of the link
-
+                       			
 	*/
 	function localFlow (pos, label, source, target, connector) {
 		var newFlow = new joint.shapes.QMLab.localLink();
@@ -1256,18 +1256,18 @@
 		if (source) {
 			if (graph.getCell(source.id)) {
 				newFlow.setStartNodeFromCell(source)
-			}
+			}	
 		}
 		//Otherwise, use the passed in point
 		else {
 			newFlow.set('source', { x: pos.x, y: pos.y });
 		}
-
+		
 		//If a target was passed, set the link's target to that
 		if (target) {
 			if (graph.getCell(target.id)) {
 				newFlow.setEndNodeFromCell(target)
-			}
+			}	
 		}
 		//Otherwise, use the passed in point
 		else {
@@ -1275,48 +1275,48 @@
 			pos.x += 400;
 			newFlow.setEndNodeFromPoint(pos);
 		}
-
+		
 		//If a label was passed in, set the link's text to that
 		if (label) {
 			newFlow.setLabel(label);
 		}
-
+		
 		//If a valid connector was passed in, set this link's connector to that
 		if (connector == "normal" || connector == "rounded" || connector == "smooth") {
 			newFlow.set('connector', { name: connector });
 		}
-
+		
 		newFlow.set('router', { name: 'orthogonal' });
-
+		
 
 		return newFlow;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 	/*
 	Getter for localLink start node. Will return what the link is currently
 	attached to at the "source" end of the link.
-
+	
 	If the link is attached to a cell, the returned value will be that cell's "id".
 	Otherwise, it will return a point that has fields "x" and "y"
-
-	If, for some reason this link has been created without a source attribute,
+	
+	If, for some reason this link has been created without a source attribute, 
 	will return undefined
-
+	
 	pre: The localLink exists
 	post: No change
 	return: The source of the localLink
@@ -1328,8 +1328,8 @@
 	/*
 	Setter for localLink start node. Since this sets by using the cell's "id",
 	the passed cell needs to be a valid cell.
-
-
+	
+	
 	pre: The localLink exists
 	     souce : the cell exists and is in the graph
 	post: The source of the node has been set to the passed in source
@@ -1353,8 +1353,8 @@
 	/*
 	Setter for localLink source node. Since this sets by using a point in the graph,
 	source be a point with valid "x" and "y" fields.
-
-
+	
+	
 	pre: The localLink exists
 	     souce : a valid point with "x" and "y" fields
 	post: The source of the node has been set to the passed in source
@@ -1367,19 +1367,19 @@
 			console.log("There was an error when setting the source of a link by point. The given point was:");
 			console.log(source);
 		}
-
+		
 	}
 
 	/*
 	Getter for localLink end node. Will return what the link is currently
 	attached to at the "target" end of the link.
-
+	
 	If the link is attached to a cell, the returned value will be that cell's "id".
 	Otherwise, it will return a point that has fields "x" and "y"
-
-	If, for some reason this link has been created without a target attribute,
+	
+	If, for some reason this link has been created without a target attribute, 
 	will return undefined
-
+	
 	pre: The localLink exists
 	post: No change
 	return: The target of the localLink
@@ -1391,8 +1391,8 @@
 	/*
 	Setter for localLink end node. Since this sets by using the cell's "id",
 	the passed cell needs to be a valid cell.
-
-
+	
+	
 	pre: The localLink exists
 	     target : the cell exists and is in the graph
 	post: The target of the node has been set to the passed in target
@@ -1404,8 +1404,8 @@
 	/*
 	Setter for localLink target node. Since this sets by using a point in the graph,
 	source be a point with valid "x" and "y" fields.
-
-
+	
+	
 	pre: The localLink exists
 	     souce : a valid point with "x" and "y" fields
 	post: The source of the node has been set to the passed in source
@@ -1417,7 +1417,7 @@
 
 	/*
 	Setter for localLink label text.
-
+	
 	pre: The localLink exists
 	     text : a valid string of some kind
 	post: The label text of the node has been set to the passed in text
@@ -1428,13 +1428,13 @@
 
 	/*
 	Getter for localLink label text. Will return what the link currently
-	has written and displayed partway along itself. If nothing is currently
+	has written and displayed partway along itself. If nothing is currently 
 	set, returns an empty string. ""
-
+	
 	By design, there should never be more than one label attached to a cell.
 	Therefore, it is perfectly safe to hardcode the index of the label we are
 	searching.
-
+	
 	pre: The localLink exists
 	post: No change
 	return: The label text of the localLink
@@ -1449,52 +1449,52 @@
 			return "";
 		}
 	}
-
-
-
+	
+	
+	
 	/*
 	Initialzes the namespace for our custom shapes for use in the diagram.
 	*/
 	joint.shapes.QMLab = {};
-
-
-
+	
+	
+	
 	/*
 	This is the shape definition of the "localLink" type. It extends joint.js' Link,
-	allowing us to easily customize it.	By default, sets the Link to behave exactly
-	link a default joint.js basic Link.
+	allowing us to easily customize it.	By default, sets the Link to behave exactly 
+	link a default joint.js basic Link. 
 
 	*/
 	joint.shapes.QMLab.localLink = joint.dia.Link.extend({
 		defaults: joint.util.deepSupplement({
-
+			
 			type: 'QMLab.localLink'
-
+			
 		}, joint.dia.Link.prototype.defaults),
 	});
-
-
+	
+	
 	/*
 	This is the shape definition of the "localFlow" type. It extends joint.js' Link,
-	allowing us to easily customize it.	By default, sets the Link to behave exactly
-	link a default joint.js basic Link.
+	allowing us to easily customize it.	By default, sets the Link to behave exactly 
+	link a default joint.js basic Link. 
 
 	*/
 	joint.shapes.QMLab.localLink = joint.dia.Link.extend({
 		defaults: joint.util.deepSupplement({
-
+			
 			type: 'QMLab.localLink',
-
+			
 		}, joint.dia.Link.prototype.defaults),
 	});
+	
+	
 
-
-
-
+	
 	/*
 	This is the shape definition of the "localNode" type. It extends joint.js' Rect shape,
 	allowing us to easily customize it.
-
+	
 	By default, sets the Node to look a certain way. Override the visual in the constructor,
 	or call the setter methods if another visual is desired.
 	*/
@@ -1509,13 +1509,13 @@
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
-
-
-
+	
+	
+	
 	/*
 	This is the shape definition of the "Stock" type. It extends joint.js' Rect shape,
 	allowing us to easily customize it.
-
+	
 	By default, sets the Stock to look a certain way. Override the visual in the constructor,
 	or call the setter methods if another visual is desired.
 	*/
@@ -1530,16 +1530,16 @@
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
 	/*
 	This is the shape definition of the "ImageNode" type. It extends joint.js' Rect shape,
 	allowing us to easily customize it.
-
+	
 	By default, sets the ImageNode is set to hold a placeholder image, with text that states "Your Image Here".
 	Override the visuals through either the constructor or the setter methods if another visual is desired.
 	*/
@@ -1559,9 +1559,9 @@
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
-
-
-
+	
+	
+	
 	/*
 	This is the shape definition of the "Variable" type. It extends joint.js' Circle shape,
 	allowing us to easily customize it.
@@ -1575,11 +1575,11 @@
 			type: 'QMLab.Variable',
 			size: { width: 20, height: 20 },
 			attrs: { text: { text: 'Variable', 'ref-y': 30, ref: 'circle' }, circle: { fill: 'gray' } },
-
+			
 		}, joint.shapes.basic.Circle.prototype.defaults)
 	});
-
-
+	
+	
 	/*
 	This is the shape definition of the "Parameter" type. It extends joint.js' Circle shape,
 	allowing us to easily customize it.
@@ -1592,17 +1592,20 @@
 
 			type: 'QMLab.Parameter',
 			size: { width: 20, height: 20 },
-
-			attrs: {
-				text: { text: 'Parameter', 'ref-y': 30, ref: 'circle' },
+			
+			attrs: { 
+				text: { text: 'Parameter', 'ref-y': 30, ref: 'circle' }, 
 				circle: { fill: 'gray' },
 				//path: { fill: 'green', stroke: "black", d: "M40,50  L50,35  A30,30 1 0,1 30,10 z"}
 				//Currently, leaving this out of the build. But throw another shape of a pie chart or something
-				//to show that this is different from a variable. Especially considering the default 'name' in the
-				//text field won't be used very often in the final release.
+				//to show that this is different from a variable. Especially considering the default 'name' in the 
+				//text field won't be used very often in the final release. 
 				},
-
-
+				
+			
 		}, joint.shapes.basic.Circle.prototype.defaults)
 	});
-	console.log("HIOHIOHIOHNILHNGB");
+	
+	
+	
+	

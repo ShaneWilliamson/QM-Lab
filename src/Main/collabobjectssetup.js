@@ -219,7 +219,7 @@
 	function updateCellByEventID(cell) {
 		if (!isCollabRecordingAllowed()) {
 			rootModel.getRoot().get(cell.id).action = 'update';
-			rootModel.getRoot().get(cell.toJSON().id).JSON = cell.toJSON();
+			rootModel.getRoot().get(cell.toJSON().id).JSON = cell.attributes;
 		}
 		allowCollabRecording();
 	}
