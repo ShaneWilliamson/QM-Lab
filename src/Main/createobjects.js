@@ -10,7 +10,6 @@
           to date with the collab cell		  
 	*/
 	function createCollabCell(cell) {
-		console.log(cell);
 		var newCell = rootModel.create('CollaborativeCell', cell.toJSON());
 		rootModel.getRoot().set(cell.id, newCell);
 		addCollabEventToCell(cell);
