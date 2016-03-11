@@ -80,9 +80,7 @@ public class SmokeTest {
          driver.switchTo().window(winHandle);
      }
      // Wait two seconds for the authentication window and then enter email and password
-     Thread.sleep(2000);
-     assert "Sign in - Google Accounts" == driver.getTitle();
-     Thread.sleep(500);
+     Thread.sleep(2500);
      driver.findElement(By.id("Email")).clear();
      driver.findElement(By.id("Email")).sendKeys("cmpt371testingemail");
      driver.findElement(By.id("Passwd")).clear();
