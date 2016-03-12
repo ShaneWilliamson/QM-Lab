@@ -3,11 +3,6 @@ import os
 import sys
 from subprocess import call
 
-###Global variables###
-# Both are assigned to in start() after we check to make sure of the argv count
-repoPath = ""
-webPath = ""
-
 #The routine to run, every hour it pulls from GitHub
 #This causes everything in the src folder to be put on display on the webserver
 def start():
