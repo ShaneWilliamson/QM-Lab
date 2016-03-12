@@ -154,23 +154,28 @@ QM_LabUI.prototype.genToolbar = function() {
 						// "emailAddress": QM_LabUI.prototype.emailAddressValue
 					};
 
-					$.ajax({
-						method: "POST",
-						// setting headers
-						beforeSend: function (request) {
-							var token = "Bearer " + access_token;
-			                request.setRequestHeader("authorization", token);
-			                request.setRequestHeader("content-type", "application/json");
-			            },
-						url: uri,
-						data: JSON.stringify(data),
-						success: function(data) { 
-							console.log("Request for permissions change was successful\n" + data);
-						},
-						error: function(data) { 
-							console.log("Request for permissions change was unsuccessful\n" + data.responseText);
-						}
-					});
+					// $.ajax({
+					// 	method: "POST",
+					// 	// setting headers
+					// 	beforeSend: function (request) {
+							// var token = "Bearer " + access_token;
+			  //               request.setRequestHeader("authorization", token);
+			  //               request.setRequestHeader("content-type", "application/json");
+			  //           },
+					// 	url: uri,
+					// 	data: JSON.stringify(data),
+					// 	success: function(data) { 
+					// 		console.log("Request for permissions change was successful\n" + data);
+					// 	},
+					// 	error: function(data) { 
+					// 		console.log("Request for permissions change was unsuccessful\n" + data.responseText);
+					// 	}
+					// });
+
+			        s = new gapi.drive.share.ShareClient();
+			        s.setOAuthToken(access_token);
+			        s.setItemIds([fileId]);
+			        gapi.load('drive-share', init);
 
 				} else if (result == "1") { // the cancel button was clicked
 					QM_LabUI.prototype.emailAddressValue = "";
