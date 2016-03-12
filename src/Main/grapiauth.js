@@ -64,8 +64,22 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
 		displayLoadingScreen();
 		registerCollaborativeObjectTypes();
 		loadQM_Document();
+		loadShareDialog();
 	}
 	
+	function loadShareDialog() {
+		var fileId = realtimeUtils.getParam('id');
+
+		init = function() {
+	        s = new gapi.drive.share.ShareClient();
+	        s.setOAuthToken(access_token);
+        	s.setItemIds([fileId]);
+	    }	
+
+		gapi.load('drive-share', init);
+	}
+
+
 	/*
 	This function is in charge of loading or creating the QM-Lab document. 
 	If it finds an "id" in the URL query, it will attempt to load that already made document.

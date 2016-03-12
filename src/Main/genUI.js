@@ -9,18 +9,6 @@ function QM_LabUI() {
 	this.lastClickedValue = "EDIT";	
 }
 
-// initalize the emailAddressValue to an empty string
-QM_LabUI.prototype.emailAddressValue = "";
-
-
-/**
-	This function is called when the share dialog is open
-	It saves what is currently in the emailAddress text box into QM_LabUI.prototype.emailAddressValue
-**/
-QM_LabUI.prototype.saveEmailAddress = function() {
-	QM_LabUI.prototype.emailAddressValue = document.getElementById("emailAddress").value;
-}
-
 
 /**
 	Creates the tabbar used to select a node/link to place
@@ -128,63 +116,7 @@ QM_LabUI.prototype.genToolbar = function() {
 	});   
 
 	$$("share").attachEvent("onItemClick", function(id, e){		
-		var boxHtml = "<input type='text' id='emailAddress' onkeypress='QM_LabUI.prototype.saveEmailAddress()'>";
-		webix.message.keyboard = false; // prevent the blocking of keyboard events
-
-		webix.modalbox({
-			title:"Enter the Email Address to Share With",
-			buttons:["Share", "Cancel"],
-			width:"500px",
-			text:boxHtml,
-			callback:function(result){
-				if (result == "0") { // the share button was clicked in the modal
-					var fileId = realtimeUtils.getParam('id');
-					var trimmedClientId = clientId.split(".")[0];
-
-
-					var uri = "https://www.googleapis.com/drive/v3/files/" + fileId + "/permissions";
-					uri += "?key=" + trimmedClientId;
-					// uri += "&access_token=" + access_token;
-					uri += "&alt=json";
-
-
-					var data = {
-						"role": "writer",
-						"type": "anyone"
-						// "emailAddress": QM_LabUI.prototype.emailAddressValue
-					};
-
-					// $.ajax({
-					// 	method: "POST",
-					// 	// setting headers
-					// 	beforeSend: function (request) {
-							// var token = "Bearer " + access_token;
-			  //               request.setRequestHeader("authorization", token);
-			  //               request.setRequestHeader("content-type", "application/json");
-			  //           },
-					// 	url: uri,
-					// 	data: JSON.stringify(data),
-					// 	success: function(data) { 
-					// 		console.log("Request for permissions change was successful\n" + data);
-					// 	},
-					// 	error: function(data) { 
-					// 		console.log("Request for permissions change was unsuccessful\n" + data.responseText);
-					// 	}
-					// });
-
-			        s = new gapi.drive.share.ShareClient();
-			        s.setOAuthToken(access_token);
-			        s.setItemIds([fileId]);
-			        gapi.load('drive-share', init);
-
-				} else if (result == "1") { // the cancel button was clicked
-					QM_LabUI.prototype.emailAddressValue = "";
-				} else { // trigger exception, because this should never happen
-
-				}
-				
-			}
-		});
+        s.showSettingsDialog(); // open the sharing dialog
 	});
 }
 
