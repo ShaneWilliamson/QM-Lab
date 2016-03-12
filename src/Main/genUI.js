@@ -150,8 +150,8 @@ QM_LabUI.prototype.genToolbar = function() {
 
 					var data = {
 						"role": "writer",
-						"type": "user",
-						"emailAddress": QM_LabUI.prototype.emailAddressValue
+						"type": "anyone"
+						// "emailAddress": QM_LabUI.prototype.emailAddressValue
 					};
 
 					$.ajax({
