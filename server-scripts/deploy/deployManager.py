@@ -15,7 +15,7 @@ def start():
     #Prompt the user for which branch they want to deploy.
     branchName = raw_input('Which branch do you wish to deploy? ')
     while promptFlag == 0:
-      response = raw_input(''.join('Is ', branchName, ' correct? (y/n, or exit) '))
+      response = raw_input(''.join('Is ' + branchName + ' correct? (y/n, or exit) '))
       if response == 'y' or response == 'n':
         promptFlag = 1
       elif response == 'exit':
