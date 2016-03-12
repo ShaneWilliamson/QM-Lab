@@ -31,6 +31,7 @@
 
 	*/
 	function displayLoadingScreen() {
+		document.getElementById("landing").style.display = "none";
 		document.getElementById("state").style.display = "block";
 		document.getElementById("bar").style.display = "block";
 		document.getElementById("progress").style.display = "block";
@@ -55,6 +56,5 @@
 		document.getElementById("state").style.display = "none";
 		document.getElementById("bar").style.display = "none";
 		document.getElementById("progress").style.display = "none";
-		document.getElementById("auth_button").style.display = "none";
 		clearInterval(loading);
 	}
