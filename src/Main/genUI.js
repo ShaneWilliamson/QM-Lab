@@ -10,7 +10,6 @@ function QM_LabUI() {
 }
 
 
-
 /**
 	Creates the tabbar used to select a node/link to place
 	Instantiates the tabbar with data from displayData.js
@@ -64,16 +63,21 @@ QM_LabUI.prototype.genTabbar = function() {
 	});  
 
 
+	// an event listener on nodes list view in the tabbar
+	// when an item is clicked, it's name is saved into genUI.lastClickedValue
 	$$("nodeListView").attachEvent("onItemClick", function(id, e){
-		console.log("Value changed in the node list view");
 		var index = $$("nodeListView").getIndexById(id);
 		genUI.lastClickedValue = sample_nodes[index].value;
+		console.log("Value changed in the node list view to " + genUI.lastClickedValue);
 	});
 
+
+	// an event listener on links list view in the tabbar
+	// when an item is clicked, it's name is saved into genUI.lastClickedValue
 	$$("linkListView").attachEvent("onItemClick", function(id, e){
-		console.log("Value changed in the link list view");
 		var index = $$("linkListView").getIndexById(id);
 		genUI.lastClickedValue = sample_links[index].value;
+		console.log("Value changed in the link list view to " + genUI.lastClickedValue);
 	});
 }
 
@@ -102,7 +106,7 @@ QM_LabUI.prototype.genToolbar = function() {
 						{id:"load", value:"Load"}
 					]
 				},
-				{ view:"button", width: 100, value: "Share"
+				{ view:"button", width: 100, value: "Share", id:"share"
 				}
 			],
 		elementsConfig:{
@@ -110,6 +114,10 @@ QM_LabUI.prototype.genToolbar = function() {
 			labelAlign:"right",
 			value:"edit"}
 	});   
+
+	$$("share").attachEvent("onItemClick", function(id, e){		
+        s.showSettingsDialog(); // open the sharing dialog
+	});
 }
 
 
