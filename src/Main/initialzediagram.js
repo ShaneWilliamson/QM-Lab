@@ -59,7 +59,7 @@
 
 		}
 		//If the mouse wheel rolled "up", zoom out
-		else if (paperScale > 0.1){
+		else if (paperScale > 0.2){ //The value is 0.2 because the objects disappear if it is 0.1
 			paperScale -= 0.1;
 		}
 
