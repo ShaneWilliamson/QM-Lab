@@ -163,7 +163,7 @@ QM_LabUI.prototype.genToolbar = function() {
 			                request.setRequestHeader("content-type", "application/json");
 			            },
 						url: uri,
-						data: data,
+						data: JSON.stringify(data),
 						success: function(data) { 
 							console.log("Request for permissions change was unsuccessful\n" + data.responseText);
 						},
