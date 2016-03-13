@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -63,11 +64,10 @@ public class SmokeTest {
      baseUrl = "http://cmpt371g3.usask.ca/";
    }
 
-<<<<<<< HEAD
   @Test
-  public void AuthTest() throws Exception {
+  public void MainTest() throws Exception {
 	// Get the web page and go to it.
-	    wait = new WebDriverWait(driver, 10);
+	    wait = new WebDriverWait(driver, 15);
 	    driver.get(baseUrl + "/demo/development/src/Main/");
 	    final String previousURL = driver.getCurrentUrl();
 
@@ -75,7 +75,10 @@ public class SmokeTest {
 	    String winHandleBefore = driver.getWindowHandle();
 
 	    // Perform the click operation that opens new window.
-	    driver.findElement(By.id("auth_button")).click();
+	    WebElement element = driver.findElement(By.id("auth_button"));
+	       wait.until(ExpectedConditions.visibilityOf(element));
+
+	    element.click();
 	    
 	    // Switch to new window opened.
 	    for(String winHandle : driver.getWindowHandles()){
@@ -83,21 +86,34 @@ public class SmokeTest {
 	    }
 	    
 	    // Enter email and password, then click sign in.
-	    assert "Sign in - Google Accounts" == driver.getTitle();
-	    driver.findElement(By.id("Email")).clear();
-	    driver.findElement(By.id("Email")).sendKeys("cmpt371testingemail");
-	    driver.findElement(By.id("Passwd")).clear();
-	    driver.findElement(By.id("Passwd")).sendKeys("DarthVader!");
-	    driver.findElement(By.id("signIn")).click();
+	    element = driver.findElement(By.id("Email"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+	    element.clear();
+	    element.sendKeys("cmpt371testingemail");
+        element = driver.findElement(By.id("Passwd"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
+        element.sendKeys("DarthVader!");
+        element = driver.findElement(By.id("signIn"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.click();
+        
+
+
 	    
 	    // Go back to the previous window.
 	    driver.switchTo().window(winHandleBefore);
 	    
 	    // Enter filename.
-	    driver.findElement(By.id("docName")).clear();
-	    driver.findElement(By.id("docName")).sendKeys("Test File");
-	    driver.findElement(By.id("docSubmit")).click();
-
+        
+	    element = driver.findElement(By.id("docName"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
+        element.sendKeys("Test File");
+        element = driver.findElement(By.id("docSubmit"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.click();
+        
 	    // Assert that the URL has changed and moved to the new page.
 	    ExpectedCondition<Boolean> e = new ExpectedCondition<Boolean>() {
 	      public Boolean apply(WebDriver d) {
@@ -106,6 +122,7 @@ public class SmokeTest {
 	      }
 	    };
 	    wait.until(e);
+	    
 	    
 	    int numElements = 0;
 	    String elementPath;
@@ -154,12 +171,15 @@ public class SmokeTest {
 	    // Check that file was created, then delete it.
 	    Actions action = new Actions(driver);
 	    
-	    driver.get("drive.google.com");
-	    assertTrue(isElementPresent(By.xpath("//.[contains(text(),'Test File')]")));
+	    driver.get("http://drive.google.com");
+	    element = driver.findElement(By.xpath("//*[contains(text(), 'Test File')]"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+
+	    assertTrue(isElementPresent(By.xpath("//*[contains(text(), 'Test File')]")));
 	    
 	    // Right click, then navigate to 'Remove' option.
 	    //	('Remove' is the 9th option in the context menu)
-	    action.contextClick(driver.findElement(By.xpath("//.[contains(text(),'Test File')]")));
+	    action.contextClick(driver.findElement(By.xpath("//*[contains(text(), 'Test File')]")));
 	    for (int i = 0; i < 9; i++)
 	    	action.sendKeys(Keys.ARROW_DOWN);
 	    action.sendKeys(Keys.RETURN).build().perform();
@@ -181,12 +201,11 @@ public class SmokeTest {
   public void tearDown() throws Exception {
     // Close when done. We will move this to a newer spot with more tests
     driver.quit();
-    String verificationErrorString = verificationErrors.toString();
-    if (!"".equals(verificationErrorString)) {
-      fail(verificationErrorString);
-    }
+    
   }
-=======
+  
+  /**
+
    @Test
    public void AuthTest() throws Exception {
      // Note: Thread.sleep is to let things load. Measured in milliseconds.
@@ -276,16 +295,7 @@ public class SmokeTest {
          numElements = driver.findElements(By.className("link")).size();
      }
    }
-   
->>>>>>> d75b0da9ac796f4b597cbfb2d931cdb1a69a67fd
+   */
 
-   @After
-   public void tearDown() throws Exception {
-     // Close when done. We will move this to a newer spot with more tests
-     driver.quit();
-     String verificationErrorString = verificationErrors.toString();
-     if (!"".equals(verificationErrorString)) {
-       System.out.println(verificationErrorString);
-     }
-   }
+
  }
