@@ -16,6 +16,9 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
 	*/
 	var realtimeUtils = new utils.RealtimeUtils({ clientId: clientId });
 
+	// save the access token that uniquely identifies a user for a particular user of Google's api 
+	var access_token = "";
+
 	/*
 	The Google Realtime API is called to ensure that the user is logged into a Google Account. 
 	If the user is logged into a Google Account, attempts to load the QM-Lab document.
@@ -31,6 +34,7 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
 	function authorize() {
 		// Attempt to authorize
 		realtimeUtils.authorize(function(response){
+			access_token = response["access_token"];
 			if(response.error){
 				// Authorization failed because this is the first time the user has used your application,
 				// show the authorize button to prompt them to authorize manually.
@@ -39,6 +43,7 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
 				button.addEventListener('click', function () {
 					realtimeUtils.authorize(function(response){
 						startQM_DocumentLoad();
+						access_token = response["access_token"];
 					}, true);
 				});
 			} else {
@@ -59,8 +64,22 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
 		displayLoadingScreen();
 		registerCollaborativeObjectTypes();
 		loadQM_Document();
+		loadShareDialog();
 	}
 	
+	function loadShareDialog() {
+		var fileId = realtimeUtils.getParam('id');
+
+		init = function() {
+	        s = new gapi.drive.share.ShareClient();
+	        s.setOAuthToken(access_token);
+        	s.setItemIds([fileId]);
+	    }	
+
+		gapi.load('drive-share', init);
+	}
+
+
 	/*
 	This function is in charge of loading or creating the QM-Lab document. 
 	If it finds an "id" in the URL query, it will attempt to load that already made document.
