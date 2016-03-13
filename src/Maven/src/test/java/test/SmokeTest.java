@@ -3,23 +3,27 @@ package test;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 @RunWith(Parameterized.class)
 public class SmokeTest {
   private String baseUrl;
   private StringBuffer verificationErrors = new StringBuffer();
   private WebDriverWait wait;  
+  
   // After every run the browser will switch to a new one
   // and be placed into the driver to use
   private WebDriver browser;
@@ -60,105 +64,106 @@ public class SmokeTest {
 
   @Test
   public void AuthTest() throws Exception {
-    // Note: Thread.sleep is to let things load. Measured in milliseconds.
-    // Get the web page and go to it
-    wait = new WebDriverWait(driver, 10);
-    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-    driver.get(baseUrl + "/demo/development/src/Main/");
-    final String previousURL = driver.getCurrentUrl();
-    
-    Thread.sleep(2500);
-    // Store the current window handle
-    String winHandleBefore = driver.getWindowHandle();
+	// Get the web page and go to it.
+	    wait = new WebDriverWait(driver, 10);
+	    driver.get(baseUrl + "/demo/development/src/Main/");
+	    final String previousURL = driver.getCurrentUrl();
 
-    // Perform the click operation that opens new window
-    driver.findElement(By.xpath("//button[contains(text(),'Authorize')]")).click();
-    
-    // Switch to new window opened
-    for(String winHandle : driver.getWindowHandles()){
-        driver.switchTo().window(winHandle);
-    }
-    // Wait two seconds for the authentication window and then enter email
-    Thread.sleep(2000);
-    Thread.sleep(500);
-    driver.findElement(By.id("Email")).clear();
-    driver.findElement(By.id("Email")).sendKeys("cmpt371testingemail");
-    
-    // Wait 0.5 seconds and then press next
-    Thread.sleep(500);
-    driver.findElement(By.id("next")).click();
-    
-    // Wait 2.5 seconds for the next page and then send the password
-    Thread.sleep(2500);
-    driver.findElement(By.id("Passwd")).clear();
-    driver.findElement(By.id("Passwd")).sendKeys("DarthVader!");
-    
-    // Wait 1.5 seconds and then press sign in
-    Thread.sleep(1500);
-    driver.findElement(By.id("signIn")).click();
-    
-    // Go back to the previous window
-    driver.switchTo().window(winHandleBefore);
-    
-    // Wait two seconds for the page to load 
-    Thread.sleep(2000);
-    
-    // Assert that the URL has changed and moved to the new page
-    ExpectedCondition<Boolean> e = new ExpectedCondition<Boolean>() {
-      public Boolean apply(WebDriver d) {
-        assert d.getCurrentUrl() != null;
-        return (d.getCurrentUrl() != previousURL);
-      }
-    };
-    wait.until(e);
-    
-    // Create new items, then check that they were actually created.
-    // TODO Turn into function
-    driver.findElement(By.xpath("//div[contains(text(),'Stock')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    assertTrue(isElementPresent(By.cssSelector(".Stock")));
-    
-    driver.findElement(By.xpath("//div[contains(text(),'Image')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    assertTrue(isElementPresent(By.cssSelector(".ImageNode")));
-    
-    driver.findElement(By.xpath("//div[contains(text(),'Variable')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    assertTrue(isElementPresent(By.cssSelector(".Variable")));
-    
-    driver.findElement(By.xpath("//div[contains(text(),'Parameter')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    assertTrue(isElementPresent(By.cssSelector(".Parameter")));
-    
-    // Switch to Links tab, and wait for it to finish switching.
-    driver.findElement(By.xpath("//div[contains(text(),'Links')]")).click();
-    for (int second = 0;; second++) {
-        if (second >= 60) fail("timeout");
-        try { if ("Flow".equals(driver.findElement(By.cssSelector("div.webix_list_item")).getText())) break; } catch (Exception e2) {}
-        Thread.sleep(1000);
-    }
+	    // Store the current window handle.
+	    String winHandleBefore = driver.getWindowHandle();
 
-    // All the links are of the same class, so count the number of links to make sure a new one is being
-    // created each time.
-    int numLinks;
-    
-    driver.findElement(By.xpath("//div[contains(text(),'Flow')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    numLinks = driver.findElements(By.className("localLink")).size();
-    assertTrue(numLinks == 1);
-    
-    driver.findElement(By.xpath("//div[contains(text(),'Simple Straight')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    numLinks = driver.findElements(By.className("localLink")).size();
-    assertTrue(numLinks == 2);
-    
-    driver.findElement(By.xpath("//div[contains(text(),'Simple Curved')]")).click();
-    driver.findElement(By.id("paperView")).click();
-    numLinks = driver.findElements(By.className("localLink")).size();
-    assertTrue(numLinks == 3);
-    
-    // TODO Test if a file is made in google drive. 
-    // Click the file, then delete the file
+	    // Perform the click operation that opens new window.
+	    driver.findElement(By.id("auth_button")).click();
+	    
+	    // Switch to new window opened.
+	    for(String winHandle : driver.getWindowHandles()){
+	        driver.switchTo().window(winHandle);
+	    }
+	    
+	    // Enter email and password, then click sign in.
+	    assert "Sign in - Google Accounts" == driver.getTitle();
+	    driver.findElement(By.id("Email")).clear();
+	    driver.findElement(By.id("Email")).sendKeys("cmpt371testingemail");
+	    driver.findElement(By.id("Passwd")).clear();
+	    driver.findElement(By.id("Passwd")).sendKeys("DarthVader!");
+	    driver.findElement(By.id("signIn")).click();
+	    
+	    // Go back to the previous window.
+	    driver.switchTo().window(winHandleBefore);
+	    
+	    // Enter filename.
+	    driver.findElement(By.id("docName")).clear();
+	    driver.findElement(By.id("docName")).sendKeys("Test File");
+	    driver.findElement(By.id("docSubmit")).click();
+
+	    // Assert that the URL has changed and moved to the new page.
+	    ExpectedCondition<Boolean> e = new ExpectedCondition<Boolean>() {
+	      public Boolean apply(WebDriver d) {
+	        assert d.getCurrentUrl() != null;
+	        return (d.getCurrentUrl() != previousURL);
+	      }
+	    };
+	    wait.until(e);
+	    
+	    int numElements = 0;
+	    String elementPath;
+	    String elementName;
+	    
+	    // Create new items.
+	    // Count number of elements to check that an item was actually created.
+	    for (int i = 1; i <= 8; i++) {
+	    	elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
+	    	elementName = driver.findElement(By.xpath(elementPath)).getText();
+	    			
+		    driver.findElement(By.xpath(elementPath)).click();
+		    driver.findElement(By.id("paperView")).click();
+		    try {
+		    	assertTrue(driver.findElements(By.className("element")).size() == numElements + 1);
+		    } catch (Error e2) {
+		        verificationErrors.append(elementName + " was not created.\n");
+		    }
+		    numElements = driver.findElements(By.className("element")).size();
+	    }
+	    
+	    // Switch to Links tab, and wait for it to finish switching.
+	    driver.findElement(By.xpath("//div[contains(text(),'Links')]")).click();
+	    for (int second = 0;; second++) {
+	    	if (second >= 60) fail("timeout");
+	    	try { if ("Flow".equals(driver.findElement(By.cssSelector("div.webix_list_item")).getText())) break; } catch (Exception e2) {}
+	    	Thread.sleep(1000);
+	    }
+
+	    // Repeat test for links.
+	    numElements = 0;
+	    for (int i = 1; i <= 5; i++) {
+	    	elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
+	    	elementName = driver.findElement(By.xpath(elementPath)).getText();
+	    			
+		    driver.findElement(By.xpath(elementPath)).click();
+		    driver.findElement(By.id("paperView")).click();
+		    try {
+		    	assertTrue(driver.findElements(By.className("link")).size() == numElements + 1);
+		    } catch (Error e2) {
+		        verificationErrors.append(elementName + " was not created.\n");
+		    }
+		    numElements = driver.findElements(By.className("link")).size();
+	    }
+	    
+	    // Check that file was created, then delete it.
+	    Actions action = new Actions(driver);
+	    
+	    driver.get("drive.google.com");
+	    assertTrue(isElementPresent(By.xpath("//.[contains(text(),'Test File')]")));
+	    
+	    // Right click, then navigate to 'Remove' option.
+	    //	('Remove' is the 9th option in the context menu)
+	    action.contextClick(driver.findElement(By.xpath("//.[contains(text(),'Test File')]")));
+	    for (int i = 0; i < 9; i++)
+	    	action.sendKeys(Keys.ARROW_DOWN);
+	    action.sendKeys(Keys.RETURN).build().perform();
+	    
+	    // Wait for file to be deleted.
+	    Thread.sleep(1000);
   }
   
   private boolean isElementPresent(By by) {
@@ -169,7 +174,6 @@ public class SmokeTest {
       return false;
     }
   }
-
 
   @After
   public void tearDown() throws Exception {
