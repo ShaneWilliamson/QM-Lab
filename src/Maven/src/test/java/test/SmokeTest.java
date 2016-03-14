@@ -173,7 +173,7 @@ public class SmokeTest {
 	    
 	    driver.get("http://drive.google.com");
 	    element = driver.findElement(By.xpath("//*[contains(text(), 'Test File')]"));
-        wait.until(ExpectedConditions.visibilityOf(element));
+	    wait.until(ExpectedConditions.elementToBeClickable(element));
 
 	    assertTrue(isElementPresent(By.xpath("//*[contains(text(), 'Test File')]")));
 	    

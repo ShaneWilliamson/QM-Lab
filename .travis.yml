@@ -30,5 +30,5 @@ before_script:
 
 
 script:
-  - grunt test --verbose --force --debug
+  - grunt test --verbose --force
   - mvn test -f ./src/Maven/pom.xml
