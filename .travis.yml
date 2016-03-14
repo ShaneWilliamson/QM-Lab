@@ -20,7 +20,6 @@ before_install:
   - sudo apt-get purge nodejs npm
   - curl -sL https://deb.nodesource.com/setup | sudo bash -
   - sudo apt-get -y install nodejs
-  - sudo apt-get install npm
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - bash selenium_setup.sh
