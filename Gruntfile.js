@@ -11,21 +11,13 @@ module.exports = function(grunt) {
       	'--ssl-protocol':'any',
         '--cookies-file':'cookies.txt'
       },
-      all: {
+      all: ['src/Unit_Tests/*.html'] {
       	options: {
       		urls: [
       			'http://test.local/src/Unit_Tests/unitTest.html'
       		],
-      		page: {
-      			settings: {
-      				resourceTimeout:10000,
-      				//userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3',
-      				loadImages:false,
-      				localToRemoteUrlAccessEnabled:true,
-      			}
-      		}
+
       	}
-      }
     }
 
   });
