@@ -25,6 +25,8 @@ before_install:
 
 before_script:
   - npm install grunt --save-dev
+  - npm install grunt-contrib-qunit --save-dev
+
 
 
 script:
