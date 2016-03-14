@@ -2,7 +2,6 @@
 <html>
 <head>
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<link rel="stylesheet" type="text/css" href="draw.css" />
     <link rel="stylesheet" href="joint.css" />
     <link rel="stylesheet" href="webix.css" />
     <link rel="stylesheet" href="main.css" />
@@ -44,6 +43,18 @@
 			</div>
 		</div>
 	</div>
-	<button id="auth_button">Authorize</button>
+	<div id="landing" class="messageBlock">
+		<div id="welcomeMessage" class="message">
+			Please Sign In And Authorize With A Valid Google Account
+		</div>
+		<button id="auth_button" class="button">Sign In</button>
+	</div>
+	<div id="createDoc" class="messageBlock">
+		<div class="message">Please Enter The Name Of The New File</div>
+		<div id="inputLine">
+			<input type="text" id="docName">
+			<button id="docSubmit" class="button">Create</button>
+		</div>
+	</div>
 </body>
 </html>

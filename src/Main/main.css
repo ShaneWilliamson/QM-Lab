@@ -16,3 +16,92 @@
 .flexible{
     margin-left: 270px;
 }
+
+.hidden{
+	display: none;
+}
+
+.visible{
+	display: block;
+}
+
+.messageBlock{
+	display: none;
+	margin-top: 100px;
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.message{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 30px;
+	margin-bottom: 30px;
+}
+
+#auth_button{
+	margin-left: 35%;
+}
+
+.button{
+	background-color: #3498db; /* colour of ui*/
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+
+.button:hover {
+	cursor: pointer;
+}
+
+#progress {
+	left: 25%;
+	top: 55%;
+	width: 50%;
+	height: 30px;
+	position: absolute;
+	background-color: #ddd;
+	overflow: hidden;
+	display: none;
+}
+
+#bar {
+	
+	background-color: #3498db; /*colour of ui */
+	width: 40%;
+	height: 30px;
+	position: relative;
+	display: none;
+}
+#state {
+	position: absolute;
+	top: 50%;
+	left: 45%;
+	display: none;
+}
+
+#paperView {
+	display: block;
+	
+}
+
+#createDoc{
+	display: none;
+}
+
+#docName{
+	color: gray;
+	padding: 15px 32px;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+
+
+#inputLine {
+	display: inline-block;
+	background-color: #3498db;
+}

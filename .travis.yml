@@ -10,7 +10,7 @@ branches:
 sudo: true
 
 notifications:
-  slack: 
+  slack:
     rooms:
         - '371team3:R6TEyOqBzUzFY13wyDs3OXJZ'
     on_success: always
@@ -22,5 +22,10 @@ before_install:
   - export DISPLAY=:99.0
   - bash selenium_setup.sh
 
+before_script:
+  - sudo npm install -g grunt
 
-script: mvn test -f ./src/Maven/pom.xml
+
+script:
+  - grunt test --verbose --force
+  - mvn test -f ./src/Maven/pom.xml
