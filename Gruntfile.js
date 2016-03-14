@@ -11,13 +11,8 @@ module.exports = function(grunt) {
       	'--ssl-protocol':'any',
         '--cookies-file':'cookies.txt'
       },
-      all: ['src/Unit_Tests/*.html'] {
-      	options: {
-      		urls: [
-      			'http://test.local/src/Unit_Tests/unitTest.html'
-      		],
+      all: ['src/Unit_Tests/*.html']
 
-      	}
     }
 
   });
