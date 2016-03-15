@@ -29,9 +29,7 @@ before_script:
   - sudo npm install grunt-contrib-jshint --save-dev
 
 
-
-
-
 script:
-  - grunt test --verbose --force
+  - grunt syntax --verbose --force
+  - grunt test --verbose
   - mvn test -f ./src/Maven/pom.xml
