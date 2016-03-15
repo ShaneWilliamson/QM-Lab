@@ -65,11 +65,30 @@ QUnit.test("addGlobalEventListeners() Test", function( assert ) {
 
 QUnit.test("registerCollaborativeObjectTypes() test", function( assert ){
   var ignoreGAPI = sinon.stub(gapi);
+  var ignoreCG = sinon.mock(CollaborativeGraph);
   registerCollaborativeObjectTypes();
   assert.ok(ignoreGAPI, "Method ran.");
+
 });
 
+QUnit.test("doGraphOnLoaded() test", function( assert ){
+  var spy = sinon.spy(console, "log");
+  doGraphOnLoaded();
+  assert.ok(spy, "Method ran.");
+});
 
+QUnit.test("updateCollabGraph() test", function( assert ){
+  var sandbox = sinon.sandbox.create();
+  sandbox.stub(colGraph, "graph", false);
+  updateCollabGraph();
+  assert.ok(sandbox, "False branch ran.");
+  sandbox.stub(colGraph, "graph", true);
+  assert.ok(sandbox, "True branch ran.");
+
+  sandbox.restore();
+
+
+});
 
 /**
 QUnit.test("Test Link Creation", function( assert ) {
