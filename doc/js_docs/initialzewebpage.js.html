@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: initialzewebpage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,36 +17,56 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: initialzewebpage.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h2>JSDocs</h2><p>Class and method documentation for QM-Lab</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/////////////////////////
+// initialize_web_page //
+/////////////////////////
+/**
+ * Contains the model for intializing the document
+ * @class initialize_web_page
+ */
+
+var graph;
+var paper;
+var paperScale;
+var colGraph;
+var rootModel;
+var realDoc;
+var loading;
+var activeID;
+var collaborativeChangeReceived;
+var selected;
+var movingViewPort;
+var oldMousePos;
+var curMousePos;
+
+
+window.onload=onstartRun;
+
+/**
+ * Attach event listeners to all buttons, start Google's Realtime API.
+ * @preconditions The window has loaded the proper html file. 
+ * @postconditions The Google Realtime has ensured the user is logged into their Google account.
+ * @memberOf initialize_web_page
+ */
+function onstartRun(){
+	selected = {}
+	authorize();
+	freeze = setInterval(checkAndFreeze, 1000);
+
+	movingViewPort = false;
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
