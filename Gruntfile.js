@@ -2,6 +2,30 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    jshint: {
+      files: [
+        'Gruntfile.js',
+        'src/Main/*.js',
+        'src/Unit_Tests/tests.js',
+        '!src/Main/webix.js',
+        '!src/Main/backbone.js',
+        '!src/Main/joint.js',
+        '!src/Main/jquery.js',
+        '!src/Main/lodash.js'
+      ],
+      options: {
+        jshintrc: '.jshintrc',
+        globals: {
+          jQuery: true
+        }
+      }
+    },
+
+
+    watch: {
+      files: ['<%= jshint.files %>'],
+      tasks: ['jshint']
+    },
     qunit: {
       options: {
       	'--ignore-ssl-errors':true,
@@ -17,6 +41,8 @@ module.exports = function(grunt) {
 
   });
 	grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.registerTask('test', ['qunit']);
-	grunt.registerTask('default', ['qunit']);
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+
+  grunt.registerTask('test', ['jshint', 'qunit' ]);
+	grunt.registerTask('default', ['jshint', 'qunit']);
 };

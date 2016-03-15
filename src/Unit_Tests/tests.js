@@ -30,10 +30,10 @@ QUnit.test("Test Link Creation", function( assert ) {
 
 Qunit.test("Test Image Creation", function( assert ) {
   var pos = {x: 4, y: 5};
-  var pictureURL = "http://i.imgur.com/48dEoHh.jpg"
-  var label = "A nice meme"
-  var sizeX = 300
-  var sizeY = 500
+  var pictureURL = "http://i.imgur.com/48dEoHh.jpg";
+  var label = "A nice meme";
+  var sizeX = 300;
+  var sizeY = 500;
   var newImage = new joint.shapes.QMLab.ImageNode({
     position: { x: pos.x, y: pos.y },
   });

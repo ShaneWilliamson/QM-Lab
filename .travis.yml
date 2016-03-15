@@ -26,6 +26,9 @@ before_install:
 before_script:
   - sudo npm install grunt --save-dev
   - sudo npm install grunt-contrib-qunit --save-dev
+  - sudo npm install grunt-contrib-jshint --save-dev
+
+
 
 
 
