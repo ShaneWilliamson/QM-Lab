@@ -101,200 +101,16 @@
 
     
 
-    <h4 class="name" id="createLink"><span class="type-signature"></span>createLink<span class="signature">(pos, connector)</span><span class="type-signature"> &rarr; {newLink}</span></h4>
+    <h4 class="name" id="createQM_Document"><span class="type-signature"></span>createQM_Document<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Creates a generic link at the given location. If the user clicked to have the link positioned over a node it will position its 'source' from the selected node.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pos</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">position</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">coordinates with 'x' and 'y' fields</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>connector</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">link</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">an object is able to hold nodes it is connecting</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="createobjects.js.html">createobjects.js</a>, <a href="createobjects.js.html#line60">line 60</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the link created with the position and connector
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">newLink</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="createStock"><span class="type-signature"></span>createStock<span class="signature">(pos)</span><span class="type-signature"> &rarr; {node}</span></h4>
-
-    
-
-
-
-<div class="description">
-    Creates a stock at the given location
+    This function will create a new Realtime document in the user's Google Drive
+  with the name input into a text box. This function is only executed if the
+  user goes to the web app without a valid document id in the url.
 </div>
 
 
@@ -303,7 +119,19 @@
 
         
 <div class="precondition-desc">
-    pos contains valid 'x' and 'y' coordinates
+    The user did not navigate to an existing valid Realtime
+  document.
+</div>
+
+    
+
+
+<h5>Postconditions:</h5>
+
+        
+<div class="precondition-desc">
+    A new Realtime file is created in the users Google Drive with
+  the name input into the text box.
 </div>
 
     
@@ -317,57 +145,6 @@
 
 
 
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pos</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">position</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">coordinates with 'x' and 'y' fields</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -403,7 +180,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="createobjects.js.html">createobjects.js</a>, <a href="createobjects.js.html#line37">line 37</a>
+        <a href="grapiauth.js.html">grapiauth.js</a>, <a href="grapiauth.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -428,28 +205,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the new stock at its location
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">node</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -469,13 +224,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createStock">createStock</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createQM_Document">createQM_Document</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Mar 15 2016 14:46:45 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Mar 15 2016 16:38:24 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
