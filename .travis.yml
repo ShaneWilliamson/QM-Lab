@@ -10,17 +10,26 @@ branches:
 sudo: true
 
 notifications:
-  slack: 
+  slack:
     rooms:
         - '371team3:R6TEyOqBzUzFY13wyDs3OXJZ'
     on_success: always
     on_failure: always
 
 before_install:
-  - sudo apt-get -y install nodejs
+  - bash gruntSetup.sh
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - bash selenium_setup.sh
 
 
-script: mvn test -f ./src/Maven/pom.xml
+before_script:
+  - sudo npm install grunt --save-dev
+  - sudo npm install grunt-contrib-qunit --save-dev
+  - sudo npm install grunt-contrib-jshint --save-dev
+
+
+script:
+  - grunt syntax --verbose --force
+  - grunt test --verbose
+  - mvn test -f ./src/Maven/pom.xml
