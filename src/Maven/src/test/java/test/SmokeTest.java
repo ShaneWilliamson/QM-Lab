@@ -67,7 +67,7 @@ public class SmokeTest {
   @Test
   public void MainTest() throws Exception {
 	// Get the web page and go to it.
-	    wait = new WebDriverWait(driver, 15);
+	    wait = new WebDriverWait(driver, 20);
 	    driver.get(baseUrl + "/demo/development/src/Main/");
 	    final String previousURL = driver.getCurrentUrl();
 
@@ -172,8 +172,8 @@ public class SmokeTest {
 	    Actions action = new Actions(driver);
 	    
 	    driver.get("http://drive.google.com");
-	    element = driver.findElement(By.xpath("//*[contains(text(), 'Test File')]"));
-	    wait.until(ExpectedConditions.elementToBeClickable(element));
+	    element = driver.findElement(By.xpath("//span[contains(text(), 'Test File')]"));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
 
 	    assertTrue(isElementPresent(By.xpath("//*[contains(text(), 'Test File')]")));
 	    
