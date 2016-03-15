@@ -33,16 +33,6 @@ function registerCollaborativeObjectTypes() {
 	gapi.drive.realtime.custom.setOnLoaded(CollaborativeCell, doCellOnLoaded);
 }
 
-/*
-This take in a joint.js "cell", which, from a general perspective,  is either
-a "node" or "link". It will add an event listener to it that ensures it updates
-the collaborative object which represents it for other users.
-
-pre: cell: must exist
-     The cell must have already been added to the collaborative graph.
-post: cell: on any change, will notify other users and cause them to update
-            accordingly
-*/
 /**
  * Takes a local cell and adds an event listener. The event listener will update
  *   the collaborative objects that represent this local cell when the local
