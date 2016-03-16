@@ -250,6 +250,7 @@ function paperOnMouseUp(e) {
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
 	selectSingleOnPoint(curMousePos);
+	updateProperties();
 }
 
 
@@ -267,6 +268,15 @@ function paperOnMouseUp(e) {
 function selectSingleOnPoint(pos) {
 	console.log(graph.findModelsFromPoint(pos));
 	selected[0] = graph.findModelsFromPoint(pos)[0];
+}
+
+function updateProperties() {
+	var selectedObj = selected[0];
+	var formName = "propertiesFormId";
+
+	$$(formName).setValues({
+		"width":1234
+	});
 }
 
 /**

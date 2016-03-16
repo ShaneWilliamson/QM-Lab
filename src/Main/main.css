@@ -25,6 +25,14 @@
 	display: block;
 }
 
+.sidebar{
+	margin: 10px;
+}
+
+.sidebarTitle{
+	font-size: 125%;
+}
+
 .messageBlock{
 	display: none;
 	margin-top: 100px;

@@ -89,6 +89,7 @@ QM_LabUI.prototype.genTabbar = function() {
 QM_LabUI.prototype.genUI = function() { 
 	genUI.genToolbar();
 	genUI.genTabbar();
+	genUI.genPropertiesForm();
 };
 
 
@@ -96,15 +97,15 @@ QM_LabUI.prototype.genUI = function() {
 	Creates the main toolbar at the top of the main page
 **/
 QM_LabUI.prototype.genToolbar = function() {
-		webix.ui({
+	webix.ui({
 		container:"mainToolbar",
 		view:"toolbar",
 		elements: [
-				{ view:"button", width: 100, value: "Create", id:"create"},
-				{ view:"button", width: 100, value: "Save", id:"save"},
-				{ view:"button", width: 100, value: "Load", id:"load"},
-				{ view:"button", width: 100, value: "Share", id:"share"}
-			],
+			{ view:"button", width: 100, value: "Create", id:"create"},
+			{ view:"button", width: 100, value: "Save", id:"save"},
+			{ view:"button", width: 100, value: "Load", id:"load"},
+			{ view:"button", width: 100, value: "Share", id:"share"}
+		],
 		elementsConfig:{
 			width: 150,
 			labelAlign:"right",
@@ -127,6 +128,28 @@ QM_LabUI.prototype.genToolbar = function() {
 
 	$$("share").attachEvent("onItemClick", function(id, e){		
         s.showSettingsDialog(); // open the sharing dialog
+	});
+}
+
+QM_LabUI.prototype.genPropertiesForm = function() {
+	QM_LabUI.prototype.propertiesForm = [
+		{ view:"label", label:"Properties", css:"sidebarTitle" },
+		{ view:"text", label:"Text", name:"text" },
+		{ view:"text", label:"Width", name:"width" },
+		{ view:"text", label:"Height", name:"height" },
+		{ view:"text", label:"Depth", name:"depth" },
+		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd" },
+		{ view:"text", label:"Img URL", name:"imgURL" }
+	];
+
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		margin:30, cols:[
+			{ margin:30, rows:[
+				{ view:"form", scroll:false, width:250, elements: QM_LabUI.prototype.propertiesForm },
+			]}
+		]
 	});
 }
 
