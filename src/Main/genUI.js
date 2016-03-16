@@ -100,20 +100,30 @@ QM_LabUI.prototype.genToolbar = function() {
 		container:"mainToolbar",
 		view:"toolbar",
 		elements: [
-				{ view:"segmented", width:200, 
-					options:[
-						{id:"save", value:"Save"},
-						{id:"load", value:"Load"}
-					]
-				},
-				{ view:"button", width: 100, value: "Share", id:"share"
-				}
+				{ view:"button", width: 100, value: "Create", id:"create"},
+				{ view:"button", width: 100, value: "Save", id:"save"},
+				{ view:"button", width: 100, value: "Load", id:"load"},
+				{ view:"button", width: 100, value: "Share", id:"share"}
 			],
 		elementsConfig:{
 			width: 150,
 			labelAlign:"right",
 			value:"edit"}
 	});   
+
+	$$("create").attachEvent("onItemClick", function(id, e){		
+        window.open('/', '_blank');
+	});
+
+	$$("save").attachEvent("onItemClick", function(id, e){		
+        function download(text, name, type) {
+		  var file = new Blob([text], {type: type});
+		  var href = URL.createObjectURL(file);
+		  window.open(href, '__blank');
+		}
+
+		download("fasfasfdasdf", "test.txt", "application/octet-stream");
+	});
 
 	$$("share").attachEvent("onItemClick", function(id, e){		
         s.showSettingsDialog(); // open the sharing dialog
