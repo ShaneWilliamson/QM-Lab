@@ -33,16 +33,6 @@ function registerCollaborativeObjectTypes() {
 	gapi.drive.realtime.custom.setOnLoaded(CollaborativeCell, doCellOnLoaded);
 }
 
-/*
-This take in a joint.js "cell", which, from a general perspective,  is either
-a "node" or "link". It will add an event listener to it that ensures it updates
-the collaborative object which represents it for other users.
-
-pre: cell: must exist
-     The cell must have already been added to the collaborative graph.
-post: cell: on any change, will notify other users and cause them to update
-            accordingly
-*/
 /**
  * Takes a local cell and adds an event listener. The event listener will update
  *   the collaborative objects that represent this local cell when the local
@@ -69,7 +59,7 @@ function addCollabEventToCell(cell) {
  *   collaborative graph which ensure correct syncing.
  */
 function CollaborativeGraph(){
-	
+
 }
 
 /**
@@ -86,7 +76,7 @@ function doGraphInitialize(){
 
 /**
  * Loads the collaborative object event listeners.
- * 
+ *
  * Called whenever the document loads a collaborative object, as well as when the first collaborative object is initialized.
  * @deprecated Currently does not need to happen for objects
  * @preconditions the collaborative graph object has been loaded and is available
@@ -134,9 +124,11 @@ function updateCollabGraph() {
  */
 function updateGraph() {
 	graph.fromJSON(JSON.parse(colGraph.graph))
+	
 	graph.on('remove', function(cell) { 
 		rootModel.getRoot().get(cell.id).action = "remove";
 	})
+	
 	addCollabEventToAllCells();
 	console.log('Built new graph');
 }

@@ -90,6 +90,22 @@
 		this.prop('rect/height', height);
 		this.attr('rect/width', width);
 		this.attr('rect/height', height);
+		this.prop('image/width', width);
+		this.prop('image/height', height);
+		this.attr('image/width', width);
+		this.attr('image/height', height);
+		this.resize(width, height);
+		
+		this.attr('text/ref-x', (width / 2));
+		if (this.attributes.type === "QMLab.Agent" || this.attributes.type === "QMLab.ImageNode")
+		{
+			this.attr('text/ref-y', (height + 30));
+		}
+		else {
+			this.attr('text/ref-y', (height / 2));
+		}
+
+		
 	}
 
 	/*
@@ -757,16 +773,7 @@
 		this.attr('image/xlink:href', url);
 	}
 	
-	joint.shapes.QMLab.ImageNode.prototype.setSize = function(width, height) {
-		this.prop('image/width', width);
-		this.prop('image/height', height);
-		this.attr('image/width', width);
-		this.attr('image/height', height);
-		this.prop('text/ref-x', (width / 2));
-		this.prop('text/ref-y', (height + 30));
-		this.attr('text/ref-x', (width / 2));
-		this.attr('text/ref-y', (height + 30));
-	}
+
 	
 
 	

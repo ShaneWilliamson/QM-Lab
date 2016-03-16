@@ -43,7 +43,7 @@ public class SmokeTest {
    public static Collection<Object[] > data(){
     // TODO: Change this to the ssh path 
     System.setProperty("webdriver.chrome.driver", "Selenium_Files/chromedriver");
-    Object[][] data = new Object[][] { { new ChromeDriver() }, { new FirefoxDriver() }};
+    Object[][] data = new Object[][] {{ new ChromeDriver() }, { new FirefoxDriver() }};
     assert data != null;
     return Arrays.asList(data);
   }
@@ -61,7 +61,7 @@ public class SmokeTest {
     // Get the web page and go to it
     wait = new WebDriverWait(driver, 10);
     driver.get(baseUrl + "/demo/development/src/Main/");
-    String previousURL = driver.getCurrentUrl();
+    final String previousURL = driver.getCurrentUrl();
     Thread.sleep(2000);
 
 
@@ -75,19 +75,12 @@ public class SmokeTest {
     for(String winHandle : driver.getWindowHandles()){
         driver.switchTo().window(winHandle);
     }
-    // Wait two seconds for the authentication window and then enter email
+    // Wait two seconds for the authentication window and then enter email and password
     Thread.sleep(2000);
     assert "Sign in - Google Accounts" == driver.getTitle();
     Thread.sleep(500);
     driver.findElement(By.id("Email")).clear();
     driver.findElement(By.id("Email")).sendKeys("cmpt371testingemail");
-    
-    // Wait 0.5 seconds and then press next
-    Thread.sleep(500);
-    driver.findElement(By.id("next")).click();
-    
-    // Wait 2.5 seconds for the next page and then send the password
-    Thread.sleep(2500);
     driver.findElement(By.id("Passwd")).clear();
     driver.findElement(By.id("Passwd")).sendKeys("DarthVader!");
     
@@ -109,6 +102,49 @@ public class SmokeTest {
       }
     };
     wait.until(e);
+    
+    int numElements = 0;
+    String elementPath;
+    String elementName;
+    
+    // Create new items
+    // Count number of elements to check that an item was actually created.
+    for (int i = 1; i <= 8; i++) {
+    	elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
+    	elementName = driver.findElement(By.xpath(elementPath)).getText();
+    			
+	    driver.findElement(By.xpath(elementPath)).click();
+	    driver.findElement(By.id("paperView")).click();
+	    try {
+	    	assertTrue(driver.findElements(By.className("element")).size() == numElements + 1);
+	    } catch (Error e2) {
+	        verificationErrors.append(elementName + " was not created.\n");
+	    }
+	    numElements = driver.findElements(By.className("element")).size();
+    }
+    
+    // Switch to Links tab, and wait for it to finish switching.
+    driver.findElement(By.xpath("//div[contains(text(),'Links')]")).click();
+    for (int second = 0;; second++) {
+    	if (second >= 60) fail("timeout");
+    	try { if ("Flow".equals(driver.findElement(By.cssSelector("div.webix_list_item")).getText())) break; } catch (Exception e2) {}
+    	Thread.sleep(1000);
+    }
+
+    // Repeat test for links.
+    for (int i = 1; i <= 5; i++) {
+    	elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
+    	elementName = driver.findElement(By.xpath(elementPath)).getText();
+    			
+	    driver.findElement(By.xpath(elementPath)).click();
+	    driver.findElement(By.id("paperView")).click();
+	    try {
+	    	assertTrue(driver.findElements(By.className("link")).size() == numElements + 1);
+	    } catch (Error e2) {
+	        verificationErrors.append(elementName + " was not created.\n");
+	    }
+	    numElements = driver.findElements(By.className("link")).size();
+    }
   }
   
 
@@ -118,9 +154,7 @@ public class SmokeTest {
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
-      fail(verificationErrorString);
+      System.out.println(verificationErrorString);
     }
   }
-
-
 }
