@@ -71,6 +71,7 @@ public class SmokeTest {
 	    driver.get(baseUrl + "/demo/development/src/Main/");
 	    final String previousURL = driver.getCurrentUrl();
 
+	    System.out.println(driver.toString());
 	    // Store the current window handle.
 	    String winHandleBefore = driver.getWindowHandle();
 
@@ -86,18 +87,35 @@ public class SmokeTest {
 	    }
 	    
 	    // Enter email and password, then click sign in.
-	    element = driver.findElement(By.id("Email"));
-        wait.until(ExpectedConditions.visibilityOf(element));
-	    element.clear();
-	    element.sendKeys("cmpt371testingemail");
-        element = driver.findElement(By.id("Passwd"));
-        wait.until(ExpectedConditions.visibilityOf(element));
-        element.clear();
-        element.sendKeys("DarthVader!");
-        element = driver.findElement(By.id("signIn"));
-        wait.until(ExpectedConditions.visibilityOf(element));
-        element.click();
-        
+	    
+	      try {
+	      element = driver.findElement(By.id("Email"));
+          wait.until(ExpectedConditions.visibilityOf(element));
+          element.clear();
+          element.sendKeys("cmpt371testingemail");
+          element = driver.findElement(By.id("Passwd"));
+          wait.until(ExpectedConditions.visibilityOf(element));
+          element.clear();
+          element.sendKeys("DarthVader!");
+          element = driver.findElement(By.id("signIn"));
+          wait.until(ExpectedConditions.visibilityOf(element));
+          element.click();
+	    } catch (NoSuchElementException ignored) {
+	       element = driver.findElement(By.id("Email"));
+	       wait.until(ExpectedConditions.visibilityOf(element));
+	       element.clear();
+	       element.sendKeys("cmpt371testingemail");
+           element = driver.findElement(By.id("next"));
+           wait.until(ExpectedConditions.visibilityOf(element));
+           element.click();
+	       element = driver.findElement(By.id("Passwd"));
+	       wait.until(ExpectedConditions.visibilityOf(element));
+	       element.clear();
+	       element.sendKeys("DarthVader!");
+	       element = driver.findElement(By.id("signIn"));
+	       wait.until(ExpectedConditions.visibilityOf(element));
+	       element.click();
+	    }
 
 
 	    

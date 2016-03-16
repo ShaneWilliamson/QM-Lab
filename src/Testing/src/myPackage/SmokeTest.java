@@ -52,7 +52,7 @@ public class SmokeTest {
   public void setUp() throws Exception {
     driver = browser;
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-    baseUrl = "http://cmpt371g3.usask.ca/";
+    baseUrl = "http://cmpt371g3.usask.ca";
   }
 
   @Test
@@ -63,7 +63,6 @@ public class SmokeTest {
     driver.get(baseUrl + "/demo/development/src/Main/");
     final String previousURL = driver.getCurrentUrl();
     Thread.sleep(2000);
-
 
     // Store the current window handle
     String winHandleBefore = driver.getWindowHandle();
