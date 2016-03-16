@@ -24,12 +24,101 @@
 	      The collaborative graph has been updated
 	*/
 	function createStock(pos) {
-		var newStock = new localNode(pos, "Stock");
+		var newStock = new joint.shapes.QMLab.Stock({
+			position: { x: pos.x, y: pos.y },
+			size: { width: 100, height: 30 },
+		});
+		console.log(this);
 		setUpNewCell(newStock);
 		
 		console.log("Stock added")
 		return newStock;
 	}
+	
+	/*
+	Creates a State at the given location 
+	
+	pre: "pos" is a valid coordinate that contains "x" and "y" fields
+	post: A collaborative state has been created with its top-left corner positioned at point "pos"
+	      The collaborative graph has been updated
+	*/
+	function createState(pos) {
+		var newState = new joint.shapes.QMLab.State({
+			position: { x: pos.x, y: pos.y },
+		});
+		setUpNewCell(newState);
+		
+		console.log("State added")
+		return newState;
+	}
+	
+	/*
+	Creates a terminal state at the given location 
+	
+	pre: "pos" is a valid coordinate that contains "x" and "y" fields
+	post: A collaborative terminal state has been created with its top-left corner positioned at point "pos"
+	      The collaborative graph has been updated
+	*/
+	function createTerminalState(pos) {
+		var newTerminalState = new joint.shapes.QMLab.TerminalState({
+			position: { x: pos.x, y: pos.y },
+		});
+		setUpNewCell(newTerminalState);
+		
+		console.log("Terminal State added")
+		return newTerminalState;
+	}
+
+	/*
+	Creates a branch at the given location 
+	
+	pre: "pos" is a valid coordinate that contains "x" and "y" fields
+	post: A collaborative branch has been created with its top-left corner positioned at point "pos"
+	      The collaborative graph has been updated
+	*/
+	function createBranch(pos) {
+		var newBranch = new joint.shapes.QMLab.Branch({
+			position: { x: pos.x, y: pos.y },
+		});
+		setUpNewCell(newBranch);
+		
+		console.log("Branch added")
+		return newBranch;
+	}
+	
+	/*
+	Creates a text area at the given location 
+	
+	pre: "pos" is a valid coordinate that contains "x" and "y" fields
+	post: A collaborative text area has been created with its top-left corner positioned at point "pos"
+	      The collaborative graph has been updated
+	*/
+	function createText(pos) {
+		var newText = new joint.shapes.QMLab.Text({
+			position: { x: pos.x, y: pos.y },
+		});
+		newText.setLabel("HI");
+		setUpNewCell(newText);
+		console.log("Text added")
+		return newText;
+	}
+	
+	/*
+	Creates an agent at the given location 
+	
+	pre: "pos" is a valid coordinate that contains "x" and "y" fields
+	post: A collaborative agent has been created with its top-left corner positioned at point "pos"
+	      The collaborative graph has been updated
+	*/
+	function createAgent(pos) {
+		var newAgent = new joint.shapes.QMLab.Agent({
+			position: { x: pos.x, y: pos.y },
+		});
+		setUpNewCell(newAgent);
+		console.log("Text added")
+		return newAgent;
+	}
+	
 
 	/*
 	Creates a generic link at the given location. If the user clicked to have the link positioned over a node, it will
@@ -43,7 +132,7 @@
 	function createLink(pos, connector) {
 		var newLink = new localLink(pos, false, false, false, connector);
 		setUpNewCell(newLink);
-
+		
 		console.log('New cell added');
 		return newLink;
 	}
@@ -61,6 +150,10 @@
 	function createImage(pos, pictureURL, label, sizeX, sizeY) {
 		var newImage = new joint.shapes.QMLab.ImageNode({
 			position: { x: pos.x, y: pos.y },
+			size: { width: 200, height: 120 },
+			attrs: {
+				'image': { 'xlink:href': 'http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg', width: 200, height: 120 }
+			}
 		});
 		if (sizeX && sizeY) {
 			newImage.setSize(sizeX, sizeY);

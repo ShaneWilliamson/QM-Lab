@@ -86,7 +86,10 @@
 	post: The localCell's size has been updated to {width, height}
 	*/
 	joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
-		this.attributes.size = {width: x, height: y};
+		this.prop('rect/width', width);
+		this.prop('rect/height', height);
+		this.attr('rect/width', width);
+		this.attr('rect/height', height);
 	}
 
 	/*
@@ -133,6 +136,15 @@
 	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
 		this.attributes.attrs.text.text = text;
 	}
+	
+	
+	
+	
+	joint.shapes.basic.Rect.prototype.setColour = function(colour) {
+		console.log(this);
+		this.prop('rect/fill', colour);
+		this.attr('rect/fill', colour);
+	}
 
 	
 	
@@ -167,7 +179,7 @@
 	*/
 	function localLink (pos, label, source, target, connector) {
 		var newLink = new joint.shapes.QMLab.localLink();
-
+		var localPos = pos;
 		//If a source was passed, set the link's source that
 		if (source) {
 			if (graph.getCell(source.id)) {
@@ -176,7 +188,7 @@
 		}
 		//Otherwise, use the passed in point
 		else {
-			newLink.set('source', { x: pos.x, y: pos.y });
+			newLink.set('source', { x: localPos.x, y: localPos.y });
 		}
 		
 		//If a target was passed, set the link's target to that
@@ -188,8 +200,8 @@
 		//Otherwise, use the passed in point
 		else {
 			//For the moment, simply set the target to be a point to the right
-			pos.x += 400;
-			newLink.setEndNodeFromPoint(pos);
+			localPos.x += 400;
+			newLink.setEndNodeFromPoint(localPos);
 		}
 		
 		//If a label was passed in, set the link's text to that
@@ -238,7 +250,8 @@
 	*/
 	function localFlow (pos, label, source, target, connector) {
 		var newFlow = new joint.shapes.QMLab.localLink();
-
+		var localPos = pos;
+		
 		//If a source was passed, set the link's source that
 		if (source) {
 			if (graph.getCell(source.id)) {
@@ -247,7 +260,7 @@
 		}
 		//Otherwise, use the passed in point
 		else {
-			newFlow.set('source', { x: pos.x, y: pos.y });
+			newFlow.set('source', { x: localPos.x, y: localPos.y });
 		}
 		
 		//If a target was passed, set the link's target to that
@@ -259,8 +272,8 @@
 		//Otherwise, use the passed in point
 		else {
 			//For the moment, simply set the target to be a point to the right
-			pos.x += 400;
-			newFlow.setEndNodeFromPoint(pos);
+			localPos.x += 400;
+			newFlow.setEndNodeFromPoint(localPos);
 		}
 		
 		//If a label was passed in, set the link's text to that
@@ -427,6 +440,29 @@
 		}
 	}
 	
+	joint.dia.Link.prototype.setColour = function(colour) {
+		console.log(this);
+		this.prop( {
+			'.connection': {stroke: colour}
+		});
+		this.attr( {
+			'.connection': { stroke: colour }
+		});
+		console.log(this);
+	}
+	
+	
+	var TerminalStateDefaultFill = {
+		type: 'radialGradient',
+		stops: [
+			{ offset: '0%', color: '#FF1111' },
+			{ offset: '20%', color: '#FF1111' },
+			{ offset: '40%', color: '#FF1111' },
+			{ offset: '60%', color: '#FF1111' },
+			{ offset: '80%', color: '#FF1111' }
+		]
+	};
+	
 	
 	
 	/*
@@ -483,7 +519,10 @@
 
 			type: 'QMLab.Node',
 			size: { width: 100, height: 30 },
-			attrs: { rect: { fill: 'grey' }, text: { text: "Node", fill: 'white' } }
+			attrs: { 
+				rect: { fill: 'grey' },
+				text: { text: "Node", fill: 'white' } 
+			}
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
@@ -498,18 +537,94 @@
 	or call the setter methods if another visual is desired.
 	*/
 	joint.shapes.QMLab.Stock = joint.shapes.basic.Rect.extend( {
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+		markup: '<g class="rotatable"><g class="scalable"><rect/></g><text/></g>',
 
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.Stock',
-			size: { width: 100, height: 30 },
-			attrs: { rect: { fill: 'grey' }, text: { text: "Node", fill: 'white' } }
+			attrs: { 
+				rect: { fill: 'grey' }, 
+				text: { text: "Stock", fill: 'white' } 
+			}
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 	
 	
+	
+	/*
+	This is the shape definition of the "State" type. It extends joint.js' Rect shape,
+	allowing us to easily customize it.
+	
+	By default, sets the State to look a certain way. Override the visual in the constructor,
+	or call the setter methods if another visual is desired.
+	*/
+	joint.shapes.QMLab.State = joint.shapes.basic.Rect.extend( {
+		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.State',
+			size: { width: 100, height: 30 },
+			attrs: { 
+				rect: { fill: 'yellow', rx: 10, ry: 10 }, 
+				text: { text: "State", fill: 'black' } 
+			}
+
+		}, joint.shapes.basic.Rect.prototype.defaults)
+	});
+	
+	
+	/*
+	This is the shape definition of the "Terminal State" type. It extends joint.js' Rect shape,
+	allowing us to easily customize it.
+	
+	By default, sets the Terminal State to look a certain way. Override the visual in the constructor,
+	or call the setter methods if another visual is desired.
+	*/
+	joint.shapes.QMLab.TerminalState = joint.shapes.basic.Rect.extend( {
+		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.TerminalState',
+			size: { width: 100, height: 30 },
+			attrs: { 
+				rect: { fill: TerminalStateDefaultFill, rx: 10, ry: 10 }, 
+				text: { text: "Terminal State", fill: 'black' } 
+			}
+
+		}, joint.shapes.basic.Rect.prototype.defaults)
+	});
+	
+	
+	/*
+	This is the shape definition of the "Branch" type. It extends joint.js' Rect shape,
+	allowing us to easily customize it.
+	
+	By default, sets the Branch to look a certain way. Override the visual in the constructor,
+	or call the setter methods if another visual is desired.
+	*/
+	joint.shapes.QMLab.Branch = joint.shapes.basic.Rect.extend( {
+		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.Branch',
+			size: { width: 25, height: 25 },
+			attrs: { 
+				rect: { fill: 'white', height: 25, width: 25, transform: 'rotate(45)' }, 
+				text: { text: "", fill: 'black' } 
+			}
+
+		}, joint.shapes.basic.Rect.prototype.defaults)
+	});
+	
+	
+	
+	
+	
+
 	
 	
 	
@@ -523,16 +638,14 @@
 	*/
 	joint.shapes.QMLab.ImageNode = joint.shapes.basic.Rect.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+		markup: '<g class="rotatable"><g class="scalable"><rect/><image/></g><text/></g>',
 
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.ImageNode',
-			size: { width: 200, height: 120 },
 			attrs: {
-				'rect': { 'fill-opacity': 0, 'stroke-opacity': 0, width: 0, height: 0 },
+				'rect': { 'fill-opacity': 0, 'stroke-opacity': 0},
 				'text': { 'font-size': 14, text: 'Your Image Here', 'ref-x': 100, 'ref-y': 130, ref: 'rect', fill: 'black' },
-				'image': { 'xlink:href': 'http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg', width: 200, height: 120 },
 			}
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
@@ -583,4 +696,78 @@
 			
 		}, joint.shapes.basic.Circle.prototype.defaults)
 	});
+	
+	
+	
+	/*
+	This is the shape definition of the "Agent" type. It extends joint.js' Rect shape,
+	allowing us to easily customize it.
+	
+	By default, sets the Agent is set to hold a placeholder image, with text that states "Agent".
+	Override the visuals through either the constructor or the setter methods if another visual is desired.
+	*/
+	joint.shapes.QMLab.Agent = joint.shapes.basic.Rect.extend({
+
+		markup: '<g class="rotatable"><g class="scalable"><rect/><image/></g><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.Agent',
+			size: { width: 200, height: 200 },
+			attrs: {
+				'rect': { fill: 'white', width: 200, height: 200 },
+				'text': { 'font-size': 14, text: 'Agent', 'ref-x': 100, 'ref-y': 130, ref: 'rect', fill: 'black' },
+				'image': { 'xlink:href': 'http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png', width: 200, height: 200 },
+			}
+
+		}, joint.shapes.basic.Rect.prototype.defaults)
+	});
+	
+	
+	
+	/*
+	This is the shape definition of the "Text Area" type. It extends joint.js' Rect shape,
+	allowing us to easily customize it.
+	
+	By default, text area to look like a speach bubble.
+	Override the visuals through either the constructor or the setter methods if another visual is desired.
+	*/
+	joint.shapes.QMLab.Text = joint.shapes.basic.Rect.extend({
+
+		markup: '<g class="rotatable"><g class="scalable"><rect/><path/></g><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.Text',
+			size: { width: 100, height: 100 },
+			
+			attrs: { 
+				text: { text: '', ref: 'rect' }, 
+				rect: { 'fill-opacity': 0, 'stroke-opacity': 0 },
+				path: { fill: '#cccccc', d: 'M 0 20 C 0 0 0 0 20 0 L 80 0 C 100 0 100 0 100 10 L 100 80 C 100 100 100 100 80 100 L 20 100 -15 115 0 80 z' },   
+				},
+				
+			
+		}, joint.shapes.basic.Rect.prototype.defaults)
+	});
+	
+	
+	joint.shapes.QMLab.ImageNode.prototype.setImage = function(url) {
+		this.prop('url', url);
+		this.attr('image/xlink:href', url);
+	}
+	
+	joint.shapes.QMLab.ImageNode.prototype.setSize = function(width, height) {
+		this.prop('image/width', width);
+		this.prop('image/height', height);
+		this.attr('image/width', width);
+		this.attr('image/height', height);
+		this.prop('text/ref-x', (width / 2));
+		this.prop('text/ref-y', (height + 30));
+		this.attr('text/ref-x', (width / 2));
+		this.attr('text/ref-y', (height + 30));
+	}
+	
+
+	
 	

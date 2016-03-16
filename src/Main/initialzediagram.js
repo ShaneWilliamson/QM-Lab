@@ -28,16 +28,128 @@
 			height: 1000,
 			model: graph,
 			perpendicularLinks: true,
-			gridSize: 1
+			gridSize: 1,
 		});
 		paperScale = 1;
 
-		paper.$el.on('wheel', paperZoom);
-		paper.$el.on('mouseup', paperOnMouseUp);
+		
 
 		paper.on('blank:pointerdown', paperEmptySelectionPressed);
+		paper.$el.on('wheel', paperZoom);
+		paper.$el.on('mouseup', paperOnMouseUp);
+		addEvent(window, 'mouseup', stopPanning);
+		addEvent(window, 'resize', resizePaper);
+		resizePaper();
+		
+		
+		// First, unembed the cell that has just been grabbed by the user.
+		paper.on('cell:pointerdown', bringParentlessCellToFront);
+		paper.on('cell:pointerdown', deParentCell);
+		
+		
+		paper.on('cell:pointerup', parentCell);
+		
+	}
+	
+	function bringParentlessCellToFront(cellView, evt, x, y) {
+		var cell = cellView.model;
 
+		if (!cell.get('embeds') || cell.get('embeds').length === 0) {
+			// Show the dragged element above all the other cells (except when the
+			// element is a parent).
+			cell.toFront();
+		}
+	}
+	
+	function deParentCell(cellView, evt, x, y) {
+		var cell = cellView.model;
+		
+		if (cell.get('parent')) {
+			graph.getCell(cell.get('parent')).unembed(cell);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	// When the dragged cell is dropped over another cell, let it become a child of the
+	// element below.
+	function parentCell(cellView, evt, x, y) {
+		var cell = cellView.model;
+		if (!cell.attributes.source) {
+			var cellViewsBelow = paper.findViewsFromPoint(cell.getBBox().center());
 
+			if (cellViewsBelow.length) {
+				// Note that the findViewsFromPoint() returns the view for the `cell` itself.
+				var cellViewBelow = _.find(cellViewsBelow, function(c) { return c.model.id !== cell.id });
+			
+				// Prevent recursive embedding.
+				if (cellViewBelow && cellViewBelow.model.get('parent') !== cell.id) {
+					if (cellViewBelow.model.attributes.type === "QMLab.Agent") {
+						cellViewBelow.model.embed(cell);
+					}
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	function stopPanning() {
+		movingViewPort = false;
+	}
+	
+	/*
+	This removes the user's ability to interact with the paper.
+
+	pre: the paper must exist
+	post: the user will no longer be able to interact with the paper
+	*/
+	function removePaperInteraction() {
+		selected = {};
+		paper.$el.addClass("nonInteractive");
+	}
+	
+	/*
+	This restores the user's ability to interact with the paper.
+
+	pre: the paper must exist
+	post: the user will once more be able to interact with the paper
+	*/
+	function restorePaperInteraction() {
+		paper.$el.removeClass("nonInteractive");
+	}
+	
+	function resizePaper(e) {
+		var paperDiv = document.getElementById('paperView');
+		var heightOfPaper = window.innerHeight - 250;
+		if (heightOfPaper < 550) {
+			heightOfPaper = 550;
+		}
+		paper.setDimensions(paperDiv.clientWidth - 20, heightOfPaper);
 	}
 	
 	
@@ -106,6 +218,21 @@
 		if (genUI.lastClickedValue == "Stock") {
 			createStock(curMousePos);
 
+		} else if (genUI.lastClickedValue == "State") {
+			createState(curMousePos);
+			
+		} else if (genUI.lastClickedValue == "Terminal State") {
+			createTerminalState(curMousePos);
+			
+		} else if (genUI.lastClickedValue == "Branch") {
+			createBranch(curMousePos);
+			
+		} else if (genUI.lastClickedValue == "Agent") {
+			createAgent(curMousePos);
+			
+		} else if (genUI.lastClickedValue == "Text Area") {
+			createText(curMousePos);
+			
 		} else if (genUI.lastClickedValue == "Simple Straight") {
 			createLink(curMousePos, "normal");
 			
@@ -130,6 +257,7 @@
 		genUI.deselectUIElements();
 		genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 		movingViewPort = false;
+		selectSingleOnPoint(curMousePos);
 	}
 
 	/*
@@ -141,7 +269,7 @@
 		
 	*/
 	function selectSingleOnPoint(pos) {
-		selected = graph.findModelsFromPoint(pos);
+		selected[0] = graph.findModelsFromPoint(pos)[0];
 	}
 	
 	
@@ -181,7 +309,6 @@
 			if (selected[0]) {
 				rootModel.getRoot().get(selected[0].id).action = 'remove';
 				selected[0].remove();
-				selected.shift();
 				updateCollabGraph();
 			}
 		}
@@ -219,7 +346,7 @@
 	function moveViewPort(e) {
 		updateMousePos(e);
 		var origin = paper.options.origin;
-		paper.setOrigin((curMousePos.x - oldMousePos.x) + origin.x, (curMousePos.y - oldMousePos.y) + origin.y);
+		paper.setOrigin(((curMousePos.x - oldMousePos.x) * paperScale) + origin.x, ((curMousePos.y - oldMousePos.y) * paperScale) + origin.y);
 		updateMousePos(e);
 	}
 

@@ -105,3 +105,39 @@
 	display: inline-block;
 	background-color: #3498db;
 }
+
+svg {
+	border-style: double; 
+}
+
+.nonInteractive {
+	pointer-events: none;
+}
+
+
+
+.bubble{
+  position:relative;
+  display: inline-block;
+  padding: 15px;
+  background: #ff9;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color:#000;
+  border:2px solid #000;
+  border-radius:20px;
+  outline:0;
+}
+.bubble:after{
+  content: ' ';
+  position:absolute;
+  margin: 0 auto;
+  left:0;
+  right:0;
+  bottom:-10px;
+  width:15px;
+  height:15px;
+  background:#ff9;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+  transform: rotate(45deg);
+}

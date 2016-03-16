@@ -25,7 +25,7 @@
  */
 function checkAndFreeze(){
 	if(!navigator.onLine){
-		document.getElementById("paperView").style.display = "none";
+		removePaperInteraction();
 		alert("You have gone offline and your session has been frozen. Please Reconnect to continue editing.");
 		restore = setInterval(checkAndRestore, 1000);
 		clearInterval(freeze);
@@ -58,7 +58,7 @@ function checkAndFreeze(){
 function checkAndRestore(){
 	if(navigator.onLine){
 		updateGraph();
-		document.getElementById("paperView").style.display = "block";
+		restorePaperInteraction();
 		alert("You have	re-connected. Editing is re-enabled.");
 		freeze = setInterval(checkAndFreeze, 1000);
 		clearInterval(restore);

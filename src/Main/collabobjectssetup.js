@@ -134,10 +134,10 @@ function updateCollabGraph() {
  */
 function updateGraph() {
 	graph.fromJSON(JSON.parse(colGraph.graph))
-	
 	graph.on('remove', function(cell) { 
 		rootModel.getRoot().get(cell.id).action = "remove";
 	})
+	addCollabEventToAllCells();
 	console.log('Built new graph');
 }
 
@@ -225,6 +225,7 @@ function updateCellByJSON(event, that) {
 		graph.addCell(that.JSON);
 		addCollabEventToCell(graph.getCell(that.JSON.id));
 	}
+	allowCollabRecording();
 }
 
 /**
@@ -241,9 +242,8 @@ function updateCellByJSON(event, that) {
  * @memberOf collab_object_setup
  */
 function updateCellByEventID(cell) {
-	if (!isCollabRecordingAllowed()) {
+	if (isCollabRecordingAllowed()) {
 		rootModel.getRoot().get(cell.id).action = 'update';
 		rootModel.getRoot().get(cell.toJSON().id).JSON = cell.toJSON();
 	}
-	allowCollabRecording();
 }

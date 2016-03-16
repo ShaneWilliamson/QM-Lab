@@ -36,5 +36,5 @@ function stopCollabRecording() {
  * @memberOf check_collab_allowed
  */
 function isCollabRecordingAllowed() {
-	return collaborativeChangeReceived;
+	return !collaborativeChangeReceived;
 }
