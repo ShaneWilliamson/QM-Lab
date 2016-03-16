@@ -59,7 +59,7 @@ function addCollabEventToCell(cell) {
  *   collaborative graph which ensure correct syncing.
  */
 function CollaborativeGraph(){
-	
+
 }
 
 /**
@@ -76,7 +76,7 @@ function doGraphInitialize(){
 
 /**
  * Loads the collaborative object event listeners.
- * 
+ *
  * Called whenever the document loads a collaborative object, as well as when the first collaborative object is initialized.
  * @deprecated Currently does not need to happen for objects
  * @preconditions the collaborative graph object has been loaded and is available
@@ -124,8 +124,8 @@ function updateCollabGraph() {
  */
 function updateGraph() {
 	graph.fromJSON(JSON.parse(colGraph.graph))
-	
-	graph.on('remove', function(cell) { 
+
+	graph.on('remove', function(cell) {
 		rootModel.getRoot().get(cell.id).action = "remove";
 	})
 	console.log('Built new graph');
