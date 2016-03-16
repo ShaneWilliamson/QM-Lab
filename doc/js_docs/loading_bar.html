@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: connection_check</title>
+    <title>JSDoc: Class: loading_bar</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: connection_check</h1>
+    <h1 class="page-title">Class: loading_bar</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>connection_check</h2>
+        <h2>loading_bar</h2>
         
     
 </header>
@@ -40,14 +40,14 @@
 
     
 
-    <h4 class="name" id="connection_check"><span class="type-signature"></span>connection_check<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loading_bar"><span class="type-signature"></span>loading_bar<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Checks connections
+    Handles the different components of the loading bar.
 </div>
 
 
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="connectioncheck.js.html">connectioncheck.js</a>, <a href="connectioncheck.js.html#line4">line 4</a>
+        <a href="loadingbar.js.html">loadingbar.js</a>, <a href="loadingbar.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -150,14 +150,14 @@
 
     
 
-    <h4 class="name" id=".checkAndFreeze"><span class="type-signature">(static) </span>checkAndFreeze<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".clearLoadingScreen"><span class="type-signature">(static) </span>clearLoadingScreen<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Uses an interval to check and see if the user has lost their internet  connection. If this is the case, this function hides the diagram to prevent  the user from making any more edits, then displays an alert telling them  they've been disconnected.
+    This function hides the animated loading bar and stops it from further  animating. In addition, since it is assumed that the loading bar being  stopped means that the document has finished loading, the Authenication  Button for Google's Realtime API is hidden.
 </div>
 
 
@@ -166,7 +166,7 @@
 
         
 <div class="precondition-desc">
-    The html page should be loaded. The user should not already be  known to be offline. The navigator should exist to check if online. The  paperView id should exist.
+    An HTML element with id="state" must exist. An HTML element  with id="bar" must exist. An HTML element with id="progress" must exist. An  HTML element with id="auth_button" must exist.
 </div>
 
     
@@ -176,27 +176,19 @@
 
         
 <div class="precondition-desc">
-    The user's online status has been checked. If they are  offline, the interval checking their offline status stops, the paper is  hidden, and a new interval is set up to check whether the user has  re-established the connection
+    The loading bar will be hidden, it's animation stopped, and  the authenication button will be hidden.
 </div>
 
     
 
 
-<h5>Invariant:</h5>
-
-        
-<div class="precondition-desc">
-    Either connected or attempting to connect
-</div>
-
-    
 
 
 <h5>History:</h5>
 
         
 <div class="precondition-desc">
-    Ummutable.
+    The loading screen was running previously.
 </div>
 
     
@@ -241,7 +233,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="connectioncheck.js.html">connectioncheck.js</a>, <a href="connectioncheck.js.html#line26">line 26</a>
+        <a href="loadingbar.js.html">loadingbar.js</a>, <a href="loadingbar.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -262,35 +254,6 @@
 
 
 
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If not online
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">alert</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
 
 
 
@@ -303,14 +266,14 @@
 
     
 
-    <h4 class="name" id=".checkAndRestore"><span class="type-signature">(static) </span>checkAndRestore<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".displayLoadingScreen"><span class="type-signature">(static) </span>displayLoadingScreen<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Uses an interval to check and see if the user has regained their internet  connection. If this is the case, this function updates the graph, shows the  diagram and allows them to continue editting, then displays an alert  telling them they've been reconnected.It then clears the interval it was using, and sets up a new one to check if  the user has disconnected again.This function generally should never be called if the user isn't detected to  have lost internet connectivity.
+    This function shows the animated loading bar and starts it animating.
 </div>
 
 
@@ -319,7 +282,7 @@
 
         
 <div class="precondition-desc">
-    The html page should be loaded.  The user should have been  known to be offline. The navigator should exist to check if online. The  paperView id should exist.
+    An HTML element with id="state" must exist. An HTML element  with id="bar" must exist. An HTML element with id="progress" must exist. An  HTML element with id="auth_button" must exist.
 </div>
 
     
@@ -329,7 +292,115 @@
 
         
 <div class="precondition-desc">
-    The user's online status has been checked. If they are  online, the interval checking their offline status stops, the paper is  shown, the graph is updated, and a new interval is set up to check whether  the user has re-established the connection.
+    The loading bar will be made visible, it's animation started.
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="loadingbar.js.html">loadingbar.js</a>, <a href="loadingbar.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".moveProgressBar"><span class="type-signature">(static) </span>moveProgressBar<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    This function animates the green bar across the loading bar in a loop.
+</div>
+
+
+
+<h5>Preconditions:</h5>
+
+        
+<div class="precondition-desc">
+    The loading bar must be contained in an html element with  id="bar".
+</div>
+
+    
+
+
+<h5>Postconditions:</h5>
+
+        
+<div class="precondition-desc">
+    An interval will be created that animates the green bar of  the loading screen looping along the loading bar.
 </div>
 
     
@@ -341,7 +412,7 @@
 
         
 <div class="precondition-desc">
-    Immutable.
+    The progress bar will be equal or higher than before.
 </div>
 
     
@@ -386,7 +457,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="connectioncheck.js.html">connectioncheck.js</a>, <a href="connectioncheck.js.html#line58">line 58</a>
+        <a href="loadingbar.js.html">loadingbar.js</a>, <a href="loadingbar.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -407,35 +478,6 @@
 
 
 
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If not online
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">alert</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
 
 
 

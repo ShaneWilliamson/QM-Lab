@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: qm_lab_file_opened</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: qm_lab_file_opened</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>qm_lab_file_opened</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="qm_lab_file_opened"><span class="type-signature"></span>qm_lab_file_opened<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Manages when a filed is opened in QM Lab
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="qmlabfileopened.js.html">qmlabfileopened.js</a>, <a href="qmlabfileopened.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addCollabEventToAllCells"><span class="type-signature">(static) </span>addCollabEventToAllCells<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    This function grabs all local cells currently in a the graph, then adds event  listeners to them that will ensures they updates their collaborative  counterparts.
+</div>
+
+
+
+<h5>Preconditions:</h5>
+
+        
+<div class="precondition-desc">
+    The local graph must exist.
+</div>
+
+    
+
+
+<h5>Postconditions:</h5>
+
+        
+<div class="precondition-desc">
+    Any local cell contained by the local graph will have had an  event listener attached. To itself that will make it update its  collaborative counterpart on change.
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="qmlabfileopened.js.html">qmlabfileopened.js</a>, <a href="qmlabfileopened.js.html#line105">line 105</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addGlobalEventListeners"><span class="type-signature">(static) </span>addGlobalEventListeners<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    This function adds neccesary event listeners to the html document itself,  giving a generic handler function to decide what to do with the event from  there. These include: when the mouse, moves when a key on the keyboard is  pressed.
+</div>
+
+
+
+<h5>Preconditions:</h5>
+
+        
+<div class="precondition-desc">
+    the html document has been loaded.
+</div>
+
+    
+
+
+<h5>Postconditions:</h5>
+
+        
+<div class="precondition-desc">
+    the html document has global event listeners waiting for user  input.
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="qmlabfileopened.js.html">qmlabfileopened.js</a>, <a href="qmlabfileopened.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".onFileInitialize"><span class="type-signature">(static) </span>onFileInitialize<span class="signature">(model)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    The first time the collaborative diagramming document is ever run, it will  run this initialization function. It will create an empty collaborative  graph, and add it to Google's Collaborative Map.
+</div>
+
+
+
+<h5>Preconditions:</h5>
+
+        
+<div class="precondition-desc">
+    Google Realtime API has never seen the current document ID. No  graph has been initialzed for this document. If one has, this function will  override it.
+</div>
+
+    
+
+
+<h5>Postconditions:</h5>
+
+        
+<div class="precondition-desc">
+    There will be an empty graph in Google's Realtime API, stored  at key "graph". colGraph: Local access to the collaborative graph.
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">model</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The model of the Google Realtime API which the document  works on.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="qmlabfileopened.js.html">qmlabfileopened.js</a>, <a href="qmlabfileopened.js.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".onFileLoaded"><span class="type-signature">(static) </span>onFileLoaded<span class="signature">(doc)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    This function is run every time the document is loaded by Google Realtime  API. It generates the diagram graph from the collaborative map, and saves  access to Google's Collaborative Objects map. It sets up the event  listeners on all existing "cells" to update their respective collaborative  objects whenever they change. Also, it adds event listeners to update the  back-up graph whever the user finishes interaction with the diagram.
+</div>
+
+
+
+<h5>Preconditions:</h5>
+
+        
+<div class="precondition-desc">
+    The document has been loaded. If Google Realtime API hasn't  given access, this function will crash the page. You have been warned.
+</div>
+
+    
+
+
+<h5>Postconditions:</h5>
+
+        
+<div class="precondition-desc">
+    The diagram has been updated to the collaborative graph.  Event listeners have been added to the diagram to allow user interaction  and realtime updating. rootModel: local access to the Google Realtime API.  realDoc: local access that allows getting the collaborators currently  working on the document. colGraph: local access back-up graph
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">collaDoc</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Google Drive document that stores the  collaborative model.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="qmlabfileopened.js.html">qmlabfileopened.js</a>, <a href="qmlabfileopened.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Mar 15 2016 22:34:04 GMT-0600 (Canada Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
