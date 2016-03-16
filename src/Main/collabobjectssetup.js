@@ -1,225 +1,239 @@
-		
-	/*
-	Before the Google Realtime API can interact with the javascript on this page, this
-	function needs to be run. It registers all the object types, without which the 
-	collaboration will thrown undefined errors or simply edit local fields only.
-	
-	This function should only be run before the Google Realtime API has finished 
-	preparing itself. 
+/////////////////////////
+// collab_object_setup //
+/////////////////////////
+/**
+ * Setup functions for a collaboritive object used with Google API and Google
+ *   Drive.
+ * @class collab_object_setup
+ */
 
-	pre: Google Realtime API has not completed its loading yet! 
-	post: The Google Realtime API will be able to interact with the custom object types
-	      defined for this page.
-	*/
-	function registerCollaborativeObjectTypes() {
-		//Register the CollaborativeGraph object
-		gapi.drive.realtime.custom.registerType(CollaborativeGraph, 'CollaborativeGraph');
-		CollaborativeGraph.prototype.graph=gapi.drive.realtime.custom.collaborativeField('graph');
-		gapi.drive.realtime.custom.setInitializer(CollaborativeGraph, doGraphInitialize);
-		gapi.drive.realtime.custom.setOnLoaded(CollaborativeGraph, doGraphOnLoaded);
+/**
+ * Registers all the custom object types.
+ *
+ * Without this, custom collaborative objects will throw undefined errors or
+ *   edit local fields only.
+ * @preconditions Google Realtime API has not interacted with JavaScript on page
+ * @preconditions Has not been called yet, the Google Realtime API can interact
+ *   with the custom collaborative objects
+ * @invariant All or none of the custom objects are registered
+ * @memberOf collab_object_setup
+ */
+function registerCollaborativeObjectTypes() {
+	//Register the CollaborativeGraph object
+	gapi.drive.realtime.custom.registerType(CollaborativeGraph, 'CollaborativeGraph');
+	CollaborativeGraph.prototype.graph=gapi.drive.realtime.custom.collaborativeField('graph');
+	gapi.drive.realtime.custom.setInitializer(CollaborativeGraph, doGraphInitialize);
+	gapi.drive.realtime.custom.setOnLoaded(CollaborativeGraph, doGraphOnLoaded);
 
-		//Register the CollaborativeCell object
-		gapi.drive.realtime.custom.registerType(CollaborativeCell, 'CollaborativeCell');
-		CollaborativeCell.prototype.JSON=gapi.drive.realtime.custom.collaborativeField('JSON');
-		CollaborativeCell.prototype.action=gapi.drive.realtime.custom.collaborativeField('action');
-		gapi.drive.realtime.custom.setInitializer(CollaborativeCell, doCellInitialize);
-		gapi.drive.realtime.custom.setOnLoaded(CollaborativeCell, doCellOnLoaded);
+	//Register the CollaborativeCell object
+	gapi.drive.realtime.custom.registerType(CollaborativeCell, 'CollaborativeCell');
+	CollaborativeCell.prototype.JSON=gapi.drive.realtime.custom.collaborativeField('JSON');
+	CollaborativeCell.prototype.action=gapi.drive.realtime.custom.collaborativeField('action');
+	gapi.drive.realtime.custom.setInitializer(CollaborativeCell, doCellInitialize);
+	gapi.drive.realtime.custom.setOnLoaded(CollaborativeCell, doCellOnLoaded);
+}
+
+/**
+ * Takes a local cell and adds an event listener. The event listener will update
+ *   the collaborative objects that represent this local cell when the local
+ *   cell is changed.
+ * @param {node|link} cell A local cell
+ * @preconditions Cell must exist, cell has be on the collaborative graph, cell
+ *   cannot already be collaborative
+ * @postconditions On cell change, will update the collaborative object (ie.
+ *   updating other users)
+ * @history The collaborative cell is up to date with the local cell, or an
+ *   update is being sent to it
+ * @memberOf collab_object_setup
+ */
+function addCollabEventToCell(cell) {
+	cell.on('change', (function() {
+		return function(event) {updateCellByEventID(event);};
+	}) ());
+}
+
+/**
+ * Local constructor of the collaborative graph.
+ * @memberOf collab_object_setup
+ * @deprecated Currently, there are no local fields or methods for the
+ *   collaborative graph which ensure correct syncing.
+ */
+function CollaborativeGraph(){
+
+}
+
+/**
+ * Initializes the collaborative constructor.
+ *
+ * @preconditions The Google Realtime API model has been created
+ * @postconditions The graph is initialized into the variable model
+ * @memberOf collab_object_setup
+ */
+function doGraphInitialize(){
+	var model = gapi.drive.realtime.custom.getModel(this);
+	console.log("The graph was initialized.")
+}
+
+/**
+ * Loads the collaborative object event listeners.
+ *
+ * Called whenever the document loads a collaborative object, as well as when the first collaborative object is initialized.
+ * @deprecated Currently does not need to happen for objects
+ * @preconditions the collaborative graph object has been loaded and is available
+ * @postconditions the collaborative graph is ready to be used
+ * @memberOf collab_object_setup
+ */
+function doGraphOnLoaded(){
+	//this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateGraph);
+	console.log("We've loaded the graph");
+}
+
+/**
+ * Ensures the back-up graph stored with the Realtime API is up to date.
+ *
+ * Generally, it doesn't have to be updated "on the fly", as it is only used to
+ *   update the graph of users when the document is loaded, or when a severe
+ *   error would cause the program to break down.
+ * @preconditions the collaboratibe graph exists in the Realtime API
+ * @postconditions the collaborative graph is up to date
+ * @history May or may not have been called on the last local update.
+ * @todo Add asserts to ensure colGraph.graph exists
+ * @memberOf collab_object_setup
+ */
+function updateCollabGraph() {
+	if (colGraph.graph) {
+		colGraph.graph = JSON.stringify(graph);
+		console.log('collab graph updated');
 	}
-	
-	/*
-	This take in a joint.js "cell", which, from a general perspective,  is either
-	a "node" or "link". It will add an event listener to it that ensures it updates
-	the collaborative object which represents it for other users.
+	else {
+		//This is where an error log should go
+		console.log("The graph doesn't exist in the collaborative map.")
+	}
 
-	pre: cell: must exist
-	     The cell must have already been added to the collaborative graph.
-	post: cell: on any change, will notify other users and cause them to update
-	            accordingly
-	*/
-	function addCollabEventToCell(cell) {
-		cell.on('change', (function() {
-			return function(event) {updateCellByEventID(event);};
+}
+
+/**
+ * Updates the local graph to the match the most up to date collaborative graph.
+ *   Called on document loading or in cases where the graph is broken and cannot
+ *   function.
+ * @preconditions The collaborative graph exists in the Google Realtime API, the
+ *   local graph exists and has a listener.
+ * @postconditions The local graph is updated to the most recent graph.
+ * @invariant The local graph only represents the most recent update.
+ * @memberOf collab_object_setup
+ */
+function updateGraph() {
+	graph.fromJSON(JSON.parse(colGraph.graph))
+
+	graph.on('remove', function(cell) {
+		rootModel.getRoot().get(cell.id).action = "remove";
+	})
+	console.log('Built new graph');
+}
+
+/**
+ * Local constructor of the collaborative cell.
+ * @postconditions A local copy of the collaborative cell has been created.
+ * @memberOf collab_object_setup
+ */
+function CollaborativeCell() {
+	// Empty be there is no information that needs to be stored locally
+	// without being passed on to the collaborator's peers.
+}
+
+/**
+ * Constructor for the collaborative cell. Creates a collaborative version of
+ *   the local cell based off of JSONdata.
+ * @param  {JSON} JSONdata JSON created from a Joint.js cell
+ * @preconditions JSONdata exists with JSON from Joint.js
+ * @postconditions A collaborative cell has been created which updates based on
+ *   the local cell.
+ *   @memberOf collab_object_setup
+ */
+function doCellInitialize (JSONdata) {
+	var model = gapi.drive.realtime.custom.getModel(this);
+	this.JSON = JSONdata;
+	this.action = "update";
+	console.log('cell created');
+}
+
+/**
+ * Called whenever a collaborative cell is loaded by a document (including on
+ *   intialized and every time a new user connects).
+ *
+ * Adds an event listener to the collaborative cell which updates the local
+ *   cell.
+ * @preconditions The collaborative cell exists and is loaded, the local cell
+ *   has been created
+ * @postconditions The collaborative cell has an event listener listeneing for
+ *   changes
+ * @history The local cell will either be up to date with the collaborative cell
+ *   or being updated
+ *   @memberOf collab_object_setup
+ */
+function doCellOnLoaded () {
+	var that = this;
+	this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, (function() {
+			return function(cell) {updateCellByJSON(cell, that);};
 		}) ());
-	}
+	console.log('cell was loaded');
+}
 
-	/*
-	This is the local constructor of the collaborative graph. At the moment, there
-	are no local fields or methods stored in the collaborative graph to ensure
-	that there is no incorrect syncing. There is another constructor called for
-	the collaborative part.
-	*/
-	function CollaborativeGraph(){
+/**
+ * Called whenever a collaborative cell has been updated. It updates the local
+ *   copy of the cell (including adding or removing the cell from the graph).
+ *
+ * Prevents latency issues with making collab objects update to old states.
+ * @preconditions The collaborative cell exists and has a JSON field with a
+ *   Joint.js cell.
+ * @postconditions The local cell JSON field is updated, the global state has
+ *   been changed to understand that the next change it makes is from a
+ *   collaborator.
+ * @todo Either use even or remove it
+ * @param  {event} event undefined
+ * @param  {action} that  the action (update, remove, or add)
+ * @memberOf collab_object_setup
+ */
+function updateCellByJSON(event, that) {
 
-	}
+	//This global state prevents "undo" updates
+	stopCollabRecording();
 
-	/*
-	This is the collaborative constructor of the collaborative graph. It doesn't
-	need to do anything at the moment other than ensure that it was made.
-	*/
-	function doGraphInitialize(){
-		var model = gapi.drive.realtime.custom.getModel(this);
-		console.log("The graph was initialized.")
-	}
-
-  /*
-	This is the collaborative "loader". Whever the document loads a collaborative
-	object,	including after the collaborative object is first initialzed.
-
-	Primarily, these "load" functions are used to set up event listeners. At the
-	moment, however, this does not need to happen for this object.
-
-	pre: the collaborative graph object has been loaded and is available in local
-	     memory
-	post: the collaborative graph is ready for use by the application
-	*/
-	function doGraphOnLoaded(){
-		//this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateGraph);
-		console.log("We've loaded the graph");
-	}
-
-  /*
-	This ensures the back-up graph stored in the Realtime API is up to date. Generally,
-	it doesn't have to be updated "on the fly", as it is only used to update the
-	graph of users when the document is loaded, or when a severe error would cause
-	the program to break down.
-
-	pre: the collaborative graph exists in the Realtime API
-    post: the collaborative graph is up to date according to the latest edit of the
-	      user
-	*/
-	function updateCollabGraph() {
-		//TODO: ASSERT colGraph.graph exists
-		if (colGraph.graph) {
-			colGraph.graph = JSON.stringify(graph);
-			console.log('collab graph updated');
-		}
-		else {
-			//This is where an error log should go
-			console.log("The graph doesn't exist in the collaborative map.")
-		}
-
-	}
-
-
-
-
-  /*
-	This updates the local graph to represent the latest graph among all collaborators.
-	It's generally only called on document load because it wipes all local changes out
-	when it updates. However, it is still called in extreme cases where things have
-	become broken beyond the ability of the application to compensate.
-
-	pre: colGraph: exists and has access to the collaborative graph in the Realtime API
-	     graph: also exists
-	post: the local graph is up to date with the latest edits by collaborators.
-	*/
-	function updateGraph() {
-		graph.fromJSON(JSON.parse(colGraph.graph))
-		
-		graph.on('remove', function(cell) { 
-			rootModel.getRoot().get(cell.id).action = "remove";
-		})
-		console.log('Built new graph');
-	}
-	
-	
-	
-	/*
-	This is the local constructor of the collaborative cell class. As there is no information that needs to be stored
-	locally without being passed on to the collaborator's peers, this constructor is empty.
-	
-	pre: 
-	post: A local copy of the collaborative cell has been created
-	*/
-	function CollaborativeCell() {
-
-	}
-
-	/*
-	This is the collaborative constructor of the collaborative cell. It creates a collaborative version of a local cell
-	based off of the JSON data passed in.
-	
-	pre: JSONdata contains the JSON created from a joint.js cell 
-	post: A collaborative cell has been created to keep the local copy of this cell up to date 
-	      for all collaborators 
-	
-	*/
-	function doCellInitialize (JSONdata) {
-		var model = gapi.drive.realtime.custom.getModel(this);
-		this.JSON = JSONdata;
-		this.action = "update";
-		console.log('cell created');
-	}
-
-	/*
-	This function is run whenever a collaborative cell has been loaded by a document. This includes the first 
-	time it is initialzed, and every time a user connects to it via Google's Realtime API
-	
-	It adds an event listener to the collaborative cell that, on change, updates the local cell
-	
-	pre: The collaborative cell must have loaded 
-	post: The collaborative cell has had an event listener attached that will keep the local
-	      copy of the cell up to date
-	*/
-	function doCellOnLoaded () {
-		var that = this;
-		this.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, (function() {
-				return function(cell) {updateCellByJSON(cell, that);};
-			}) ());
-		console.log('cell was loaded');
-	}
-
-	/*
-	This function is called whenever a collaborative cell has been updated. It updates the local copy of the cell.
-	In some cases, this includes adding the cell to the graph, or removing it from the graph.
-	
-	It also prevents the local client from deciding to update the collaborative cell to the state it already changed to.
-	This prevents latency issues from making the collab object update to states prior to its most recent one.
-	
-	pre: The collaborative cell has a value in its JSON field that represents a joint.js cell.
-	post: The local cell represented by the JSON field has been properly updated
-	      The global state has been changed to understand that the next change it makes
-		  was from a collaborator
-	*/
-	function updateCellByJSON(event, that) {
-
-		//This global state prevents "undo" updates
-		stopCollabRecording();
-
-		//Handles the appropriate action to ensure the cell is up to date
-		if(that.action === "update") {
-			var localCell = graph.getCell(that.JSON.id);
-			if (localCell) {
-				localCell.set(that.JSON);
-			}
-		}
-		else if (that.action === "remove") {
-			if (graph.getCell(that.JSON.id)) {
-				graph.getCell(that.JSON.id).remove();
-			}
-		}
-		else if (that.action === "add") {
-			graph.addCell(that.JSON);
-			addCollabEventToCell(graph.getCell(that.JSON.id));
+	//Handles the appropriate action to ensure the cell is up to date
+	if(that.action === "update") {
+		var localCell = graph.getCell(that.JSON.id);
+		if (localCell) {
+			localCell.set(that.JSON);
 		}
 	}
-
-	
-	/*
-	This function occurs whenever a joint.js cell has been updated. It checks to see if that update
-	was of local origin, and, if yes, updates the collaborative version of itself
-	
-	Also, if the change came from a collaborator, it then sets the global state to start recording changes again 
-	
-	pre: The local cell has had a collaborative cell already created to parallel it
-	     rootModel points to the document collaborative graph from Google's Realtime API
-	post: The local cell's state has been recorded in the collaborative cell if this state didn't already come from there
-	      collaborativeChangeReceived has been set to false
-	*/
-	function updateCellByEventID(cell) {
-		if (!isCollabRecordingAllowed()) {
-			rootModel.getRoot().get(cell.id).action = 'update';
-			rootModel.getRoot().get(cell.toJSON().id).JSON = cell.toJSON();
+	else if (that.action === "remove") {
+		if (graph.getCell(that.JSON.id)) {
+			graph.getCell(that.JSON.id).remove();
 		}
-		allowCollabRecording();
 	}
+	else if (that.action === "add") {
+		graph.addCell(that.JSON);
+		addCollabEventToCell(graph.getCell(that.JSON.id));
+	}
+}
+
+/**
+ * Called whenever a Joint.js cell is updated. If it was a local change, it will
+ *   update the collaborative version. Otherwise, if the change was from a
+ *   collaborator, it will set the global state to record changes.
+ * @preconditions The local cell has had a collaborative cell already created to
+ *   parallel it rootModel points to the document collaborative graph from
+ *   Google's Realtime API
+ * @postconditions The local cell's state has been recorded in the collaborative
+ *   cell if this state didn't already come from there,
+ *   collaborativeChangeReceived has been set to false
+ * @param  {cell} cell the cell updated
+ * @memberOf collab_object_setup
+ */
+function updateCellByEventID(cell) {
+	if (!isCollabRecordingAllowed()) {
+		rootModel.getRoot().get(cell.id).action = 'update';
+		rootModel.getRoot().get(cell.toJSON().id).JSON = cell.toJSON();
+	}
+	allowCollabRecording();
+}
