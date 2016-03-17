@@ -20,6 +20,28 @@ function initializeGraph() {
 	colGraph.graph = JSON.stringify(graph);
 }
 
+/*
+Initializes the graph used for printing to whatever is in the current editable graph.
+The print graph is not directly linked to the collaborative graph and is only updated at the
+time of printing so that the graph can not be changed as you are printing it.
+pre: graph exists.
+post: printGraph contains the contents of graph.
+*/
+function initializePrintGraph(){
+	printGraph = new joint.dia.Graph;
+	console.log("Print graph created.");
+	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
+}
+
+/*
+Updates the print graph with the contents of graph.
+pre: printGraph and graph exist.
+post: printGraph has the same contents of graph.
+*/
+function updatePrintGraph(){
+	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
+}
+
 
 	
 function bringParentlessCellToFront(cellView, evt, x, y) {
@@ -110,6 +132,29 @@ function initializePaper() {
 }
 
 /**
+ * This initialzes the local "paper" object that is used for printing purposes from joint.js to be able to display
+ *   the diagram.
+ * @preconditions The printPraph must exist. The HTML container "printView"
+ *   must exist.
+ * @postconditions The html container div "printView" will hold a hidden view of the
+ *   diagram, representing the back-end model.
+ * @memberOf initialize_diagram
+ */
+function initializePrintPaper() {
+	//Paper is initialized with 0 height and width so it does not take up space
+	//until it is needed for printing
+	printPaper = new joint.dia.Paper({
+		el: $('#printView'),
+		width: 0,
+		height: 0,
+		model: printGraph,
+		perpendicularLinks: true,
+		gridSize: 1
+	});
+	printPaper.scale(1,1);	
+}
+
+/**
  * On mouse wheel over the "paper", zoom based on mouse wheel direction.
  * @preconditions The "wheel" event has triggered, and contains a non-zero
  *   number for direction of mouse wheel.
@@ -165,6 +210,37 @@ function resizePaper(e) {
 		heightOfPaper = 550;
 	}
 	paper.setDimensions(paperDiv.clientWidth - 20, heightOfPaper);
+}
+
+/* 
+Resizes the printing paper so that it fits a sheet of paper and scales the content
+so that it all fits inside the paper.
+pre: The printPaper must exist.
+post: The printPaper will be the size of a sheet of paper.
+*/
+function resizePrintPaper(e){
+	//The values 1000 and 1250 make the paper fit the print page nicely
+	var width = 1000;
+	var height = 1250;
+	printPaper.setDimensions(width, height);
+	printPaper.scaleContentToFit();
+}
+
+/*
+Shrinks the paper so that it no longer takes up space.
+This is done after printing is complete.
+This is required because the paper has a visibility of hidden,
+not a display of none. The paper can not have a display of none because
+there is an issue where the size of objects is changes when the paper goes from
+no display to block display.
+pre: The printPaper must exist.
+post: the printPaper will be the smallest possible size.
+*/
+function shrinkPrintPaper(e){
+	//Values are 1 and 1 because using 0 and 0 does not work
+	var width = 1;
+	var height = 1;
+	printPaper.setDimensions(width, height);
 }
 	
 

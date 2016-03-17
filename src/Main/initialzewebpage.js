@@ -8,6 +8,8 @@
 
 var graph;
 var paper;
+var printGraph;
+var printPaper;
 var paperScale;
 var colGraph;
 var rootModel;

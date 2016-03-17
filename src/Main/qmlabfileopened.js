@@ -26,6 +26,7 @@ function onFileInitialize(model) {
 	model.getRoot().set("graph", cGraph);
 	colGraph = model.getRoot().get('graph');
 	initializeGraph();
+	initializePrintGraph();
 	console.log("Initialize complete");
 
 	updateGraph();
@@ -54,11 +55,12 @@ function onFileLoaded(doc) {
 			// function is declared in genUI.js
 	
 	graph = new joint.dia.Graph;
-
+	printGraph = new joint.dia.Graph; //Initialize the graph for printing
 	rootModel = doc.getModel();
 	realDoc = doc;
 	colGraph = rootModel.getRoot().get('graph');
 	initializePaper();
+	initializePrintPaper();  //Initialize the paper for printing
 
 
 	// Update the collaborative object whenever the user finishes making a change

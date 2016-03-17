@@ -103,7 +103,8 @@ QM_LabUI.prototype.genToolbar = function() {
 				{ view:"button", width: 100, value: "Create", id:"create"},
 				{ view:"button", width: 100, value: "Save", id:"save"},
 				{ view:"button", width: 100, value: "Load", id:"load"},
-				{ view:"button", width: 100, value: "Share", id:"share"}
+				{ view:"button", width: 100, value: "Share", id:"share"},
+				{ view:"button", width: 100, value: "Print", id:"print"}
 			],
 		elementsConfig:{
 			width: 150,
@@ -127,6 +128,17 @@ QM_LabUI.prototype.genToolbar = function() {
 
 	$$("share").attachEvent("onItemClick", function(id, e){		
         s.showSettingsDialog(); // open the sharing dialog
+	});
+	
+	$$("print").attachEvent("onItemClick", function(id, e){
+		//Make the printGraph up to date, enlarge printPaper and then shrink it after printing
+		updatePrintGraph();
+		resizePrintPaper();
+		window.addEventListener("click", shrink = function(id, e){
+			shrinkPrintPaper();
+			window.removeEventListener("click", shrink);
+		});
+		window.print();
 	});
 }
 
