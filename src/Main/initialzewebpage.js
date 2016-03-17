@@ -30,7 +30,7 @@ window.onload=onstartRun;
  * @memberOf initialize_web_page
  */
 function onstartRun(){
-	selected = {}
+	selected = {};
 	authorize();
 	freeze = setInterval(checkAndFreeze, 1000);
 

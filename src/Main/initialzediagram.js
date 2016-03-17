@@ -91,7 +91,7 @@ function paperZoom(e) {
  * @memberOf initialize_diagram
  */
 function paperEmptySelectionPressed(e) {
-	updateMousePos(e)
+	updateMousePos(e);
 	movingViewPort = true;
 }
 

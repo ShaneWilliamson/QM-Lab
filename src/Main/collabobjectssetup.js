@@ -71,7 +71,7 @@ function CollaborativeGraph(){
  */
 function doGraphInitialize(){
 	var model = gapi.drive.realtime.custom.getModel(this);
-	console.log("The graph was initialized.")
+	console.log("The graph was initialized.");
 }
 
 /**
@@ -123,11 +123,11 @@ function updateCollabGraph() {
  * @memberOf collab_object_setup
  */
 function updateGraph() {
-	graph.fromJSON(JSON.parse(colGraph.graph))
+	graph.fromJSON(JSON.parse(colGraph.graph));
 
 	graph.on('remove', function(cell) {
 		rootModel.getRoot().get(cell.id).action = "remove";
-	})
+	});
 	console.log('Built new graph');
 }
 

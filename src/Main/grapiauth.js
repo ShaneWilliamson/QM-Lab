@@ -95,7 +95,7 @@ function loadShareDialog() {
         s = new gapi.drive.share.ShareClient();
         s.setOAuthToken(access_token);
     	s.setItemIds([fileId]);
-    }	
+    };
 
 	gapi.load('drive-share', init);
 }

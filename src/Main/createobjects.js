@@ -39,7 +39,7 @@ function createStock(pos) {
 	var newStock = new localNode(pos, "Stock");
 	setUpNewCell(newStock);
 	
-	console.log("Stock added")
+	console.log("Stock added");
 	return newStock;
 }
 

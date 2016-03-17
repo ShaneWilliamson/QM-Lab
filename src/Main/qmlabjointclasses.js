@@ -16,7 +16,7 @@
 		if (label) {
 			newNode.setLabel(label);
 		}
-		return newNode
+		return newNode;
 	}
 
 	
@@ -29,7 +29,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getXPos = function() {
 		return this.attributes.position.x;
-	}
+	};
 
 	
 	/*
@@ -41,7 +41,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getYPos = function() {
 		return this.attributes.position.y;
-	}
+	};
 
 	/*
 	Setter for localNode position. 
@@ -52,7 +52,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.setPos = function(x, y) {
 		this.attributes.position = {x: x, y: y};
-	}
+	};
 
 
 	/*
@@ -64,7 +64,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getXSize = function() {
 		return this.attributes.size.width;
-	}
+	};
 
 
 	/*
@@ -76,7 +76,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getYSize = function() {
 		return this.attributes.size.height;
-	}
+	};
 
 	/*
 	Setter for localNode size. 
@@ -87,7 +87,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
 		this.attributes.size = {width: x, height: y};
-	}
+	};
 
 	/*
 	Getter for localNode z-order attribute. Will return the 
@@ -99,7 +99,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getZOrder = function() {
 		return this.attributes.z;
-	}
+	};
 
 	/*
 	Setter for localNode z-order. Changes what order it is drawn on the screen 
@@ -110,7 +110,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.setZOrder = function(z) {
 		this.attributes.z = z;
-	}
+	};
 
 	/*
 	Getter for localNode label attribute. Will return the text associated with this node.
@@ -121,7 +121,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getLabel = function() {
 		return this.attributes.attrs.text.text;
-	}
+	};
 
 	/*
 	Getter for localNode z-order attribute. Will return order in which it is drawn on the screen.
@@ -132,7 +132,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
 		this.attributes.attrs.text.text = text;
-	}
+	};
 
 	
 	
@@ -171,7 +171,7 @@
 		//If a source was passed, set the link's source that
 		if (source) {
 			if (graph.getCell(source.id)) {
-				newLink.setStartNodeFromCell(source)
+				newLink.setStartNodeFromCell(source);
 			}	
 		}
 		//Otherwise, use the passed in point
@@ -182,8 +182,8 @@
 		//If a target was passed, set the link's target to that
 		if (target) {
 			if (graph.getCell(target.id)) {
-				newLink.setEndNodeFromCell(target)
-			}	
+				newLink.setEndNodeFromCell(target);
+			}
 		}
 		//Otherwise, use the passed in point
 		else {
@@ -242,7 +242,7 @@
 		//If a source was passed, set the link's source that
 		if (source) {
 			if (graph.getCell(source.id)) {
-				newFlow.setStartNodeFromCell(source)
+				newFlow.setStartNodeFromCell(source);
 			}	
 		}
 		//Otherwise, use the passed in point
@@ -253,7 +253,7 @@
 		//If a target was passed, set the link's target to that
 		if (target) {
 			if (graph.getCell(target.id)) {
-				newFlow.setEndNodeFromCell(target)
+				newFlow.setEndNodeFromCell(target);
 			}	
 		}
 		//Otherwise, use the passed in point
@@ -300,7 +300,7 @@
 	*/
 	joint.dia.Link.prototype.getStartNode = function() {
 		return this.attributes.source;
-	}
+	};
 
 	/*
 	Setter for localLink start node. Since this sets by using the cell's "id",
@@ -325,7 +325,7 @@
 			console.log("There was an error when setting the source of a link by cell. The given cell was:");
 			console.log(source);
 		}
-	}
+	};
 
 	/*
 	Setter for localLink source node. Since this sets by using a point in the graph,
@@ -345,7 +345,7 @@
 			console.log(source);
 		}
 		
-	}
+	};
 
 	/*
 	Getter for localLink end node. Will return what the link is currently
@@ -363,7 +363,7 @@
 	*/
 	joint.dia.Link.prototype.getEndNode = function() {
 		return this.attributes.target;
-	}
+	};
 
 	/*
 	Setter for localLink end node. Since this sets by using the cell's "id",
@@ -376,7 +376,7 @@
 	*/
 	joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
 		this.set('target', target.id);
-	}
+	};
 
 	/*
 	Setter for localLink target node. Since this sets by using a point in the graph,
@@ -389,7 +389,7 @@
 	*/
 	joint.dia.Link.prototype.setEndNodeFromPoint = function(target) {
 		this.set('target', { x: target.x, y: target.y });
-	}
+	};
 
 
 	/*
@@ -401,7 +401,7 @@
 	*/
 	joint.dia.Link.prototype.setLabel = function(text) {
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
-	}
+	};
 
 	/*
 	Getter for localLink label text. Will return what the link currently
@@ -425,7 +425,7 @@
 		else {
 			return "";
 		}
-	}
+	};
 	
 	
 	
