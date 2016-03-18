@@ -149,3 +149,22 @@ svg {
   border-bottom: 2px solid #000;
   transform: rotate(45deg);
 }
+
+.printable{
+	visibility: hidden;
+}
+
+@media print{
+	.nonPrintable{
+		display: none;
+	}
+	
+	.printable{
+		visibility: visible;
+	}
+	
+	#printView{
+		display: block;
+	}
+
+}
