@@ -107,6 +107,13 @@ function initializePaper() {
 	
 	
 	paper.on('cell:pointerup', parentCell);	
+	paper.on('cell:pointerclick', selectClickedCell);
+	paper.on('blank:pointerclick', deselectCell);
+	
+	graph.on('change', function(cell) { 
+		selected[0] = cell;
+		updateProperties();
+	})
 }
 
 /**
@@ -205,7 +212,6 @@ function paperEmptySelectionPressed(e) {
  */
 function paperOnMouseUp(e) {
 	updateMousePos(e)
-	selectSingleOnPoint(curMousePos);
 
 	if (genUI.lastClickedValue == "Stock") {
 		createStock(curMousePos);
@@ -249,34 +255,66 @@ function paperOnMouseUp(e) {
 	genUI.deselectUIElements();
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
-	selectSingleOnPoint(curMousePos);
+}
+
+function selectClickedCell(cellView, evt) {
+	selected[0] = cellView.model;
+	updateProperties();
+}
+
+function deselectCell() {
+	selected = {};
 	updateProperties();
 }
 
 
 
-
-/**
- * Update the "selected" array to hold all cells that are under a single point
- *   on the paper. This point should generally be the user's mouse position.
- * @preconditions The mouse is on the paper. The graph is initialized.
- * @postconditions The selected array is filled with all of the objects on the
- *   position of the mouse.
- * @param  {position} pos a valid coordinate with a 'x' field and 'y' field.
- * @memberOf initialize_diagram
- */
-function selectSingleOnPoint(pos) {
-	console.log(graph.findModelsFromPoint(pos));
-	selected[0] = graph.findModelsFromPoint(pos)[0];
-}
-
 function updateProperties() {
 	var selectedObj = selected[0];
 	var formName = "propertiesFormId";
+	
+	if (selectedObj) {
+		document.querySelector('div[view_id="text"] input').value = selectedObj.getLabel();
+		document.querySelector('div[view_id="textsize"] input').value = selectedObj.getTextSize();
+	
+		document.querySelector('div[view_id="color"] div.webix_input_icon').style.background = selectedObj.getColour();
+		document.querySelector('div[view_id="color"] div.webix_inp_static').innerHTML = selectedObj.getColour();
+		
+		document.querySelector('div[view_id="textcolor"] div.webix_input_icon').style.background = selectedObj.getTextColour();
+		document.querySelector('div[view_id="textcolor"] div.webix_inp_static').innerHTML = selectedObj.getTextColour();
+		
+		document.querySelector('div[view_id="width"] input').value = selectedObj.getXSize();
+		document.querySelector('div[view_id="height"] input').value = selectedObj.getYSize();
+		
+	}
+	else {
+		document.querySelector('div[view_id="text"] input').value = "";
+		document.querySelector('div[view_id="textsize"] input').value = "";
+	
+		document.querySelector('div[view_id="color"] div.webix_input_icon').style.background = "#ffffff";
+		document.querySelector('div[view_id="color"] div.webix_inp_static').innerHTML = "";
+		
+		document.querySelector('div[view_id="textcolor"] div.webix_input_icon').style.background = "#ffffff";
+		document.querySelector('div[view_id="textcolor"] div.webix_inp_static').innerHTML = "";
+		
+		document.querySelector('div[view_id="width"] input').value = "";
+		document.querySelector('div[view_id="height"] input').value = "";
+	}
+	
+	
+	
 
+	/*
+	setValues apparently doesn't exist.
+	Looked through everything involved in $$(formname),
+	found nothing for setting Values.
+	
+	Checked the Webix documentation as well. No help.
+	
 	$$(formName).setValues({
 		"width":1234
 	});
+	*/
 }
 
 /**
@@ -299,7 +337,7 @@ function handleKeyInput(e) {
 		deleteSelectedCell(e);
 	}
 	else {
-		console.log("A key was pushed");
+		//console.log("A key was pushed");
 	}
 }
 
@@ -316,7 +354,6 @@ function handleKeyInput(e) {
  * @memberOf initialize_diagram
  */
 function deleteSelectedCell(e) {
-	console.log(selected);
 	if (selected){
 		if (selected[0]) {
 			rootModel.getRoot().get(selected[0].id).action = 'remove';

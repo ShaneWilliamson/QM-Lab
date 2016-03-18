@@ -134,12 +134,13 @@ QM_LabUI.prototype.genToolbar = function() {
 QM_LabUI.prototype.genPropertiesForm = function() {
 	QM_LabUI.prototype.propertiesForm = [
 		{ view:"label", label:"Properties", css:"sidebarTitle" },
-		{ view:"text", label:"Text", name:"text" },
-		{ view:"text", label:"Width", name:"width" },
-		{ view:"text", label:"Height", name:"height" },
-		{ view:"text", label:"Depth", name:"depth" },
-		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd" },
-		{ view:"text", label:"Img URL", name:"imgURL" }
+		{ view:"text", label:"Text", name:"text", id:"text" },
+		{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+		{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"#ffaadd", id:"textcolor" },
+		{ view:"text", label:"Width", name:"width", id:"width" },
+		{ view:"text", label:"Height", name:"height", id:"height" },
+		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd", id:"color" },
+		{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
 	];
 
 	webix.ui({
@@ -151,6 +152,54 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 			]}
 		]
 	});
+	
+	$$("text").attachEvent("onBlur", function(prev_view){		
+		if (selected[0]) {
+			selected[0].setLabel(prev_view.data.value);
+		}
+	});
+	
+	$$("textsize").attachEvent("onBlur", function(prev_view){		
+		if (selected[0]) {
+			selected[0].setTextSize(prev_view.data.value);
+		}
+	});
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	$$("width").attachEvent("onBlur", function(prev_view){		
+        if (selected[0]) {
+			selected[0].setWidth(prev_view.data.value);
+		}
+	});
+	
+	$$("height").attachEvent("onBlur", function(prev_view){		
+        if (selected[0]) {
+			selected[0].setHeight(prev_view.data.value);
+		}
+	});
+	
+	
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	$$("url").attachEvent("onBlur", function(prev_view){		
+        if (selected[0]){
+			if (selected[0].attributes.type === "QMLab.ImageNode" || selected[0].attributes.type === "QMLab.Agent") {
+				selected[0].setImage(prev_view.data.value);
+			}
+		}
+	});
+	
 }
 
 
@@ -161,4 +210,3 @@ QM_LabUI.prototype.deselectUIElements = function() {
 	$$("nodeListView").unselectAll();
 	$$("linkListView").unselectAll();
 }
-
