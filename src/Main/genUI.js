@@ -113,7 +113,7 @@ QM_LabUI.prototype.genToolbar = function() {
 	});   
 
 	$$("create").attachEvent("onItemClick", function(id, e){		
-        window.open('/', '_blank');
+        window.open(location.protocol + '//' + location.origin + location.pathname, '_blank');
 	});
 
 	$$("save").attachEvent("onItemClick", function(id, e){		
