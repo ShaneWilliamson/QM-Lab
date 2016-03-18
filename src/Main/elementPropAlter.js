@@ -43,20 +43,23 @@ function getSelectedElementFromGraph(e){
 		var Propform = (document.getElementById("propertiesForm")).getElementsByTagName("*");	
 		//Set the appropriate values for each field
 		//this field is the text field 
-		Propform[9].value =selectElement.attr('text/text');
+		Propform[9].value =selectElement.getLabel();
 		//this field is the width field
-		Propform[13].value =selectElement.attr('rect/width');
+		Propform[13].value =selectElement.getXSize();
 		//this field is the height field
-		Propform[17].value =selectElement.attr('rect/height');
+		Propform[17].value =selectElement.getYSize();
 		//this field is the depth field (I ma not sure what this is for so it is set to be 1 )
-		Propform[21].value ="1"
+		Propform[21].value = selectElement.getZOrder();
 		//this field is the colour field, not sure which value to use to fill it with
 		//ask if it is text or background colour
 		//Propform[21].textContent =selectElement.attr('rect/fill')
 		
-		//This is for the image url field
-		//TODO check element type to ensure it is supposed to have an image
-		Propform[30].value ="n/a"
+		var imgURL = selectElement.getImageURL();
+		if (imgURL == undefined) { // if imgURL is undefined then we have loaded a non image node
+			Propform[30].value = "n/a";
+		} else {
+			Propform[30].value = imgURL;
+		}
 	}
 }
 

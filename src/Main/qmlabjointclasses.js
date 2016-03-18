@@ -773,6 +773,9 @@
 		this.attr('image/xlink:href', url);
 	}
 	
+	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
+		return this.attr("image/xlink:href");
+	}
 
 	
 

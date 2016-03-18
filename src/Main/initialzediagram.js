@@ -326,7 +326,6 @@ function paperOnMouseUp(e) {
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
 	selectSingleOnPoint(curMousePos);
-	updateProperties();
 }
 
 
@@ -346,14 +345,6 @@ function selectSingleOnPoint(pos) {
 	selected[0] = graph.findModelsFromPoint(pos)[0];
 }
 
-function updateProperties() {
-	var selectedObj = selected[0];
-	var formName = "propertiesFormId";
-
-	$$(formName).setValues({
-		"width":1234
-	});
-}
 
 /**
  * When the user hits a key, check which key was pressed. Handle state
@@ -397,7 +388,6 @@ function deleteSelectedCell(e) {
 		if (selected[0]) {
 			rootModel.getRoot().get(selected[0].id).action = 'remove';
 			selected[0].remove();
-			updateCollabGraph();
 		}
 	}
 }
