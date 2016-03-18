@@ -759,7 +759,7 @@
 			type: 'QMLab.TerminalState',
 			size: { width: 100, height: 30 },
 			attrs: {
-				rect: { fill: TerminalStateDefaultFill, rx: 10, ry: 10 },
+				rect: { fill: "red", rx: 10, ry: 10 },
 				text: { text: "Terminal State", fill: 'black' }
 			}
 
@@ -882,7 +882,7 @@
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 
-
+	console.log("HI");
 
 	/*
 	This is the shape definition of the "Text Area" type. It extends joint.js' Rect shape,
