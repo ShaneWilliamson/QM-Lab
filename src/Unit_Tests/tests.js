@@ -13,6 +13,7 @@ QUnit.config.collapse = false;
 QUnit.test("Test Stock Creation", function( assert ) {
   var pos = {x: 3, y: 2};
   var newStock = new localNode(pos, "Stock");
+  assert.notDeepEqual(newStock, null);
   assert.deepEqual(createStock(pos).attributes.position, newStock.attributes.position);
 
 });
@@ -24,7 +25,20 @@ QUnit.test("Test Image Creation", function( assert ) {
   var newImage = new joint.shapes.QMLab.ImageNode({
     position: { x: pos.x, y: pos.y },
   });
+
+  var sizeX = 200;
+  var sizeY = 200;
+  newImage.setSize(sizeX, sizeY);
+  newImage.setImage(pictureURL);
+
+  assert.notDeepEqual(newImage, null);
   assert.deepEqual(createImage(pos, pictureURL, label, null, null).attributes.position, newImage.attributes.position);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.height, newImage.attributes.rect.height);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.width, newImage.attributes.rect.width);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.image.xlink, newImage.attributes.image.xlink);
+
+
+
 });
 
 QUnit.test("Test Variable Creation", function( assert ) {
@@ -32,6 +46,7 @@ QUnit.test("Test Variable Creation", function( assert ) {
   var newVariable = new joint.shapes.QMLab.Variable({
     position: {x: pos.x, y: pos.y}
   });
+  assert.notDeepEqual(newVariable);
   assert.deepEqual(createVariable(pos).attributes.position, newVariable.attributes.position);
 });
 
@@ -90,7 +105,8 @@ QUnit.test("updateCollabGraph() test", function( assert ){
 
 });
 
-/**
+
+
 QUnit.test("Test Link Creation", function( assert ) {
   var pos = {x: 2, y: 3};
   var nConnector = "normal";
@@ -100,6 +116,20 @@ QUnit.test("Test Link Creation", function( assert ) {
   var newRLink = new localLink(pos, false, false, false, rConnector);
   var newSLink = new localLink(pos, false, false, false, sConnector);
 
-  assert.deepEqual(createLink(pos, nConnector).attributes, newRLink.attributes);
+  assert.deepEqual(createLink(pos, nConnector).attributes.source, newNLink.attributes.source);
+  assert.deepEqual(createLink(pos, nConnector).attributes.target, newNLink.attributes.target);
+  assert.deepEqual(createLink(pos, nConnector).attributes.connector, newNLink.attributes.connector);
+
+
+  assert.deepEqual(createLink(pos, rConnector).attributes.source, newRLink.attributes.source);
+  assert.deepEqual(createLink(pos, rConnector).attributes.target, newRLink.attributes.target);
+  assert.deepEqual(createLink(pos, rConnector).attributes.connector, newRLink.attributes.connector);
+
+
+  assert.deepEqual(createLink(pos, sConnector).attributes.source, newSLink.attributes.source);
+  assert.deepEqual(createLink(pos, sConnector).attributes.target, newSLink.attributes.target);
+  assert.deepEqual(createLink(pos, sConnector).attributes.connector, newSLink.attributes.connector);
+
+
+
 });
-*/
