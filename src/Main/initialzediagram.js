@@ -286,6 +286,13 @@ function updateProperties() {
 		document.querySelector('div[view_id="width"] input').value = selectedObj.getXSize();
 		document.querySelector('div[view_id="height"] input').value = selectedObj.getYSize();
 		
+		if (selectedObj.attributes.type === "QMLab.ImageNode" || selectedObj.attributes.type === "QMLab.Agent") {
+			document.querySelector('div[view_id="url"] input').value = selectedObj.getImage();
+		}
+		else {
+			document.querySelector('div[view_id="url"] input').value = "";
+		}
+		
 	}
 	else {
 		document.querySelector('div[view_id="text"] input').value = "";
@@ -299,7 +306,10 @@ function updateProperties() {
 		
 		document.querySelector('div[view_id="width"] input').value = "";
 		document.querySelector('div[view_id="height"] input').value = "";
+		
+		document.querySelector('div[view_id="url"] input').value = "";
 	}
+
 	
 	
 	

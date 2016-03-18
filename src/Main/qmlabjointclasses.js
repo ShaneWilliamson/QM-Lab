@@ -198,6 +198,8 @@
 		this.attr('rect/fill', colour);
 		this.prop('path/fill', colour);
 		this.attr('path/fill', colour);
+		this.prop('circle/fill', colour);
+		this.attr('circle/fill', colour);
 	}
 	
 	joint.shapes.basic.Rect.prototype.getColour = function(colour) {
@@ -225,6 +227,30 @@
 		return this.attributes.text.fontsize;
 
 	}
+
+	joint.shapes.basic.Rect.prototype.getImage = function() {
+		return "";
+	}
+	
+	
+	
+	
+	joint.shapes.basic.Circle.prototype.setLabel = joint.shapes.basic.Rect.prototype.setLabel;
+	joint.shapes.basic.Circle.prototype.setTextSize = joint.shapes.basic.Rect.prototype.setTextSize;
+	joint.shapes.basic.Circle.prototype.setTextColour = joint.shapes.basic.Rect.prototype.setTextColour;
+	joint.shapes.basic.Circle.prototype.setColour = joint.shapes.basic.Rect.prototype.setColour;
+	joint.shapes.basic.Circle.prototype.setWidth = joint.shapes.basic.Rect.prototype.setWidth;
+	joint.shapes.basic.Circle.prototype.setHeight = joint.shapes.basic.Rect.prototype.setHeight;
+	joint.shapes.basic.Circle.prototype.setSize = joint.shapes.basic.Rect.prototype.setSize;
+	joint.shapes.basic.Circle.prototype.setImage = joint.shapes.basic.Rect.prototype.setImage;
+	
+	joint.shapes.basic.Circle.prototype.getLabel = joint.shapes.basic.Rect.prototype.getLabel;
+	joint.shapes.basic.Circle.prototype.getTextSize = joint.shapes.basic.Rect.prototype.getTextSize;
+	joint.shapes.basic.Circle.prototype.getTextColour = joint.shapes.basic.Rect.prototype.getTextColour;
+	joint.shapes.basic.Circle.prototype.getColour = joint.shapes.basic.Rect.prototype.getColour;
+	joint.shapes.basic.Circle.prototype.getXSize = joint.shapes.basic.Rect.prototype.getXSize;
+	joint.shapes.basic.Circle.prototype.getYSize = joint.shapes.basic.Rect.prototype.getYSize;
+	joint.shapes.basic.Circle.prototype.getImage = joint.shapes.basic.Rect.prototype.getImage;
 	
 	
 	
@@ -841,9 +867,17 @@
 		this.attr('image/xlink:href', url);
 	}
 	
+	joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
+		return this.attributes.url;
+	}
+	
 	joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
 		this.prop('url', url);
 		this.attr('image/xlink:href', url);
+	}
+	
+	joint.shapes.QMLab.Agent.prototype.getImage = function(url) {
+		return this.attributes.url;
 	}
 	
 

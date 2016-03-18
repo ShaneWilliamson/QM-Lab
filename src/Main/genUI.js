@@ -156,12 +156,14 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 	$$("text").attachEvent("onBlur", function(prev_view){		
 		if (selected[0]) {
 			selected[0].setLabel(prev_view.data.value);
+			updateCollabGraph();
 		}
 	});
 	
 	$$("textsize").attachEvent("onBlur", function(prev_view){		
 		if (selected[0]) {
 			selected[0].setTextSize(prev_view.data.value);
+			updateCollabGraph();
 		}
 	});
 	
@@ -175,12 +177,14 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 	$$("width").attachEvent("onBlur", function(prev_view){		
         if (selected[0]) {
 			selected[0].setWidth(prev_view.data.value);
+			updateCollabGraph();
 		}
 	});
 	
 	$$("height").attachEvent("onBlur", function(prev_view){		
         if (selected[0]) {
 			selected[0].setHeight(prev_view.data.value);
+			updateCollabGraph();
 		}
 	});
 	
@@ -196,6 +200,7 @@ QM_LabUI.prototype.genPropertiesForm = function() {
         if (selected[0]){
 			if (selected[0].attributes.type === "QMLab.ImageNode" || selected[0].attributes.type === "QMLab.Agent") {
 				selected[0].setImage(prev_view.data.value);
+				updateCollabGraph();
 			}
 		}
 	});
