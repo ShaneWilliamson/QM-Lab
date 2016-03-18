@@ -48,6 +48,10 @@ QUnit.test("Test Variable Creation", function( assert ) {
   });
   assert.notDeepEqual(newVariable);
   assert.deepEqual(createVariable(pos).attributes.position, newVariable.attributes.position);
+  assert.deepEqual(createVariable(pos).attributes.position.x, newVariable.attributes.position.x);
+  assert.deepEqual(createVariable(pos).attributes.position.y, newVariable.attributes.position.y);
+
+
 });
 
 
@@ -56,6 +60,7 @@ QUnit.test("Test Parameter Creation", function( assert ) {
   var newParameter = new joint.shapes.QMLab.Parameter({
     position: {x: pos.x, y: pos.y}
   });
+  assert.notDeepEqual(newParameter, null);
   assert.deepEqual(createParameter(pos).attributes.position, newParameter.attributes.position);
 });
 
@@ -131,5 +136,16 @@ QUnit.test("Test Link Creation", function( assert ) {
   assert.deepEqual(createLink(pos, sConnector).attributes.connector, newSLink.attributes.connector);
 
 
+
+});
+
+QUnit.test("createBranch(pos) test", function (assert){
+  var pos = {x: 3, y: 5};
+  var newState = new joint.shapes.QMLab.State({
+  		position: { x: pos.x, y: pos.y },
+	});
+  setUpNewCell(newState);
+  assert.notEqual(newState,null);
+  assert.deepEqual(createState(pos).attributes.pos, newState.attributes.pos );
 
 });
