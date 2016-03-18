@@ -136,10 +136,10 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 		{ view:"label", label:"Properties", css:"sidebarTitle" },
 		{ view:"text", label:"Text", name:"text", id:"text" },
 		{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
-		{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"#ffaadd", id:"textcolor" },
+		{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
 		{ view:"text", label:"Width", name:"width", id:"width" },
 		{ view:"text", label:"Height", name:"height", id:"height" },
-		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd", id:"color" },
+		{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
 		{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
 	];
 

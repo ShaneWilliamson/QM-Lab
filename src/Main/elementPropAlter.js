@@ -9,72 +9,52 @@ var selectId = null;
 var selectElement = null;
 
 
-
-function initChangeBox()
-{
-	//add a mouse listener to the paper so that on mouse down we can check the point
-	//the mouse is at to see if an element exists there
-	 var paperDiv = document.getElementById('paperView');
-	paperDiv.addEventListener("mousedown",getSelectedElementFromGraph); 
-
-}
 /**
- * Finds the element in the paper that was clicked and populates the properties box with the 
- * values from that element
- * @preconditions The window has loaded the proper html file. 
- * @postconditions the properties form will contain the properties of the selected element assuming there was one
+ * Fills the text boxes in the property pane with the given values based on whether an object is selected or not
+ * @preconditions If an object is selected, all proper fields have values and functions are declared
+ * @postconditions The properties will be displayed to reflect whether an object is selected
  */
-function getSelectedElementFromGraph(e){
-	//update mouse position so we know we are clicking the right spot
-	updateMousePos(e);
-	//make an array to hold the results of findModelsFromPoint 
-	var tempArray = graph.findModelsFromPoint(curMousePos);
-	//make sure there is atleast one element in the array before taking more action
-	if(tempArray.length >= 1)
-	{
-
-		//take the first element of the array as the selected element
-		selectElement = tempArray[0];
-		
-		//selectId = selectElement.id; //We don't really use the id for anything so it is commented out
-		//console.log((document.getElementById("propertiesForm")).getElementsByTagName("*"));
-		
-		//Get the properties form
-		var Propform = (document.getElementById("propertiesForm")).getElementsByTagName("*");	
-		//Set the appropriate values for each field
-		//this field is the text field 
-		Propform[9].value =selectElement.attr('text/text');
-		//this field is the width field
-		Propform[13].value =selectElement.attr('rect/width');
-		//this field is the height field
-		Propform[17].value =selectElement.attr('rect/height');
-		//this field is the depth field (I ma not sure what this is for so it is set to be 1 )
-		Propform[21].value ="1"
-		//this field is the colour field, not sure which value to use to fill it with
-		//ask if it is text or background colour
-		//Propform[21].textContent =selectElement.attr('rect/fill')
-		
-		//This is for the image url field
-		//TODO check element type to ensure it is supposed to have an image
-		Propform[30].value ="n/a"
+function updateProperties() {
+	var selectedObj = selected[0];
+	var formName = "propertiesFormId";
+	
+	var text = "";
+	var textsize = "";
+	var textcolour = "";
+	var width = "";
+	var height = "";
+	var colour = "";
+	var url = "";
+	
+	
+	if (selectedObj) {
+		text = selectedObj.getLabel();
+		textsize = selectedObj.getTextSize();
+		textcolour = selectedObj.getTextColour();
+		width = selectedObj.getXSize();
+		height = selectedObj.getYSize();
+		colour = selectedObj.getColour();
+		if (selectedObj.attributes.type === "QMLab.ImageNode" || selectedObj.attributes.type === "QMLab.Agent") {
+			url = selectedObj.getImage();
+		}
 	}
+	
+	setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url)
 }
 
 /**
- * Fills the selected elements with 
- * @preconditions An element has been selected. 
- * @postconditions the properties form will fill the selected element with the values from the form
+ * Fills the text boxes in the property pane with the given values
+ * @preconditions All textboxes and divs called exist in the DOM 
+ * @postconditions The properties will be displayed to reflect the values passed in.
  */
-function setUpdatedProperties()
-{
-	if (selectId != null && selectElement != null)
-	{
-		//gets the properties form 
-		var Propform = (document.getElementById("propertiesForm")).getElementsByTagName("*");
-		//console.log(selectElement.attr('text/text'));
-		//set the text, width, and height of the element
-		selectElement.attr('text/text',Propform[9].value); 
-		selectElement.attr('rect/width',Propform[13].value);
-		selectElement.attr('rect/height',Propform[17].value);
-	}
+function setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url) {
+	document.querySelector('div[view_id="text"] input').value = text;
+		document.querySelector('div[view_id="textsize"] input').value = textsize;
+		document.querySelector('div[view_id="textcolor"] div.webix_input_icon').style.background = textcolour;
+		document.querySelector('div[view_id="textcolor"] div.webix_inp_static').innerHTML = textcolour;
+		document.querySelector('div[view_id="width"] input').value = width;
+		document.querySelector('div[view_id="height"] input').value = height;
+		document.querySelector('div[view_id="color"] div.webix_input_icon').style.background = colour;
+		document.querySelector('div[view_id="color"] div.webix_inp_static').innerHTML = colour;
+		document.querySelector('div[view_id="url"] input').value = url;
 }

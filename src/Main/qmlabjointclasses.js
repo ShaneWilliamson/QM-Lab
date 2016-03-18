@@ -598,7 +598,13 @@
 	
 	//This is a placeholder
 	joint.dia.Link.prototype.getTextColour = function() {
-		return this.attributes.text.textcolour;
+		if (this.attributes.text) {
+			return this.attributes.text.textcolour;
+		}
+		else {
+			return "#000000";
+		}
+		
 	}
 	
 	//This is a placeholder
@@ -619,6 +625,15 @@
 	joint.dia.Link.prototype.setHeight = function() {
 	}
 	
+	//This is a placeholder
+	joint.dia.Link.prototype.attemptToParent = function() {
+		if (this.getSourceElement() != null && 
+			    this.getTargetElement() != null) {
+					if (this.getSourceElement().get('parent') != this.getTargetElement().get('parent')) {
+						graph.getCell(this.get('parent')).unembed(this);							
+					}
+				}
+	}
 	
 	
 	/*

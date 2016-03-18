@@ -21,52 +21,6 @@ function initializeGraph() {
 }
 
 
-	
-function bringParentlessCellToFront(cellView, evt, x, y) {
-	var cell = cellView.model;
-
-	if (!cell.get('embeds') || cell.get('embeds').length === 0) {
-		// Show the dragged element above all the other cells (except when the
-		// element is a parent).
-		cell.toFront();
-	}
-}
-
-function deParentCell(cellView, evt, x, y) {
-	var cell = cellView.model;
-	
-	if (cell.get('parent')) {
-		graph.getCell(cell.get('parent')).unembed(cell);
-	}
-}
-	
-	
-
-	
-// When the dragged cell is dropped over another cell, let it become a child of the
-// element below.
-function parentCell(cellView, evt, x, y) {
-	var cell = cellView.model;
-	if (!cell.attributes.source) {
-		var cellViewsBelow = paper.findViewsFromPoint(cell.getBBox().center());
-
-		if (cellViewsBelow.length) {
-			// Note that the findViewsFromPoint() returns the view for the `cell` itself.
-			var cellViewBelow = _.find(cellViewsBelow, function(c) { return c.model.id !== cell.id });
-		
-			// Prevent recursive embedding.
-			if (cellViewBelow && cellViewBelow.model.get('parent') !== cell.id) {
-				if (cellViewBelow.model.attributes.type === "QMLab.Agent") {
-					cell.toFront();
-					cellViewBelow.model.embed(cell);
-				}
-			}
-		}
-	}
-	
-}
-	
-	
 
 function stopPanning() {
 	movingViewPort = false;
@@ -111,8 +65,11 @@ function initializePaper() {
 	paper.on('blank:pointerclick', deselectCell);
 	
 	graph.on('change', function(cell) { 
-		selected[0] = cell;
-		updateProperties();
+		if (isCollabRecordingAllowed()) {
+			selected[0] = cell;
+			updateProperties();
+		}
+		
 	})
 }
 
@@ -127,6 +84,10 @@ function initializePaper() {
  * @memberOf initialize_diagram
  */
 function paperZoom(e) {
+	
+	
+	var oldPaperScale = paperScale;
+	
 	//For cross browser use, grab the direction the mouse wheel has turned
 	var delta = Math.max(-1, Math.min(1, (-e.originalEvent.deltaY || e.originalEvent.wheelDelta || -e.originalEvent.detail)));
 	//If the mouse wheel rolled "down", zoom out
@@ -140,6 +101,12 @@ function paperZoom(e) {
 
 	//Set the actual zoom
 	paper.scale(paperScale, paperScale);
+	
+	//Reposition the origin to keep the upper left corner where it is
+	var xOffset = paper.options.origin.x;
+	var yOffset = paper.options.origin.y;
+	paper.setOrigin(xOffset * (paperScale / oldPaperScale), yOffset * (paperScale / oldPaperScale));
+	
 
 	//Prevent the mouse wheel event from scrolling
 	e.originalEvent.preventDefault();
@@ -257,8 +224,11 @@ function paperOnMouseUp(e) {
 	movingViewPort = false;
 }
 
+
 function selectClickedCell(cellView, evt) {
+	bringChildrenOfParentToFront(cellView.model);
 	selected[0] = cellView.model;
+	console.log(selected[0].attributes.position);
 	updateProperties();
 }
 
@@ -269,63 +239,10 @@ function deselectCell() {
 
 
 
-function updateProperties() {
-	var selectedObj = selected[0];
-	var formName = "propertiesFormId";
-	
-	if (selectedObj) {
-		document.querySelector('div[view_id="text"] input').value = selectedObj.getLabel();
-		document.querySelector('div[view_id="textsize"] input').value = selectedObj.getTextSize();
-	
-		document.querySelector('div[view_id="color"] div.webix_input_icon').style.background = selectedObj.getColour();
-		document.querySelector('div[view_id="color"] div.webix_inp_static').innerHTML = selectedObj.getColour();
-		
-		document.querySelector('div[view_id="textcolor"] div.webix_input_icon').style.background = selectedObj.getTextColour();
-		document.querySelector('div[view_id="textcolor"] div.webix_inp_static').innerHTML = selectedObj.getTextColour();
-		
-		document.querySelector('div[view_id="width"] input').value = selectedObj.getXSize();
-		document.querySelector('div[view_id="height"] input').value = selectedObj.getYSize();
-		
-		if (selectedObj.attributes.type === "QMLab.ImageNode" || selectedObj.attributes.type === "QMLab.Agent") {
-			document.querySelector('div[view_id="url"] input').value = selectedObj.getImage();
-		}
-		else {
-			document.querySelector('div[view_id="url"] input').value = "";
-		}
-		
-	}
-	else {
-		document.querySelector('div[view_id="text"] input').value = "";
-		document.querySelector('div[view_id="textsize"] input').value = "";
-	
-		document.querySelector('div[view_id="color"] div.webix_input_icon').style.background = "#ffffff";
-		document.querySelector('div[view_id="color"] div.webix_inp_static').innerHTML = "";
-		
-		document.querySelector('div[view_id="textcolor"] div.webix_input_icon').style.background = "#ffffff";
-		document.querySelector('div[view_id="textcolor"] div.webix_inp_static').innerHTML = "";
-		
-		document.querySelector('div[view_id="width"] input').value = "";
-		document.querySelector('div[view_id="height"] input').value = "";
-		
-		document.querySelector('div[view_id="url"] input').value = "";
-	}
 
-	
-	
-	
 
-	/*
-	setValues apparently doesn't exist.
-	Looked through everything involved in $$(formname),
-	found nothing for setting Values.
-	
-	Checked the Webix documentation as well. No help.
-	
-	$$(formName).setValues({
-		"width":1234
-	});
-	*/
-}
+
+
 
 /**
  * When the user hits a key, check which key was pressed. Handle state

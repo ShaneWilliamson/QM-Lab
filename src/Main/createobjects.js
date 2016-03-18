@@ -103,6 +103,9 @@ function createImage(pos, pictureURL, label, sizeX, sizeY) {
 	if (pictureURL) {
 		newImage.setImage(pictureURL);
 	}
+	else {
+		newImage.setImage('http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg');
+	}
 	if (label) {
 		newImage.setLabel(label);
 	}
@@ -254,8 +257,9 @@ function createAgent(pos) {
 		}
 	});
 	newAgent.setSize(200, 200);
+	newAgent.setImage('http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png');
 	setUpNewCell(newAgent, "", "#ffffff", "#000000");
-	console.log("Text added")
+	console.log("Agent added")
 	return newAgent;
 }
 
