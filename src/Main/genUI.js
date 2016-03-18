@@ -101,7 +101,7 @@ QM_LabUI.prototype.genToolbar = function() {
 		container:"mainToolbar",
 		view:"toolbar",
 		elements: [
-				{ view:"button", width: 100, value: "Create", id:"create"},
+				{ view:"button", width: 100, value: "New", id:"new"},
 				{ view:"button", width: 100, value: "Save", id:"save"},
 				{ view:"button", width: 100, value: "Load", id:"load"},
 				{ view:"button", width: 100, value: "Share", id:"share"},
@@ -113,7 +113,7 @@ QM_LabUI.prototype.genToolbar = function() {
 			value:"edit"}
 	});   
 
-	$$("create").attachEvent("onItemClick", function(id, e){		
+	$$("new").attachEvent("onItemClick", function(id, e){		
         window.open(location.origin + location.pathname, '_blank');
 	});
 
