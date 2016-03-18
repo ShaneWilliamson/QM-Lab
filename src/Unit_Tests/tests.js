@@ -149,3 +149,47 @@ QUnit.test("createBranch(pos) test", function (assert){
   assert.deepEqual(createState(pos).attributes.pos, newState.attributes.pos );
 
 });
+
+QUnit.test("createText(pos) test", function (assert){
+  var pos = {x: 4, y: 6};
+  var newText = new joint.shapes.QMLab.Text({
+  		position: { x: pos.x, y: pos.y },
+	});
+  setUpNewCell(newText);
+  assert.notEqual(newText,null);
+  assert.deepEqual(createText(pos).attributes.pos, newText.attributes.pos );
+
+});
+
+QUnit.test("createTerminalState(pos) test", function (assert){
+  var pos = {x: 7, y: 6};
+  var newTerminalState = new joint.shapes.QMLab.TerminalState({
+  		position: { x: pos.x, y: pos.y },
+	});
+  setUpNewCell(newTerminalState);
+  assert.notEqual(newTerminalState,null);
+  assert.deepEqual(createTerminalState(pos).attributes.pos, newTerminalState.attributes.pos );
+
+});
+
+QUnit.test("createBranch(pos) test", function (assert){
+  var pos = {x: 8, y: 1};
+  var newBranch = new joint.shapes.QMLab.Branch({
+  		position: { x: pos.x, y: pos.y },
+	});
+  setUpNewCell(newBranch);
+  assert.notEqual(newBranch,null);
+  assert.deepEqual(createBranch(pos).attributes.pos, newBranch.attributes.pos );
+
+});
+
+QUnit.test("createAgent(pos) test", function (assert){
+  var pos = {x: 4, y: 2};
+  var newAgent = new joint.shapes.QMLab.Agent({
+  		position: { x: pos.x, y: pos.y },
+	});
+  setUpNewCell(newAgent);
+  assert.notEqual(newAgent,null);
+  assert.deepEqual(createAgent(pos).attributes.pos, newAgent.attributes.pos );
+
+});
