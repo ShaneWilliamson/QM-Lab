@@ -332,9 +332,6 @@ function setUpNewCell(cell, text, colour, textColour){
 	cell.setTextSize(12);
 	cell.setColour(colour);
 	cell.setTextColour(textColour);
-	console.log(cell);
-	console.log(cell.getLabel());
-	console.log(cell.getXSize());
 	
 	graph.addCell(cell);
 	createCollabCell(cell);

@@ -109,9 +109,9 @@ function initializePrintPaper() {
 	//until it is needed for printing
 	printPaper = new joint.dia.Paper({
 		el: $('#printView'),
-		width: 0,
-		height: 0,
-		model: printGraph,
+		width: 1,
+		height: 1,
+		model: graph,
 		perpendicularLinks: true,
 		gridSize: 1
 	});
@@ -304,7 +304,6 @@ function paperOnMouseUp(e) {
 function selectClickedCell(cellView, evt) {
 	bringChildrenOfParentToFront(cellView.model);
 	selected[0] = cellView.model;
-	console.log(selected[0].attributes.position);
 	updateProperties();
 }
 

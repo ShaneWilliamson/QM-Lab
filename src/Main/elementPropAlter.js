@@ -16,9 +16,6 @@ var selectElement = null;
  */
 function updateProperties() {
 	var selectedObj = selected[0];
-	console.log(selectedObj);
-	console.log(selectedObj.getXSize());
-	console.log(selectedObj.getLabel());
 	var formName = "propertiesFormId";
 	
 	var text = "";
@@ -31,11 +28,7 @@ function updateProperties() {
 	
 	
 	if (selectedObj) {
-		console.log(selectedObj);
-		console.log(selectedObj.getLabel());
-		console.log(selectedObj.getLabel());
 		text = selectedObj.getLabel();
-		
 		textsize = selectedObj.getTextSize();
 		textcolour = selectedObj.getTextColour();
 		width = selectedObj.getXSize();

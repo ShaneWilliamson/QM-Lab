@@ -158,7 +158,6 @@
 		if (!isNaN(z)) {
 			this.set('z', z);
 		}
-		console.log(this);
 	}
 
 	/*
@@ -882,7 +881,6 @@
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 
-	console.log("HI");
 
 	/*
 	This is the shape definition of the "Text Area" type. It extends joint.js' Rect shape,
