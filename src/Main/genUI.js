@@ -140,7 +140,7 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 		{ view:"text", label:"Depth", name:"depth", id:"propDepth" },
 		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd", id: "propColour" },
 		{ view:"text", label:"Img URL", name:"imgURL", id: "propImageUrl" },
-		{ view:"button", width: 100, value: "Change", id:"propChange"}
+		{ view:"button", width: 100, value: "Change", id:"Change"}
 	];
 
 	webix.ui({
@@ -152,6 +152,11 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 			]}
 		]
 	});
+	$$("Change").attachEvent("onItemClick", function(id, e){		
+        setUpdatedProperties();
+	});
+	
+	
 }
 
 
