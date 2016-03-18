@@ -134,12 +134,13 @@ QM_LabUI.prototype.genToolbar = function() {
 QM_LabUI.prototype.genPropertiesForm = function() {
 	QM_LabUI.prototype.propertiesForm = [
 		{ view:"label", label:"Properties", css:"sidebarTitle" },
-		{ view:"text", label:"Text", name:"text" },
-		{ view:"text", label:"Width", name:"width" },
-		{ view:"text", label:"Height", name:"height" },
-		{ view:"text", label:"Depth", name:"depth" },
-		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd" },
-		{ view:"text", label:"Img URL", name:"imgURL" }
+		{ view:"text", label:"Text", name:"text" ,id: "propText" },
+		{ view:"text", label:"Width", name:"width", id: "propWidth" },
+		{ view:"text", label:"Height", name:"height", id: "propHeight" },
+		{ view:"text", label:"Depth", name:"depth", id:"propDepth" },
+		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd", id: "propColour" },
+		{ view:"text", label:"Img URL", name:"imgURL", id: "propImageUrl" },
+		{ view:"button", width: 100, value: "Change", id:"propChange"}
 	];
 
 	webix.ui({
