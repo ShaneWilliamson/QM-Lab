@@ -15,6 +15,16 @@ QUnit.test("Test Stock Creation", function( assert ) {
   var newStock = new localNode(pos, "Stock");
   assert.notDeepEqual(newStock, null);
   assert.deepEqual(createStock(pos).attributes.position, newStock.attributes.position);
+  assert.deepEqual(newStock.getXPos(), newStock.attributes.position.x);
+  assert.deepEqual(newStock.getYPos(), newStock.attributes.position.y);
+
+  //Test now if we change the position will it change the attributes properly.
+  newStock.setPos(4,3);
+  assert.deepEqual(newStock.getXPos(), 4);
+  assert.deepEqual(newStock.getYPos(), 3);
+
+
+
 
 });
 
@@ -35,7 +45,17 @@ QUnit.test("Test Image Creation", function( assert ) {
   assert.deepEqual(createImage(pos, pictureURL, label, null, null).attributes.position, newImage.attributes.position);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.height, newImage.attributes.rect.height);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.width, newImage.attributes.rect.width);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.image.xlink, newImage.attributes.image.xlink);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.url, newImage.attributes.url);
+  var defaultURL = "http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg"
+  assert.deepEqual(createImage(pos, null, label, sizeX, sizeY).attributes.url, defaultURL);
+
+
+  assert.deepEqual(newImage.getXSize(), sizeX);
+  assert.deepEqual(newImage.getYSize(), sizeY);
+
+  // Add a z order and see if it Changes
+  newImage.setZOrder(2);
+  assert.deepEqual(newImage.getZOrder(), 2);
 
 
 
@@ -134,6 +154,8 @@ QUnit.test("Test Link Creation", function( assert ) {
   assert.deepEqual(createLink(pos, sConnector).attributes.source, newSLink.attributes.source);
   assert.deepEqual(createLink(pos, sConnector).attributes.target, newSLink.attributes.target);
   assert.deepEqual(createLink(pos, sConnector).attributes.connector, newSLink.attributes.connector);
+
+  assert.deepEqual()
 
 
 
