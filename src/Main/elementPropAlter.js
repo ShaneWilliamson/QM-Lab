@@ -36,7 +36,7 @@ function getSelectedElementFromGraph(e){
 		//take the first element of the array as the selected element
 		selectElement = tempArray[0];
 		
-		//selectId = selectElement.id; //We don't really use the id for anything so it is commented out
+		selectId = selectElement.id; //We don't really use the id for anything so it is commented out
 		//console.log((document.getElementById("propertiesForm")).getElementsByTagName("*"));
 		
 		//Get the properties form
@@ -67,8 +67,10 @@ function getSelectedElementFromGraph(e){
  */
 function setUpdatedProperties()
 {
+	console.log(selectId);	
 	if (selectId != null && selectElement != null)
 	{
+		console.log("Got Here");
 		//gets the properties form 
 		var Propform = (document.getElementById("propertiesForm")).getElementsByTagName("*");
 		//console.log(selectElement.attr('text/text'));
