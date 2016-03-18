@@ -227,6 +227,10 @@
 		return this.attributes.text.fontsize;
 
 	}
+	
+	joint.shapes.basic.Rect.prototype.setImage = function() {
+		
+	}
 
 	joint.shapes.basic.Rect.prototype.getImage = function() {
 		return "";

@@ -153,19 +153,20 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 		]
 	});
 	
-	$$("text").attachEvent("onBlur", function(prev_view){		
+	webix.UIManager.addHotKey("Enter", function() { 
 		if (selected[0]) {
-			selected[0].setLabel(prev_view.data.value);
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
 			updateCollabGraph();
 		}
-	});
+	}, $$("text"));
 	
-	$$("textsize").attachEvent("onBlur", function(prev_view){		
+	webix.UIManager.addHotKey("Enter", function() { 
 		if (selected[0]) {
-			selected[0].setTextSize(prev_view.data.value);
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
 			updateCollabGraph();
 		}
-	});
+	}, $$("textsize"));
+	
 	
 	$$("textcolor").attachEvent("onChange", function(id){		
         if(selected[0]){
@@ -174,19 +175,19 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 		}
 	});
 	
-	$$("width").attachEvent("onBlur", function(prev_view){		
-        if (selected[0]) {
-			selected[0].setWidth(prev_view.data.value);
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setWidth(document.querySelector('div[view_id="width"] input').value);
 			updateCollabGraph();
 		}
-	});
+	}, $$("width"));
 	
-	$$("height").attachEvent("onBlur", function(prev_view){		
-        if (selected[0]) {
-			selected[0].setHeight(prev_view.data.value);
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setHeight(document.querySelector('div[view_id="height"] input').value);
 			updateCollabGraph();
 		}
-	});
+	}, $$("height"));
 	
 	
 	$$("color").attachEvent("onChange", function(id){		
@@ -196,14 +197,12 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 		}
 	});
 	
-	$$("url").attachEvent("onBlur", function(prev_view){		
-        if (selected[0]){
-			if (selected[0].attributes.type === "QMLab.ImageNode" || selected[0].attributes.type === "QMLab.Agent") {
-				selected[0].setImage(prev_view.data.value);
-				updateCollabGraph();
-			}
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setImage(document.querySelector('div[view_id="url"] input').value);
+			updateCollabGraph();
 		}
-	});
+	}, $$("url"));
 	
 }
 
