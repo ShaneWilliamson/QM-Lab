@@ -43,52 +43,6 @@ function updatePrintGraph(){
 }
 
 
-	
-function bringParentlessCellToFront(cellView, evt, x, y) {
-	var cell = cellView.model;
-
-	if (!cell.get('embeds') || cell.get('embeds').length === 0) {
-		// Show the dragged element above all the other cells (except when the
-		// element is a parent).
-		cell.toFront();
-	}
-}
-
-function deParentCell(cellView, evt, x, y) {
-	var cell = cellView.model;
-	
-	if (cell.get('parent')) {
-		graph.getCell(cell.get('parent')).unembed(cell);
-	}
-}
-	
-	
-
-	
-// When the dragged cell is dropped over another cell, let it become a child of the
-// element below.
-function parentCell(cellView, evt, x, y) {
-	var cell = cellView.model;
-	if (!cell.attributes.source) {
-		var cellViewsBelow = paper.findViewsFromPoint(cell.getBBox().center());
-
-		if (cellViewsBelow.length) {
-			// Note that the findViewsFromPoint() returns the view for the `cell` itself.
-			var cellViewBelow = _.find(cellViewsBelow, function(c) { return c.model.id !== cell.id });
-		
-			// Prevent recursive embedding.
-			if (cellViewBelow && cellViewBelow.model.get('parent') !== cell.id) {
-				if (cellViewBelow.model.attributes.type === "QMLab.Agent") {
-					cell.toFront();
-					cellViewBelow.model.embed(cell);
-				}
-			}
-		}
-	}
-	
-}
-	
-	
 
 function stopPanning() {
 	movingViewPort = false;
@@ -129,6 +83,16 @@ function initializePaper() {
 	
 	
 	paper.on('cell:pointerup', parentCell);	
+	paper.on('cell:pointerclick', selectClickedCell);
+	paper.on('blank:pointerclick', deselectCell);
+	
+	graph.on('change', function(cell) { 
+		if (isCollabRecordingAllowed()) {
+			selected[0] = cell;
+			updateProperties();
+		}
+		
+	})
 }
 
 /**
@@ -165,6 +129,10 @@ function initializePrintPaper() {
  * @memberOf initialize_diagram
  */
 function paperZoom(e) {
+	
+	
+	var oldPaperScale = paperScale;
+	
 	//For cross browser use, grab the direction the mouse wheel has turned
 	var delta = Math.max(-1, Math.min(1, (-e.originalEvent.deltaY || e.originalEvent.wheelDelta || -e.originalEvent.detail)));
 	//If the mouse wheel rolled "down", zoom out
@@ -178,6 +146,12 @@ function paperZoom(e) {
 
 	//Set the actual zoom
 	paper.scale(paperScale, paperScale);
+	
+	//Reposition the origin to keep the upper left corner where it is
+	var xOffset = paper.options.origin.x;
+	var yOffset = paper.options.origin.y;
+	paper.setOrigin(xOffset * (paperScale / oldPaperScale), yOffset * (paperScale / oldPaperScale));
+	
 
 	//Prevent the mouse wheel event from scrolling
 	e.originalEvent.preventDefault();
@@ -281,7 +255,6 @@ function paperEmptySelectionPressed(e) {
  */
 function paperOnMouseUp(e) {
 	updateMousePos(e)
-	selectSingleOnPoint(curMousePos);
 
 	if (genUI.lastClickedValue == "Stock") {
 		createStock(curMousePos);
@@ -325,25 +298,21 @@ function paperOnMouseUp(e) {
 	genUI.deselectUIElements();
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
-	selectSingleOnPoint(curMousePos);
 }
 
 
-
-
-/**
- * Update the "selected" array to hold all cells that are under a single point
- *   on the paper. This point should generally be the user's mouse position.
- * @preconditions The mouse is on the paper. The graph is initialized.
- * @postconditions The selected array is filled with all of the objects on the
- *   position of the mouse.
- * @param  {position} pos a valid coordinate with a 'x' field and 'y' field.
- * @memberOf initialize_diagram
- */
-function selectSingleOnPoint(pos) {
-	console.log(graph.findModelsFromPoint(pos));
-	selected[0] = graph.findModelsFromPoint(pos)[0];
+function selectClickedCell(cellView, evt) {
+	bringChildrenOfParentToFront(cellView.model);
+	selected[0] = cellView.model;
+	console.log(selected[0].attributes.position);
+	updateProperties();
 }
+
+function deselectCell() {
+	selected = {};
+	updateProperties();
+}
+
 
 
 /**
@@ -366,7 +335,7 @@ function handleKeyInput(e) {
 		deleteSelectedCell(e);
 	}
 	else {
-		console.log("A key was pushed");
+		//console.log("A key was pushed");
 	}
 }
 
@@ -383,7 +352,6 @@ function handleKeyInput(e) {
  * @memberOf initialize_diagram
  */
 function deleteSelectedCell(e) {
-	console.log(selected);
 	if (selected){
 		if (selected[0]) {
 			rootModel.getRoot().get(selected[0].id).action = 'remove';

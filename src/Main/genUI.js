@@ -146,13 +146,13 @@ QM_LabUI.prototype.genToolbar = function() {
 QM_LabUI.prototype.genPropertiesForm = function() {
 	QM_LabUI.prototype.propertiesForm = [
 		{ view:"label", label:"Properties", css:"sidebarTitle" },
-		{ view:"text", label:"Text", name:"text" ,id: "propText" },
-		{ view:"text", label:"Width", name:"width", id: "propWidth" },
-		{ view:"text", label:"Height", name:"height", id: "propHeight" },
-		{ view:"text", label:"Depth", name:"depth", id:"propDepth" },
-		{ view:"colorpicker", label:"Color", name:"color", value:"#ffaadd", id: "propColour" },
-		{ view:"text", label:"Img URL", name:"imgURL", id: "propImageUrl" },
-		{ view:"button", width: 100, value: "Change", id:"Change"}
+		{ view:"text", label:"Text", name:"text", id:"text" },
+		{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+		{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+		{ view:"text", label:"Width", name:"width", id:"width" },
+		{ view:"text", label:"Height", name:"height", id:"height" },
+		{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
+		{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
 	];
 
 	webix.ui({
@@ -164,10 +164,57 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 			]}
 		]
 	});
-	$$("Change").attachEvent("onItemClick", function(id, e){		
-        setUpdatedProperties();
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+	
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
 	});
 	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setWidth(document.querySelector('div[view_id="width"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("width"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setHeight(document.querySelector('div[view_id="height"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("height"));
+	
+	
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setImage(document.querySelector('div[view_id="url"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("url"));
 	
 }
 
@@ -179,4 +226,3 @@ QM_LabUI.prototype.deselectUIElements = function() {
 	$$("nodeListView").unselectAll();
 	$$("linkListView").unselectAll();
 }
-

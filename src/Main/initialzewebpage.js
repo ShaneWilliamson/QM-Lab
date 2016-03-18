@@ -35,6 +35,5 @@ function onstartRun(){
 	selected = {}
 	authorize();
 	freeze = setInterval(checkAndFreeze, 1000);
-	initChangeBox();
 	movingViewPort = false;
 }

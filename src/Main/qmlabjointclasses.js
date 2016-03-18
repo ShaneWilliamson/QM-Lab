@@ -1,4 +1,4 @@
-/*
+	/*
 	This is the constructor of the localNode class.
 
 	From a technical standpoint, this function simply wraps a joint.js cell. However, it allows us
@@ -99,13 +99,40 @@
 		this.attr('text/ref-x', (width / 2));
 		if (this.attributes.type === "QMLab.Agent" || this.attributes.type === "QMLab.ImageNode")
 		{
-			this.attr('text/ref-y', (height + 30));
+			this.attr('text/ref-y', height);
 		}
 		else {
-			this.attr('text/ref-y', (height / 2));
+			this.attr('text/ref-y', ((height / 2) - 10));
 		}
 
 
+	}
+	
+	
+	/*
+	Setter for localNode height. 
+	
+	pre: The localNode exists
+	     height is a valid int
+	post: The localCell's size has been updated to {curWidth, height}
+	*/
+	joint.shapes.basic.Rect.prototype.setHeight = function(height) {
+		if (height > 0) {
+			this.setSize(this.getXSize(), height);	
+		}
+	}
+	
+	/*
+	Setter for localNode width. 
+	
+	pre: The localNode exists
+	     width is a valid int
+	post: The localCell's size has been updated to {width, curHeight}
+	*/
+	joint.shapes.basic.Rect.prototype.setWidth = function(width) {
+		if (width > 0) {
+			this.setSize(width, this.getYSize());	
+		}
 	}
 
 	/*
@@ -128,7 +155,10 @@
 	post: The localCell's z-order has been updated to z
 	*/
 	joint.shapes.basic.Rect.prototype.setZOrder = function(z) {
-		this.attributes.z = z;
+		if (!isNaN(z)) {
+			this.set('z', z);
+		}
+		console.log(this);
 	}
 
 	/*
@@ -139,7 +169,14 @@
 	return: The label text of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.getLabel = function() {
-		return this.attributes.attrs.text.text;
+		var retval = this.attributes.text.text;
+		if (!retval) {
+			return "";
+			
+		}
+		else {
+			return retval;
+		}
 	}
 
 	/*
@@ -150,22 +187,75 @@
 	return: The z-order of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
-		this.attributes.attrs.text.text = text;
+		this.prop('text/text', text);
+		this.attr('text/text', text);
 	}
 
 
 
 
 	joint.shapes.basic.Rect.prototype.setColour = function(colour) {
-		console.log(this);
 		this.prop('rect/fill', colour);
 		this.attr('rect/fill', colour);
+		this.prop('path/fill', colour);
+		this.attr('path/fill', colour);
+		this.prop('circle/fill', colour);
+		this.attr('circle/fill', colour);
+	}
+	
+	joint.shapes.basic.Rect.prototype.getColour = function(colour) {
+		return this.attributes.rect.fill;
+	}
+	
+	
+	joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
+		this.prop('text/fill', colour);
+		this.attr('text/fill', colour);
+	}
+	
+	joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
+		return this.attributes.text.fill;
+	}
+	
+	joint.shapes.basic.Rect.prototype.setTextSize = function(size) {
+		if(!isNaN(size)) {
+			this.prop('text/fontsize', size);
+			this.attr('text/font-size', size);
+		}
+	}
+	
+	joint.shapes.basic.Rect.prototype.getTextSize = function() {
+		return this.attributes.text.fontsize;
+	}
+	
+	joint.shapes.basic.Rect.prototype.setImage = function() {
+		
 	}
 
-
-
-
-
+	joint.shapes.basic.Rect.prototype.getImage = function() {
+		return "";
+	}
+	
+	
+	
+	
+	joint.shapes.basic.Circle.prototype.setLabel = joint.shapes.basic.Rect.prototype.setLabel;
+	joint.shapes.basic.Circle.prototype.setTextSize = joint.shapes.basic.Rect.prototype.setTextSize;
+	joint.shapes.basic.Circle.prototype.setTextColour = joint.shapes.basic.Rect.prototype.setTextColour;
+	joint.shapes.basic.Circle.prototype.setColour = joint.shapes.basic.Rect.prototype.setColour;
+	joint.shapes.basic.Circle.prototype.setWidth = joint.shapes.basic.Rect.prototype.setWidth;
+	joint.shapes.basic.Circle.prototype.setHeight = joint.shapes.basic.Rect.prototype.setHeight;
+	joint.shapes.basic.Circle.prototype.setSize = joint.shapes.basic.Rect.prototype.setSize;
+	joint.shapes.basic.Circle.prototype.setImage = joint.shapes.basic.Rect.prototype.setImage;
+	
+	joint.shapes.basic.Circle.prototype.getLabel = joint.shapes.basic.Rect.prototype.getLabel;
+	joint.shapes.basic.Circle.prototype.getTextSize = joint.shapes.basic.Rect.prototype.getTextSize;
+	joint.shapes.basic.Circle.prototype.getTextColour = joint.shapes.basic.Rect.prototype.getTextColour;
+	joint.shapes.basic.Circle.prototype.getColour = joint.shapes.basic.Rect.prototype.getColour;
+	joint.shapes.basic.Circle.prototype.getXSize = joint.shapes.basic.Rect.prototype.getXSize;
+	joint.shapes.basic.Circle.prototype.getYSize = joint.shapes.basic.Rect.prototype.getYSize;
+	joint.shapes.basic.Circle.prototype.getImage = joint.shapes.basic.Rect.prototype.getImage;
+	
 
 	/*
 	This is the constructor of the localLink class.
@@ -431,7 +521,33 @@
 	joint.dia.Link.prototype.setLabel = function(text) {
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
 	}
+	
+	/*
+	Setter for localLink label text.
+	
+	pre: The localLink exists
+	     text : a valid string of some kind
+	post: The label text of the node has been set to the passed in text
+	*/
+	joint.dia.Link.prototype.setTextSize = function(textsize) {
+		var text = this.getLabel();
+		var colour = this.getTextColour();
+		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
+		this.prop('text/textsize', textsize);
+	}
 
+	/*
+	Setter for localLink label text.
+	
+	pre: The localLink exists
+	     text : a valid string of some kind
+	post: The label text of the node has been set to the passed in text
+	*/
+	joint.dia.Link.prototype.getTextSize = function(textsize) {
+		return this.attributes.text.textsize;
+	}
+	
+	
 	/*
 	Getter for localLink label text. Will return what the link currently
 	has written and displayed partway along itself. If nothing is currently
@@ -457,30 +573,68 @@
 	}
 
 	joint.dia.Link.prototype.setColour = function(colour) {
-		console.log(this);
-		this.prop( {
-			'.connection': {stroke: colour}
-		});
+		this.prop('colour', colour);
 		this.attr( {
-			'.connection': { stroke: colour }
+			'.connection': { stroke: colour, fill: colour },
+			'.marker-target': {stroke: colour, fill: colour },
+			'.marker-source': {stroke: colour, fill: colour },
 		});
-		console.log(this);
 	}
 
 
-	var TerminalStateDefaultFill = {
-		type: 'radialGradient',
-		stops: [
-			{ offset: '0%', color: '#FF1111' },
-			{ offset: '20%', color: '#FF1111' },
-			{ offset: '40%', color: '#FF1111' },
-			{ offset: '60%', color: '#FF1111' },
-			{ offset: '80%', color: '#FF1111' }
-		]
-	};
-
-
-
+	
+	joint.dia.Link.prototype.getColour = function(colour) {
+		return this.attributes.colour;
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setTextColour = function(colour) {
+		var text = this.getLabel();
+		var textsize = this.getTextSize();
+		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
+		this.prop('text/textcolour', colour);
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.getTextColour = function() {
+		if (this.attributes.text) {
+			return this.attributes.text.textcolour;
+		}
+		else {
+			return "#000000";
+		}
+		
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.getXSize = function() {
+		return "";
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.getYSize = function() {
+		return "";
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setWidth = function() {
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setHeight = function() {
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.attemptToParent = function() {
+		if (this.getSourceElement() != null && 
+			    this.getTargetElement() != null) {
+					if (this.getSourceElement().get('parent') != this.getTargetElement().get('parent')) {
+						graph.getCell(this.get('parent')).unembed(this);							
+					}
+				}
+	}
+	
+	
 	/*
 	Initialzes the namespace for our custom shapes for use in the diagram.
 	*/
@@ -562,7 +716,6 @@
 				rect: { fill: 'grey' },
 				text: { text: "Stock", fill: 'white' }
 			}
-
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 
@@ -659,10 +812,7 @@
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.ImageNode',
-			attrs: {
-				'rect': { 'fill-opacity': 0, 'stroke-opacity': 0},
-				'text': { 'font-size': 14, text: 'Your Image Here', 'ref-x': 100, 'ref-y': 130, ref: 'rect', fill: 'black' },
-			}
+			
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
@@ -709,7 +859,6 @@
 				//text field won't be used very often in the final release.
 				},
 
-
 		}, joint.shapes.basic.Circle.prototype.defaults)
 	});
 
@@ -729,13 +878,7 @@
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.Agent',
-			size: { width: 200, height: 200 },
-			attrs: {
-				'rect': { fill: 'white', width: 200, height: 200 },
-				'text': { 'font-size': 14, text: 'Agent', 'ref-x': 100, 'ref-y': 130, ref: 'rect', fill: 'black' },
-				'image': { 'xlink:href': 'http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png', width: 200, height: 200 },
-			}
-
+			
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 
@@ -763,7 +906,6 @@
 				path: { fill: '#cccccc', d: 'M 0 20 C 0 0 0 0 20 0 L 80 0 C 100 0 100 0 100 10 L 100 80 C 100 100 100 100 80 100 L 20 100 -15 115 0 80 z' },
 				},
 
-
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 
@@ -771,6 +913,19 @@
 	joint.shapes.QMLab.ImageNode.prototype.setImage = function(url) {
 		this.prop('url', url);
 		this.attr('image/xlink:href', url);
+	}
+	
+	joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
+		return this.attributes.url;
+	}
+	
+	joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
+		this.prop('url', url);
+		this.attr('image/xlink:href', url);
+	}
+	
+	joint.shapes.QMLab.Agent.prototype.getImage = function(url) {
+		return this.attributes.url;
 	}
 
 	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {

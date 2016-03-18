@@ -40,8 +40,12 @@ function createStock(pos) {
 	var newStock = new joint.shapes.QMLab.Stock({
 		position: { x: pos.x, y: pos.y },
 		size: { width: 100, height: 30 },
+		attrs: { 
+			rect: { fill: 'grey' }, 
+			text: { text: "Stock", fill: 'white' } 
+		}
 	});
-	setUpNewCell(newStock);
+	setUpNewCell(newStock, "Stock", "#aaaaaa", "#ffffff");
 	
 	console.log("Stock added")
 	return newStock;
@@ -58,7 +62,7 @@ function createStock(pos) {
  */
 function createLink(pos, connector) {
 	var newLink = new localLink(pos, false, false, false, connector);
-	setUpNewCell(newLink);
+	setUpNewCell(newLink, "", "#000000", "#000000");
 	
 	console.log('New cell added');
 	return newLink;
@@ -88,7 +92,9 @@ function createImage(pos, pictureURL, label, sizeX, sizeY) {
 		position: { x: pos.x, y: pos.y },
 		size: { width: 200, height: 120 },
 		attrs: {
-			'image': { 'xlink:href': 'http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg', width: 200, height: 120 }
+			'rect': { 'fill-opacity': 0, 'stroke-opacity': 0},
+			'image': { 'xlink:href': 'http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg', width: 200, height: 120 },
+			'text': { 'font-size': 14, text: 'Your Image Here', 'ref-x': 100, 'ref-y': 130, ref: 'rect', fill: 'black' },
 		}
 	});
 	if (sizeX && sizeY) {
@@ -97,10 +103,13 @@ function createImage(pos, pictureURL, label, sizeX, sizeY) {
 	if (pictureURL) {
 		newImage.setImage(pictureURL);
 	}
+	else {
+		newImage.setImage('http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg');
+	}
 	if (label) {
 		newImage.setLabel(label);
 	}
-	setUpNewCell(newImage);
+	setUpNewCell(newImage, "Your Image Here", "#ffffff", "#000000");
 	console.log("A image node was created.");
 	return newImage;
 }
@@ -116,9 +125,11 @@ function createImage(pos, pictureURL, label, sizeX, sizeY) {
  */
 function createVariable(pos) {
 	var newVariable = new joint.shapes.QMLab.Variable({
-		position: {x: pos.x, y: pos.y}
+		position: {x: pos.x, y: pos.y},
+		size: { width: 20, height: 20 },
+		attrs: { text: { text: 'Variable', 'ref-y': 30, ref: 'circle' }, circle: { fill: 'gray' } },
 	});
-	setUpNewCell(newVariable);
+	setUpNewCell(newVariable, "Variable", "#aaaaaa", "#000000");
 	
 	console.log("A variable was created.");
 	return newVariable;
@@ -136,9 +147,14 @@ function createVariable(pos) {
  */
 function createParameter(pos) {
 	var newParameter = new joint.shapes.QMLab.Parameter({
-		position: {x: pos.x, y: pos.y}
+		position: {x: pos.x, y: pos.y},
+		size: { width: 20, height: 20 },
+		attrs: { 
+			text: { text: 'Parameter', 'ref-y': 30, ref: 'circle' }, 
+			circle: { fill: 'gray' },
+		},
 	});
-	setUpNewCell(newParameter);
+	setUpNewCell(newParameter, "Parameter", "#aaaaaa", "#000000");
 	
 	console.log("A parameter was created.");
 	return newParameter;
@@ -158,8 +174,13 @@ post: A collaborative state has been created with its top-left corner positioned
 function createState(pos) {
 	var newState = new joint.shapes.QMLab.State({
 		position: { x: pos.x, y: pos.y },
+		size: { width: 100, height: 30 },
+		attrs: { 
+			rect: { fill: 'yellow', rx: 10, ry: 10 }, 
+			text: { text: "State", fill: 'black' } 
+		}
 	});
-	setUpNewCell(newState);
+	setUpNewCell(newState, "State", "#ffff00", "#000000");
 	
 	console.log("State added")
 	return newState;
@@ -179,8 +200,13 @@ post: A collaborative terminal state has been created with its top-left corner p
 function createTerminalState(pos) {
 	var newTerminalState = new joint.shapes.QMLab.TerminalState({
 		position: { x: pos.x, y: pos.y },
+		size: { width: 100, height: 30 },
+		attrs: { 
+			rect: { fill: "red", rx: 10, ry: 10 }, 
+			text: { text: "Terminal State", fill: 'black' } 
+		}
 	});
-	setUpNewCell(newTerminalState);
+	setUpNewCell(newTerminalState, "Terminal State", "#ff0000", "#000000");
 	
 	console.log("Terminal State added")
 	return newTerminalState;
@@ -199,8 +225,13 @@ post: A collaborative branch has been created with its top-left corner positione
 function createBranch(pos) {
 	var newBranch = new joint.shapes.QMLab.Branch({
 		position: { x: pos.x, y: pos.y },
+		size: { width: 25, height: 25 },
+		attrs: { 
+			rect: { fill: 'white', height: 25, width: 25, transform: 'rotate(45)' }, 
+			text: { text: "", fill: 'black' } 
+		}
 	});
-	setUpNewCell(newBranch);
+	setUpNewCell(newBranch, "", "#ffffff", "#000000");
 	
 	console.log("Branch added")
 	return newBranch;
@@ -218,9 +249,17 @@ post: A collaborative agent has been created with its top-left corner positioned
 function createAgent(pos) {
 	var newAgent = new joint.shapes.QMLab.Agent({
 		position: { x: pos.x, y: pos.y },
+		size: { width: 10000, height: 10000 },
+		attrs: {
+			'rect': { 'fill': '#ffffff', 'stroke': '#000000', width: 10000, height: 10000 },
+			'text': { 'font-size': 14, text: 'Agent', 'ref-x': 100, 'ref-y': 230, ref: 'rect', fill: 'black' },
+			'image': { 'xlink:href': 'http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png', width: 10000, height: 10000 },
+		}
 	});
-	setUpNewCell(newAgent);
-	console.log("Text added")
+	newAgent.setSize(200, 200);
+	newAgent.setImage('http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png');
+	setUpNewCell(newAgent, "", "#ffffff", "#000000");
+	console.log("Agent added")
 	return newAgent;
 }
 
@@ -236,9 +275,16 @@ post: A collaborative text area has been created with its top-left corner positi
 function createText(pos) {
 	var newText = new joint.shapes.QMLab.Text({
 		position: { x: pos.x, y: pos.y },
+		size: { width: 10000, height: 10000 },
+		attrs: { 
+			text: { text: '', ref: 'rect' }, 
+			rect: { 'fill-opacity': 0, 'stroke-opacity': 0 },
+			path: { fill: '#cccccc', d: 'M 0 2000 C 0 0 0 0 2000 0 L 8000 0 C 10000 0 10000 0 10000 2000 L 10000 8000 C 10000 10000 10000 10000 8000 10000 L 2000 10000 -1500 11500 0 8000 z' },   
+		},
 	});
 	newText.setLabel("HI");
-	setUpNewCell(newText);
+	newText.setSize(100, 100);
+	setUpNewCell(newText, "Hi!", "#aaaaaa", "#000000");
 	console.log("Text added")
 	return newText;
 }
@@ -261,7 +307,7 @@ function createText(pos) {
  */
 function createFlow(pos) {
 	var newFlow = new localFlow(pos, false, false, false, false);
-	setUpNewCell(newFlow);
+	setUpNewCell(newFlow, "", "#000000", "#000000");
 	
 	console.log("A flow was created.");
 	return newFlow;
@@ -281,7 +327,15 @@ function createFlow(pos) {
  * @param {position} cell a valid coordinate with an 'x' and 'y' field
  * @memberOf create_objects
  */
-function setUpNewCell(cell){
+function setUpNewCell(cell, text, colour, textColour){
+	cell.setLabel(text);
+	cell.setTextSize(12);
+	cell.setColour(colour);
+	cell.setTextColour(textColour);
+	console.log(cell);
+	console.log(cell.getLabel());
+	console.log(cell.getXSize());
+	
 	graph.addCell(cell);
 	createCollabCell(cell);
 	updateCollabGraph();
