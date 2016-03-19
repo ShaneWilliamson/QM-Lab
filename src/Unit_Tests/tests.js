@@ -286,3 +286,33 @@ QUnit.test("createAgent(pos) test", function (assert){
   assert.equal(newAgent.getImage(),"http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png");
 
 });
+
+QUnit.test("Test initializeGraph()", function(assert){
+  var spy = sinon.spy(JSON, "stringify");
+  initializeGraph();
+  assert.ok(spy);
+  spy.restore();
+
+});
+
+QUnit.test("Test initializeGraph()", function(assert){
+  var spy = sinon.spy(printGraph, "fromJSON");
+  initializePrintGraph();
+  assert.ok(spy);
+  spy.restore();
+
+});
+
+
+QUnit.test("Test compareArray())", function(assert){
+  var a1 = [];
+  var a2 = []
+  var a3 = [1];
+  var a4 = [0];
+
+  assert.equal(compareArray(a1,a2), true);
+  assert.equal(compareArray(a3,a4), false);
+  assert.equal(compareArray(a1,a4), false);
+
+
+});
