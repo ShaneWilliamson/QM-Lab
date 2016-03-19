@@ -107,31 +107,31 @@
 
 
 	}
-	
-	
+
+
 	/*
-	Setter for localNode height. 
-	
+	Setter for localNode height.
+
 	pre: The localNode exists
 	     height is a valid int
 	post: The localCell's size has been updated to {curWidth, height}
 	*/
 	joint.shapes.basic.Rect.prototype.setHeight = function(height) {
 		if (height > 0) {
-			this.setSize(this.getXSize(), height);	
+			this.setSize(this.getXSize(), height);
 		}
 	}
-	
+
 	/*
-	Setter for localNode width. 
-	
+	Setter for localNode width.
+
 	pre: The localNode exists
 	     width is a valid int
 	post: The localCell's size has been updated to {width, curHeight}
 	*/
 	joint.shapes.basic.Rect.prototype.setWidth = function(width) {
 		if (width > 0) {
-			this.setSize(width, this.getYSize());	
+			this.setSize(width, this.getYSize());
 		}
 	}
 
@@ -171,7 +171,7 @@
 		var retval = this.attributes.text.text;
 		if (!retval) {
 			return "";
-			
+
 		}
 		else {
 			return retval;
@@ -201,43 +201,43 @@
 		this.prop('circle/fill', colour);
 		this.attr('circle/fill', colour);
 	}
-	
+
 	joint.shapes.basic.Rect.prototype.getColour = function(colour) {
 		return this.attributes.rect.fill;
 	}
-	
-	
+
+
 	joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
 		this.prop('text/fill', colour);
 		this.attr('text/fill', colour);
 	}
-	
+
 	joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
 		return this.attributes.text.fill;
 	}
-	
+
 	joint.shapes.basic.Rect.prototype.setTextSize = function(size) {
 		if(!isNaN(size)) {
 			this.prop('text/fontsize', size);
 			this.attr('text/font-size', size);
 		}
 	}
-	
+
 	joint.shapes.basic.Rect.prototype.getTextSize = function() {
 		return this.attributes.text.fontsize;
 	}
-	
+
 	joint.shapes.basic.Rect.prototype.setImage = function() {
-		
+
 	}
 
 	joint.shapes.basic.Rect.prototype.getImage = function() {
 		return "";
 	}
-	
-	
-	
-	
+
+
+
+
 	joint.shapes.basic.Circle.prototype.setLabel = joint.shapes.basic.Rect.prototype.setLabel;
 	joint.shapes.basic.Circle.prototype.setTextSize = joint.shapes.basic.Rect.prototype.setTextSize;
 	joint.shapes.basic.Circle.prototype.setTextColour = joint.shapes.basic.Rect.prototype.setTextColour;
@@ -246,7 +246,7 @@
 	joint.shapes.basic.Circle.prototype.setHeight = joint.shapes.basic.Rect.prototype.setHeight;
 	joint.shapes.basic.Circle.prototype.setSize = joint.shapes.basic.Rect.prototype.setSize;
 	joint.shapes.basic.Circle.prototype.setImage = joint.shapes.basic.Rect.prototype.setImage;
-	
+
 	joint.shapes.basic.Circle.prototype.getLabel = joint.shapes.basic.Rect.prototype.getLabel;
 	joint.shapes.basic.Circle.prototype.getTextSize = joint.shapes.basic.Rect.prototype.getTextSize;
 	joint.shapes.basic.Circle.prototype.getTextColour = joint.shapes.basic.Rect.prototype.getTextColour;
@@ -254,7 +254,7 @@
 	joint.shapes.basic.Circle.prototype.getXSize = joint.shapes.basic.Rect.prototype.getXSize;
 	joint.shapes.basic.Circle.prototype.getYSize = joint.shapes.basic.Rect.prototype.getYSize;
 	joint.shapes.basic.Circle.prototype.getImage = joint.shapes.basic.Rect.prototype.getImage;
-	
+
 
 	/*
 	This is the constructor of the localLink class.
@@ -520,10 +520,10 @@
 	joint.dia.Link.prototype.setLabel = function(text) {
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
 	}
-	
+
 	/*
 	Setter for localLink label text.
-	
+
 	pre: The localLink exists
 	     text : a valid string of some kind
 	post: The label text of the node has been set to the passed in text
@@ -537,7 +537,7 @@
 
 	/*
 	Setter for localLink label text.
-	
+
 	pre: The localLink exists
 	     text : a valid string of some kind
 	post: The label text of the node has been set to the passed in text
@@ -545,8 +545,8 @@
 	joint.dia.Link.prototype.getTextSize = function(textsize) {
 		return this.attributes.text.textsize;
 	}
-	
-	
+
+
 	/*
 	Getter for localLink label text. Will return what the link currently
 	has written and displayed partway along itself. If nothing is currently
@@ -581,11 +581,11 @@
 	}
 
 
-	
+
 	joint.dia.Link.prototype.getColour = function(colour) {
 		return this.attributes.colour;
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.setTextColour = function(colour) {
 		var text = this.getLabel();
@@ -593,7 +593,7 @@
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
 		this.prop('text/textcolour', colour);
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.getTextColour = function() {
 		if (this.attributes.text) {
@@ -602,38 +602,38 @@
 		else {
 			return "#000000";
 		}
-		
+
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.getXSize = function() {
 		return "";
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.getYSize = function() {
 		return "";
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.setWidth = function() {
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.setHeight = function() {
 	}
-	
+
 	//This is a placeholder
 	joint.dia.Link.prototype.attemptToParent = function() {
-		if (this.getSourceElement() != null && 
+		if (this.getSourceElement() != null &&
 			    this.getTargetElement() != null) {
 					if (this.getSourceElement().get('parent') != this.getTargetElement().get('parent')) {
-						graph.getCell(this.get('parent')).unembed(this);							
+						graph.getCell(this.get('parent')).unembed(this);
 					}
 				}
 	}
-	
-	
+
+
 	/*
 	Initialzes the namespace for our custom shapes for use in the diagram.
 	*/
@@ -811,7 +811,7 @@
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.ImageNode',
-			
+
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
@@ -877,7 +877,7 @@
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.Agent',
-			
+
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
 
@@ -912,16 +912,16 @@
 		this.prop('url', url);
 		this.attr('image/xlink:href', url);
 	}
-	
+
 	joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
 		return this.attributes.url;
 	}
-	
+
 	joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
 		this.prop('url', url);
 		this.attr('image/xlink:href', url);
 	}
-	
+
 	joint.shapes.QMLab.Agent.prototype.getImage = function(url) {
 		return this.attributes.url;
 	}

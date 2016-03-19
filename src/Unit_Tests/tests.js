@@ -39,6 +39,7 @@ QUnit.test("Test Image Creation", function( assert ) {
   var sizeX = 200;
   var sizeY = 200;
   newImage.setSize(sizeX, sizeY);
+  newImage.setLabel(label);
   newImage.setImage(pictureURL);
 
   assert.notDeepEqual(newImage, null);
@@ -46,6 +47,7 @@ QUnit.test("Test Image Creation", function( assert ) {
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.height, newImage.attributes.rect.height);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.width, newImage.attributes.rect.width);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.url, newImage.attributes.url);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.text.text, newImage.attributes.text.text);
   var defaultURL = "http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg"
   assert.deepEqual(createImage(pos, null, label, sizeX, sizeY).attributes.url, defaultURL);
 
@@ -53,10 +55,18 @@ QUnit.test("Test Image Creation", function( assert ) {
   assert.deepEqual(newImage.getXSize(), sizeX);
   assert.deepEqual(newImage.getYSize(), sizeY);
 
+  // Change size and confirm it changed properly
+  newImage.setHeight(20);
+  assert.deepEqual(newImage.getYSize(), 20);
+
+  newImage.setWidth(30);
+  assert.deepEqual(newImage.getXSize(), 30);
+
+
+
   // Add a z order and see if it Changes
   newImage.setZOrder(2);
   assert.deepEqual(newImage.getZOrder(), 2);
-
 
 
 });
