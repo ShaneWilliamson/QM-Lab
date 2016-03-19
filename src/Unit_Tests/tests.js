@@ -295,12 +295,13 @@ QUnit.test("Test initializeGraph()", function(assert){
 
 });
 
-QUnit.test("Test initializeGraph()", function(assert){
+QUnit.test("Test initializeGraph() and updatePrintGraph", function(assert){
   var spy = sinon.spy(printGraph, "fromJSON");
   initializePrintGraph();
   assert.ok(spy);
+  updatePrintGraph();
+  assert.ok(spy);
   spy.restore();
-
 });
 
 
@@ -314,5 +315,12 @@ QUnit.test("Test compareArray())", function(assert){
   assert.equal(compareArray(a3,a4), false);
   assert.equal(compareArray(a1,a4), false);
 
+
+});
+
+// TODO: This test properly.
+QUnit.test("Test initializePaper()", function(assert){
+  initializePrintPaper();
+  assert.ok(true);
 
 });
