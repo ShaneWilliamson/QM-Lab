@@ -922,7 +922,7 @@
 		this.attr('image/xlink:href', url);
 	}
 
-	joint.shapes.QMLab.Agent.prototype.getImage = function(url) {
+	joint.shapes.QMLab.Agent.prototype.getImage = function() {
 		return this.attributes.url;
 	}
 

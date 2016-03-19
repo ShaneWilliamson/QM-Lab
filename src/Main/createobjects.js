@@ -108,6 +108,7 @@ function createImage(pos, pictureURL, label, sizeX, sizeY) {
 	}
 	if (label) {
 		newImage.setLabel(label);
+		setUpNewCell(newImage, newImage.getLabel(), "#ffffff", "#000000");
 	} else {
 		setUpNewCell(newImage, "Your Image Here", "#ffffff", "#000000");
 	}
