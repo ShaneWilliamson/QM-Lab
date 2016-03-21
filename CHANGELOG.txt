@@ -1,0 +1,38 @@
+
+ID4
+
+Implemented new in ID4:
+I would say the project, while still having issues is ready for use. 
+	
+	- There is a simple landing page which allows you to create a new file and name it. 
+		- loading the page via http://cmpt371g3.usask.ca/demo/development/src/Main/ is for creating new projects only. 
+		- To load an existing file, simply go to your google drive and open it from there. 
+	- Share functionality is in: to share a project, click the share button, and share it exactly as you would any google drive document
+		- When you've shared the file, the person you're sharing it with will see the name of the file so they can accept it.
+	- There is now an extra GUI element which allows you to change the properties of a node or link. 
+		Things you can change are:
+		- Text
+		- Text Size
+		- Text Color
+		- Width
+		- Height
+		- Color
+		- IMG URL (for image nodes only)
+	- Image is now custom. Input a valid URL to an image that is uploaded; no upload functionality
+	- State is yellow
+	- Terminal State is red... though the color may be changed by the user, so the difference is really only in the defaults
+	- Branch is a diamond
+	- Agent works. It is a black human body. You can place nodes on top of it, move it, and the nodes on top follow. 
+		Since the body is black and "color" changes the background of the node, it's recommended to make use of coloring text and links
+	- Links now have an arrow for direction
+	
+Things for ID5 thus far:
+	differentiating variables and parameters by having the circle show a p or v inside it. 
+		(To use it for now, I would suggest establishing a color to differentiate them eg. blue for parameter and green for variable)
+
+	there are several Flow improvements that need to be done
+		- doubled "tubelike" line
+		- adding a valve shape where the title of the link will be
+		
+	overhaul of how to make a link; select the type of link, click the source, click any intermediate paths, then double click on the final 
+		node to end it. 
