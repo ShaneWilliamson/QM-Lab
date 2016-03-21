@@ -11,7 +11,8 @@ The wiki pages are pretty barren at the moment, so if you have something to add 
 
 ID4
 =====
-We have a Documents manager (Angela), whom I have asked to make all files homogenized between github and google docs; ie. same files, same organization. 
+We have a Documents manager (Angela), whom I have asked to make documents homogenized between github and google docs as much as possible; ie. same documents, 
+	same organization, where possible. However, the git repo is still the main source for documentation, and will have things like jsdocs. 
 
 The main project can still be found at cmpt371g3.usask.ca/demo/development/src/Main
 
@@ -45,7 +46,7 @@ There is also now a changelog to describe the new features that have been implem
 
 On the Build-integration side, we have some improvements with the implementation of Linting. 
 	
-
+We have jsdocs to be found under doc>js_docs>index.html on the repo. 
 
 
 
