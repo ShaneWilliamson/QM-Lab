@@ -15,10 +15,21 @@ QUnit.test("Test Stock Creation", function( assert ) {
   var newStock = new localNode(pos, "Stock");
   assert.notDeepEqual(newStock, null);
   assert.deepEqual(createStock(pos).attributes.position, newStock.attributes.position);
+  assert.deepEqual(newStock.getXPos(), newStock.attributes.position.x);
+  assert.deepEqual(newStock.getYPos(), newStock.attributes.position.y);
+
+  //Test now if we change the position will it change the attributes properly.
+  newStock.setPos(4,3);
+  assert.equal(newStock.getXPos(), 4);
+  assert.equal(newStock.getYPos(), 3);
+
+  assert.equal(newStock.getImage(),"");
+
+
 
 });
 
-QUnit.test("Test Image Creation", function( assert ) {
+QUnit.test("Test Image Creation and qmlabjointclasses tests", function( assert ) {
   var pos = {x: 4, y: 3};
   var pictureURL = "http://i.imgur.com/48dEoHh.jpg";
   var label = "A nice meme";
@@ -29,15 +40,53 @@ QUnit.test("Test Image Creation", function( assert ) {
   var sizeX = 200;
   var sizeY = 200;
   newImage.setSize(sizeX, sizeY);
+  newImage.setLabel(label);
   newImage.setImage(pictureURL);
 
   assert.notDeepEqual(newImage, null);
   assert.deepEqual(createImage(pos, pictureURL, label, null, null).attributes.position, newImage.attributes.position);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.height, newImage.attributes.rect.height);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.width, newImage.attributes.rect.width);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.image.xlink, newImage.attributes.image.xlink);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.url, newImage.attributes.url);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.text.text, newImage.attributes.text.text);
+  assert.equal(createImage(pos, pictureURL, null, sizeX, sizeY).attributes.text.text, "Your Image Here");
+  var defaultURL = "http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg"
+  assert.equal(createImage(pos, null, label, sizeX, sizeY).attributes.url, defaultURL);
 
 
+  assert.equal(newImage.getXSize(), sizeX);
+  assert.equal(newImage.getYSize(), sizeY);
+
+  // Change size and confirm it changed properly
+  newImage.setHeight(20);
+  assert.equal(newImage.getYSize(), 20);
+
+  newImage.setWidth(30);
+  assert.equal(newImage.getXSize(), 30);
+
+  assert.equal(newImage.getLabel(), "A nice meme");
+  newImage.setLabel(null);
+  assert.equal(newImage.getLabel(), "");
+
+  // Set the fill color and see if it changed it
+  newImage.setColour("#ffffff");
+  assert.equal(newImage.getColour(), "#ffffff", "Changing fill colour worked.");
+
+  // Set the text color and see if it changed it
+  newImage.setTextColour("#000000");
+  assert.equal(newImage.getTextColour(), "#000000", "Changing text colour worked.");
+
+  // Add a z order and see if it Changes
+  newImage.setZOrder(2);
+  assert.equal(newImage.getZOrder(), 2);
+
+  // Gets the url
+  assert.equal(newImage.getImageURL(), "http://i.imgur.com/48dEoHh.jpg");
+  assert.equal(newImage.getImage(), "http://i.imgur.com/48dEoHh.jpg");
+
+  // Change text size
+  newImage.setTextSize(10);
+  assert.equal(newImage.getTextSize(), 10);
 
 });
 
@@ -68,6 +117,16 @@ QUnit.test("Test Flow Creation", function( assert ) {
   var pos = {x: 4, y: 3};
   var newFlow = new localFlow(pos, false, false, false, false);
   assert.deepEqual(createFlow(pos).attributes.position, newFlow.attributes.position);
+
+  var pos1 = {x: 0, y: 3};
+  var pos2 = {x: 4, y: 4};
+  var pos3 = {x: 3, y: 5};
+
+  var newStock1 = createStock(pos1);
+  var newStock2 = createStock(pos2);
+  var flow = localFlow (pos3, "Hello World", newStock1, newStock2, "Normal");
+  assert.equal(flow.getEndNode(), newStock2.id);
+
 });
 
 QUnit.test("addCollabEventToAllCells() Test", function( assert ) {
@@ -95,6 +154,7 @@ QUnit.test("doGraphOnLoaded() test", function( assert ){
   var spy = sinon.spy(console, "log");
   doGraphOnLoaded();
   assert.ok(spy, "Method ran.");
+  spy.restore();
 });
 
 QUnit.test("updateCollabGraph() test", function( assert ){
@@ -135,6 +195,32 @@ QUnit.test("Test Link Creation", function( assert ) {
   assert.deepEqual(createLink(pos, sConnector).attributes.target, newSLink.attributes.target);
   assert.deepEqual(createLink(pos, sConnector).attributes.connector, newSLink.attributes.connector);
 
+  var pos1 = {x: 0, y: 3};
+  var pos2 = {x: 4, y: 4};
+
+  var newStock1 = createStock(pos1);
+  var newStock2 = createStock(pos2);
+
+  newNLink.setStartNodeFromCell(newStock1);
+  assert.deepEqual(newNLink.getStartNode(), newStock1.id);
+
+  // change the id of the stock so the id is null but stock exists
+  var id = $.extend(true, {}, newStock1.id);
+  newStock1.id = null;
+  var spy = sinon.spy(console, "log");
+  newNLink.setStartNodeFromCell(newStock1);
+  assert.ok(spy);
+  newStock1.id = id;
+
+  // Change the id of the stock so the stock is null
+  newNLink.setStartNodeFromCell(null);
+  assert.ok(spy);
+  spy.restore();
+
+  // Create a link that has all variables
+  var pos3 = {x: 9, y: 4};
+  var newStock3 = createStock(pos3);
+  var newNLink = new localLink(pos, "Hello", newStock3, newStock2, nConnector);
 
 
 });
@@ -186,10 +272,55 @@ QUnit.test("createBranch(pos) test", function (assert){
 QUnit.test("createAgent(pos) test", function (assert){
   var pos = {x: 4, y: 2};
   var newAgent = new joint.shapes.QMLab.Agent({
-  		position: { x: pos.x, y: pos.y },
+		position: { x: pos.x, y: pos.y },
+		size: { width: 10000, height: 10000 },
+		attrs: {
+			'rect': { 'fill': '#ffffff', 'stroke': '#000000', width: 10000, height: 10000 },
+			'text': { 'font-size': 14, text: 'Agent', 'ref-x': 100, 'ref-y': 230, ref: 'rect', fill: 'black' },
+			'image': { 'xlink:href': 'http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png', width: 10000, height: 10000 },
+		}
 	});
-  setUpNewCell(newAgent);
   assert.notEqual(newAgent,null);
   assert.deepEqual(createAgent(pos).attributes.pos, newAgent.attributes.pos );
+  newAgent.setImage("http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png");
+  assert.equal(newAgent.getImage(),"http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png");
+
+});
+
+QUnit.test("Test initializeGraph()", function(assert){
+  var spy = sinon.spy(JSON, "stringify");
+  initializeGraph();
+  assert.ok(spy);
+  spy.restore();
+
+});
+
+QUnit.test("Test initializeGraph() and updatePrintGraph", function(assert){
+  var spy = sinon.spy(printGraph, "fromJSON");
+  initializePrintGraph();
+  assert.ok(spy);
+  updatePrintGraph();
+  assert.ok(spy);
+  spy.restore();
+});
+
+
+QUnit.test("Test compareArray())", function(assert){
+  var a1 = [];
+  var a2 = []
+  var a3 = [1];
+  var a4 = [0];
+
+  assert.equal(compareArray(a1,a2), true);
+  assert.equal(compareArray(a3,a4), false);
+  assert.equal(compareArray(a1,a4), false);
+
+
+});
+
+// TODO: This test properly.
+QUnit.test("Test initializePaper()", function(assert){
+  initializePrintPaper();
+  assert.ok(true);
 
 });
