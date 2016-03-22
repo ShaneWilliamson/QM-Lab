@@ -78,6 +78,7 @@
 		return this.attributes.size.height;
 	}
 
+
 	/*
 	Setter for localNode size.
 
@@ -191,6 +192,32 @@
 	}
 
 
+	/*
+	Setter for whether or not a node appears to be selected
+	When this value is set to true the node has a blue outline around it
+	When this value is set to false, the blue outline is removed
+
+	pre: The localNode exists
+		isSelected isn't null
+		isSelected is a boolean
+	post: the colour of the localNode is set to blue or transparent blue
+	*/
+	joint.shapes.basic.Rect.prototype.setSelected = function(isSelected) {
+		if (isSelected) {
+			// set colour to blue
+			colour = "#0000FF";
+		} else {
+			// set colour to transparent blue
+			colour = "#000000FF";
+		}
+
+		this.prop('rect/stroke', colour);
+		this.attr('rect/stroke', colour);
+		this.prop('path/stroke', colour);
+		this.attr('path/stroke', colour);
+		this.prop('circle/stroke', colour);
+		this.attr('circle/stroke', colour);
+	}	
 
 
 	joint.shapes.basic.Rect.prototype.setColour = function(colour) {
@@ -242,6 +269,7 @@
 	joint.shapes.basic.Circle.prototype.setTextSize = joint.shapes.basic.Rect.prototype.setTextSize;
 	joint.shapes.basic.Circle.prototype.setTextColour = joint.shapes.basic.Rect.prototype.setTextColour;
 	joint.shapes.basic.Circle.prototype.setColour = joint.shapes.basic.Rect.prototype.setColour;
+	joint.shapes.basic.Circle.prototype.setSelected = joint.shapes.basic.Rect.prototype.setSelected;
 	joint.shapes.basic.Circle.prototype.setWidth = joint.shapes.basic.Rect.prototype.setWidth;
 	joint.shapes.basic.Circle.prototype.setHeight = joint.shapes.basic.Rect.prototype.setHeight;
 	joint.shapes.basic.Circle.prototype.setSize = joint.shapes.basic.Rect.prototype.setSize;
