@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Main/qmlabfileopened.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header medium">
+    <h1>Code coverage report for <span class="entity">Main/qmlabfileopened.js</span></h1>
+    <h2>
+        Statements: <span class="metric">54.55% <small>(18 / 33)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(4 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">54.55% <small>(18 / 33)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">Main/</a> &#187; qmlabfileopened.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">///////////////////////
+//qm_lab_file_opened //
+///////////////////////
+/**
+ * Manages when a filed is opened in QM Lab
+ * @class qm_lab_file_opened
+ */
+&nbsp;
+/**
+ * The first time the collaborative diagramming document is ever run, it will
+ *   run this initialization function. It will create an empty collaborative
+ *   graph, and add it to Google's Collaborative Map.
+ * @preconditions Google Realtime API has never seen the current document ID. No
+ *   graph has been initialzed for this document. If one has, this function will
+ *   override it.
+ * @postconditions There will be an empty graph in Google's Realtime API, stored
+ *   at key "graph". colGraph: Local access to the collaborative graph.
+ * @param  {model} model The model of the Google Realtime API which the document
+ *   works on.
+ * @memberOf qm_lab_file_opened
+ */
+function onFileInitialize(model) {
+	rootModel = model;
+&nbsp;
+	var cGraph = model.create('CollaborativeGraph');
+	model.getRoot().set("graph", cGraph);
+	colGraph = model.getRoot().get('graph');
+	initializeGraph();
+	initializePrintGraph();
+	console.log("Initialize complete");
+&nbsp;
+	updateGraph();
+}
+&nbsp;
+/**
+ * This function is run every time the document is loaded by Google Realtime
+ *   API. It generates the diagram graph from the collaborative map, and saves
+ *   access to Google's Collaborative Objects map. It sets up the event
+ *   listeners on all existing "cells" to update their respective collaborative
+ *   objects whenever they change. Also, it adds event listeners to update the
+ *   back-up graph whever the user finishes interaction with the diagram.
+ * @param  {collaDoc} doc The Google Drive document that stores the
+ *   collaborative model.
+ * @preconditions The document has been loaded. If Google Realtime API hasn't
+ *   given access, this function will crash the page. You have been warned.
+ * @postconditions The diagram has been updated to the collaborative graph.
+ *   Event listeners have been added to the diagram to allow user interaction
+ *   and realtime updating. rootModel: local access to the Google Realtime API.
+ *   realDoc: local access that allows getting the collaborators currently
+ *   working on the document. colGraph: local access back-up graph
+ * @memberOf qm_lab_file_opened
+ */
+function onFileLoaded(doc) {
+	genUI.genUI(); // function loads the toolbars and menus required for the user interface
+			// function is declared in genUI.js
+	
+<span class="cstat-no" title="statement not covered" >	graph = new joint.dia.Graph;</span>
+<span class="cstat-no" title="statement not covered" >	printGraph = new joint.dia.Graph; </span>//Initialize the graph for printing
+<span class="cstat-no" title="statement not covered" >	rootModel = doc.getModel();</span>
+<span class="cstat-no" title="statement not covered" >	realDoc = doc;</span>
+<span class="cstat-no" title="statement not covered" >	colGraph = rootModel.getRoot().get('graph');</span>
+<span class="cstat-no" title="statement not covered" >	initializePaper();</span>
+<span class="cstat-no" title="statement not covered" >	initializePrintPaper(); </span> //Initialize the paper for printing
+&nbsp;
+&nbsp;
+	// Update the collaborative object whenever the user finishes making a change
+<span class="cstat-no" title="statement not covered" >	paper.on('cell:pointerup', updateCollabGraph);</span>
+<span class="cstat-no" title="statement not covered" >	paper.on('blank:pointerup', updateCollabGraph);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	updateGraph();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	addGlobalEventListeners();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	addCollabEventToAllCells();</span>
+<span class="cstat-no" title="statement not covered" >	allowCollabRecording();</span>
+	
+<span class="cstat-no" title="statement not covered" >	clearLoadingScreen();</span>
+	
+<span class="cstat-no" title="statement not covered" >	console.log("We loaded the document.");</span>
+}
+&nbsp;
+/**
+ * This function adds neccesary event listeners to the html document itself,
+ *   giving a generic handler function to decide what to do with the event from
+ *   there. These include: when the mouse, moves when a key on the keyboard is
+ *   pressed.
+ * @preconditions the html document has been loaded.
+ * @postconditions the html document has global event listeners waiting for user
+ *   input.
+ * @memberOf qm_lab_file_opened
+ */
+function addGlobalEventListeners() {
+	document.addEventListener('keydown', handleKeyInput);
+	document.addEventListener('mousemove', handleMouseMove);
+}
+&nbsp;
+/**
+ * This function grabs all local cells currently in a the graph, then adds event
+ *   listeners to them that will ensures they updates their collaborative
+ *   counterparts.
+ * @preconditions The local graph must exist.
+ * @postconditions Any local cell contained by the local graph will have had an
+ *   event listener attached. To itself that will make it update its
+ *   collaborative counterpart on change.
+ * @memberOf qm_lab_file_opened
+ */
+function addCollabEventToAllCells() {
+	var cells = graph.getCells();
+	for (i = 0; i &lt; cells.length; i++) {
+		addCollabEventToCell(cells[i]);
+	}
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Mar 21 2016 15:14:15 GMT-0600 (CST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

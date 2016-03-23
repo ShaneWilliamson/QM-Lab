@@ -8,8 +8,10 @@ function start() {
   onFileLoaded(doc);
 }
 
+// This makes failed tests dont expand on reload.
 QUnit.config.collapse = false;
 
+// Test to see if a created stock has the same position as our created cell
 QUnit.test("Test Stock Creation", function( assert ) {
   var pos = {x: 3, y: 2};
   var newStock = new localNode(pos, "Stock");
@@ -54,6 +56,7 @@ QUnit.test("addCollabEventToAllCells() Test", function( assert ) {
   var spy = sinon.spy(graph, "getCells");
   addCollabEventToAllCells();
   assert.ok(spy,"graph.getCells() got called");
+  spy.restore();
 });
 
 QUnit.test("addGlobalEventListeners() Test", function( assert ) {
@@ -68,6 +71,7 @@ QUnit.test("registerCollaborativeObjectTypes() test", function( assert ){
   var ignoreCG = sinon.mock(CollaborativeGraph);
   registerCollaborativeObjectTypes();
   assert.ok(ignoreGAPI, "Method ran.");
+  ignoreCG.restore();
 
 });
 
@@ -75,6 +79,7 @@ QUnit.test("doGraphOnLoaded() test", function( assert ){
   var spy = sinon.spy(console, "log");
   doGraphOnLoaded();
   assert.ok(spy, "Method ran.");
+  spy.restore();
 });
 
 QUnit.test("updateCollabGraph() test", function( assert ){
