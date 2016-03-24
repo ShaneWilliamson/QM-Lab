@@ -5,6 +5,9 @@ They are not the same thing **/
 var genUI = new QM_LabUI();
 
 
+/**
+	Initializer for QM_LabUI class
+*/
 function QM_LabUI() {
 	this.lastClickedValue = "EDIT";	
 }
@@ -13,7 +16,12 @@ function QM_LabUI() {
 /**
 	Creates the tabbar used to select a node/link to place
 	Instantiates the tabbar with data from displayData.js
-**/
+	@precond html doc exists
+			webix.js has been imported
+			displayData.js has been imported
+			the html doc has been loaded
+	@postcond creates an tabbar in the objectSelectTabbar div
+*/
 QM_LabUI.prototype.genTabbar = function() {
 	webix.ui({
 		container: "objectSelectTabbar",
@@ -62,7 +70,6 @@ QM_LabUI.prototype.genTabbar = function() {
 		]
 	});  
 
-
 	// an event listener on nodes list view in the tabbar
 	// when an item is clicked, it's name is saved into genUI.lastClickedValue
 	$$("nodeListView").attachEvent("onItemClick", function(id, e){
@@ -84,7 +91,7 @@ QM_LabUI.prototype.genTabbar = function() {
 
 
 /**
-	Function creates the toolbar and tabbar using webix.
+	Creates the toolbar, tabbar and property box using webix.
 **/
 QM_LabUI.prototype.genUI = function() { 
 	genUI.genToolbar();
@@ -95,6 +102,10 @@ QM_LabUI.prototype.genUI = function() {
 
 /**
 	Creates the main toolbar at the top of the main page
+	@precond webix.js has been imported
+			the html doc has been loaded
+			the graph has been initialized
+	@postcond creates a toolbar in the mainToolbar div
 **/
 QM_LabUI.prototype.genToolbar = function() {
 	webix.ui({
@@ -143,6 +154,14 @@ QM_LabUI.prototype.genToolbar = function() {
 	});
 }
 
+
+/**
+	Creates the property display box
+	@precond webix.js has been imported
+			the html doc has been loaded
+			the graph has been instantiated
+	@postcond creates a property box in the propertiesForm div
+*/
 QM_LabUI.prototype.genPropertiesForm = function() {
 	QM_LabUI.prototype.propertiesForm = [
 		{ view:"label", label:"Properties", css:"sidebarTitle" },
@@ -221,6 +240,10 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 
 /**
 	Deselects all of the elements from both views in the tabbar
+	@precond webix.js has been loaded
+			the tabbar has been initialized into objectSelectTabbar
+			the html doc has been loaded
+	@postcond the node tab and link tab for the item selection tabbar will not have an item selected
 **/
 QM_LabUI.prototype.deselectUIElements = function() {
 	$$("nodeListView").unselectAll();
