@@ -4,10 +4,11 @@ var sample_nodes = [
 	{ id:1, value:"Image"},
 	{ id:2, value:"State"},
 	{ id:3, value:"Terminal State"},
-	{ id:4, value:"Variable"},
-	{ id:5, value:"Parameter"},
-	{ id:6, value:"Box"},
-	{ id:7, value:"Text Area"}
+	{ id:4, value:"Branch"},
+	{ id:5, value:"Variable"},
+	{ id:6, value:"Parameter"},
+	{ id:7, value:"Agent"},
+	{ id:8, value:"Text Area"}
 ];
 
 // data that is loaded into the links tab of the selection tabBar

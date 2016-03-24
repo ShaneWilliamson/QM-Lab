@@ -9,6 +9,48 @@ Please see the [wiki](https://github.com/ShaneWilliamson/QM-Lab/wiki) for an in-
 
 The wiki pages are pretty barren at the moment, so if you have something to add please do so!
 
+ID4
+=====
+We have a Documents manager (Angela), whom I have asked to make documents homogenized between github and google docs as much as possible; ie. same documents, 
+	same organization, where possible. However, the git repo is still the main source for documentation, and will have things like jsdocs. 
+
+The main project can still be found at cmpt371g3.usask.ca/demo/development/src/Main
+
+Unfortunately, finding times to get together for meetings and reviews this week has been very difficult, as several classes have been approaching 
+	end of term crunch. We did a lot more discussing things over slack and making use of our issue tracker to keep track of each other
+	and communicate. We did have a large meeting saturday the 12th where quite a lot of stuff got done, however, it was mainly a 
+	working meeting, with quite a lot of pair programming. 
+	
+	Michael Kelly and Matthew were pair programming working on the sharing, printing, saving
+	Michael Ruffel and Connor were pair programming working on the UI for hooking up ability to change the nodes' traits, such as text, color, font size
+	Angela and Benjin were there working on testing. Angela has taken lead of the selenium testing, and Benjin has done a lot of testing coverage plans. 
+	Corey was there, setting up the method contracts as proper jsdocs, and converting the existing contracts to that. 
+	I spent the time moving between the groups, seeing what they were doing, giving them feedback, giving them direction on what to work on,
+		seeing how things were done, and eating cookies. 
+	
+For testing, there was a significant push this deliverable for coverage testing and unit testing. You can see the results of our coverage testing 
+	here: http://puu.sh/nLSbw/d30433c666.png
+	
+	for more info on testing, you can see their more comprehensive report on the git wiki here https://github.com/ShaneWilliamson/QM-Lab/wiki/Testing
+		which should also be posted to the git and drive as a document. 
+	
+We have also begun triage. We decided (not in a meeting, so there are no minutes) to hold off on making the export to json to save locally, and load. 
+	we found that that would be a fairly involved process, and we will do that if it's important to the stakeholder for ID5. We also have begun triaging 
+	the issue tracker. Working through the issues, removing the bugs, removing the ones that have been done, deciding on which ones need to be done for
+	this deliverable. 
+	
+We also had a code freeze friday at noon. Because of some issues with merging, it ended up being extended a few hours, but the testing team had already 
+	been working on things during the week, so it didn't cause much headache. 
+	
+There is also now a changelog to describe the new features that have been implemented in the system, and outline how to use it, and what's to come. 
+
+On the Build-integration side, we have some improvements with the implementation of Linting. 
+	
+We have jsdocs to be found under doc>js_docs>index.html on the repo. 
+
+
+
+
 ID3
 =====
 For the main aspects of the codebase and project, go to cmpt371g3.usask.ca/demo/development/src/Main. 

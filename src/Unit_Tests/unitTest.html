@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Joint Spike Tests</title>
+
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.22.0.css">
+  <script src="qunit.js"></script>
+
+  <script src="sinon.js"></script>
+  <script src="sinon-qunit.js"></script>
+  <script src="blanket.min.js" ></script>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
+  <script src="../Main/jquery.js"></script>
+  <script src="../Main/lodash.js"></script>
+  <script src="../Main/backbone.js"></script>
+  <script src="../Main/joint.js"></script>
+  <script src="../Main/webix.js"></script>
+
+
+  <script src="../Main/displayData.js" data-cover></script>
+  <script src="../Main/genUI.js" data-cover></script>
+  <script src="../Main/checkcollaballowed.js" data-cover></script>
+  <script src="../Main/collabobjectssetup.js" data-cover></script>
+  <script src="../Main/connectioncheck.js" data-cover></script>
+  <script src="../Main/createobjects.js" data-cover></script>
+  <script src="../Main/initialzediagram.js" data-cover></script>
+  <script src="../Main/qmlabfileopened.js" data-cover></script>
+  <script src="../Main/qmlabjointclasses.js" data-cover></script>
+  <script src="../Main/elementPropAlter.js" data-cover></script>
+  <script src="../Main/utilityfunctionsqmlab.js" data-cover></script>
+  <script src="tests.js"></script>
+
+  <script>
+
+  window.onerror = function(){
+   return true;
+  }
+
+  </script>
+
+
+</head>
+<body>
+
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+
+</body>
+</html>

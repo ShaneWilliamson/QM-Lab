@@ -46,7 +46,7 @@ sudo dpkg -i google-chrome*.deb
 #
 echo "\r\nInstalling XVFB (headless GUI for Firefox) ...\r\n"
 sudo apt-get -y install xvfb
-sh -e /etc/init.d/xvfb start
+sudo sh -e /etc/init.d/xvfb start
 
 echo "Starting Google Chrome ..."
 sudo google-chrome --remote-debugging-port=9222 &

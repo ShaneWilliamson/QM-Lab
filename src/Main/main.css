@@ -16,3 +16,155 @@
 .flexible{
     margin-left: 270px;
 }
+
+.hidden{
+	display: none;
+}
+
+.visible{
+	display: block;
+}
+
+.sidebar{
+	margin: 10px;
+}
+
+.sidebarTitle{
+	font-size: 125%;
+}
+
+.messageBlock{
+	display: none;
+	margin-top: 100px;
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.message{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 30px;
+	margin-bottom: 30px;
+}
+
+#auth_button{
+	margin-left: 35%;
+}
+
+.button{
+	background-color: #3498db; /* colour of ui*/
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+
+.button:hover {
+	cursor: pointer;
+}
+
+#progress {
+	left: 25%;
+	top: 55%;
+	width: 50%;
+	height: 30px;
+	position: absolute;
+	background-color: #ddd;
+	overflow: hidden;
+	display: none;
+}
+
+#bar {
+	
+	background-color: #3498db; /*colour of ui */
+	width: 40%;
+	height: 30px;
+	position: relative;
+	display: none;
+}
+#state {
+	position: absolute;
+	top: 50%;
+	left: 45%;
+	display: none;
+}
+
+#paperView {
+	display: block;
+	
+}
+
+#createDoc{
+	display: none;
+}
+
+#docName{
+	color: gray;
+	padding: 15px 32px;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+
+
+#inputLine {
+	display: inline-block;
+	background-color: #3498db;
+}
+
+svg {
+	border-style: double; 
+}
+
+.nonInteractive {
+	pointer-events: none;
+}
+
+
+
+.bubble{
+  position:relative;
+  display: inline-block;
+  padding: 15px;
+  background: #ff9;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color:#000;
+  border:2px solid #000;
+  border-radius:20px;
+  outline:0;
+}
+.bubble:after{
+  content: ' ';
+  position:absolute;
+  margin: 0 auto;
+  left:0;
+  right:0;
+  bottom:-10px;
+  width:15px;
+  height:15px;
+  background:#ff9;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+  transform: rotate(45deg);
+}
+
+.printable{
+	visibility: hidden;
+}
+
+@media print{
+	.nonPrintable{
+		display: none;
+	}
+	
+	.printable{
+		visibility: visible;
+	}
+	
+	#printView{
+		display: block;
+	}
+
+}

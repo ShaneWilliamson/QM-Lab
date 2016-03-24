@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: grapiauth.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: grapiauth.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/////////////////
+//g_r_api_auth //
+/////////////////
+/**
+ * Google Realtime API Authentication class
+ * @class g_r_api_auth
+ */
+
+// Client ID from Google for our application
+var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercontent.com';
+
+/**
+ * Google Realtime API check to ensure the application has been properly set up.
+ *   Alerts the user if something has gone horribly wrong and no functionality
+ *   related to real-time collaboration will function.
+ */
+if (!/^([0-9])$/.test(clientId[0])) {
+	alert('Invalid Client ID - did you forget to insert your application Client ID?');
+}
+
+/**
+ * Creates a new instance of Google's Realtime API utility with the client ID of
+ *   QM-Lab. This is used to shorten a great many function calls and document
+ *   startup basics.
+ * @ignore
+ */
+var realtimeUtils = new utils.RealtimeUtils({ clientId: clientId });
+
+// save the access token that uniquely identifies a user for a particular user
+// of Google's api
+var access_token = "";
+
+/**
+ * The Google Realtime API is called to ensure that the user is logged into a
+ *   Google Account. If the user is logged into a Google Account, attempts to
+ *   load the QM-Lab document. If not logged in, the "Authorize" button has
+ *   functionality added to it that prompts the user to log in.
+ * @preconditions The HTML document should have just loaded when running this
+ *   function. It should run at no other time.
+ * @postconditions Either the QM-Lab document loading has begun, or the
+ *   "Authorize" button has had functionality added to it that allows the user
+ *   to log in and then start the QM-Lab document loading.
+ * @invariant The user needs a Google account to get past authorization
+ * @history Successful authorization is reused in future use
+ * @memberOf g_r_api_auth
+ */
+function authorize() {
+	// Attempt to authorize
+	realtimeUtils.authorize(function(response){
+		access_token = response["access_token"];
+		if(response.error){
+			// Authorization failed because this is the first time the user has used your application,
+			// show the authorize button to prompt them to authorize manually.
+			var button = document.getElementById('auth_button');
+			document.getElementById('landing').style.display = "block";
+			button.addEventListener('click', function () {
+				realtimeUtils.authorize(function(response){
+					startQM_DocumentLoad();
+					access_token = response["access_token"];
+				}, true);
+			});
+		} else {
+			startQM_DocumentLoad();
+		}
+	}, false);
+}
+
+/**
+ * This function gives the user feedback that Google's Realtime API is
+ *   attempting to load a document, initiates the back-end set up for properly
+ *   using Google's Realtime API, then actually calls said API to load a
+ *   document.
+ * @preconditions The user is logged into a Google Account.
+ * @postconditions A QM-Lab document will be loaded, and the page will have full
+ *   use of Google's Realtime API.
+ * @memberOf g_r_api_auth
+ */
+function startQM_DocumentLoad() {
+	displayLoadingScreen();
+	registerCollaborativeObjectTypes();
+	loadQM_Document();
+	loadShareDialog();
+}
+
+/**
+ * Loads the dialog for sharing the document
+ * @preconditions The Google Realtime API id is intialized.
+ * @postconditions The document is sharable
+ * @memberOf g_r_api_auth
+ */
+function loadShareDialog() {
+	var fileId = realtimeUtils.getParam('id');
+
+	init = function() {
+        s = new gapi.drive.share.ShareClient();
+        s.setOAuthToken(access_token);
+    	s.setItemIds([fileId]);
+    }	
+
+	gapi.load('drive-share', init);
+}
+
+/**
+ * This function is in charge of loading or creating the QM-Lab document. If it
+ *   finds an "id" in the URL query, it will attempt to load that already made
+ *   document. If it does not, it will create a new document and give it a
+ *   unique "id".
+ * @preconditions The HTML document has finished loading
+ * @postconditions The GoogleRealtime document should be loaded and all
+ *   collaborative functionality be properly engaged.
+ * @memberOf g_r_api_auth
+ */
+function loadQM_Document(){
+	// With auth taken care of, load a file, or create one if there
+	// is not an id in the URL.
+	var id = realtimeUtils.getParam('id');
+	if (id) {
+	// Load the document id from the URL
+		realtimeUtils.load(id.replace('/', ''), onFileLoaded, onFileInitialize);
+	} else {
+	//Check if it was loaded from google drive
+		//The section in the path that contains the ID is enclosed with %5B"..."%5D
+		var openDelim = "%5B%22";
+		var closeDelim = "%22%5D";
+		var url = window.location.href;
+		var openIndex = url.indexOf(openDelim);
+		var closeIndex = url.indexOf(closeDelim);
+		if((openIndex != -1) &amp;&amp; (closeIndex != -1)){
+			//Slices out the id from the end of the open delimiter to the beginning of the end delimiter
+			id = url.slice(openIndex + openDelim.length, closeIndex);
+			//navigate to the existing page and re-run existing code for loading the page
+			window.location.replace("?id=" + id);
+			//existing code for loading the page
+			id = realtimeUtils.getParam('id');
+			realtimeUtils.load(id.replace('/', ''), onFileLoaded, onFileInitialize);
+		}else{
+			//remove the loading screen so the user can enter in the name of the new file
+			clearLoadingScreen();
+			//Set up text field for naming new document
+			document.getElementById('createDoc').style.display = "block";
+			var submit = document.getElementById('docSubmit');
+			submit.addEventListener('click', createQM_Document);
+		} 	
+		
+	}
+}
+
+/**
+ * This function will create a new Realtime document in the user's Google Drive
+ *   with the name input into a text box. This function is only executed if the
+ *   user goes to the web app without a valid document id in the url.
+ * @preconditions The user did not navigate to an existing valid Realtime
+ *   document.
+ * @postconditions A new Realtime file is created in the users Google Drive with
+ *   the name input into the text box.
+ * @memberOf g_r_api_auth
+ */
+function createQM_Document(){
+	// Get the file name entered by the user
+	var fileName = document.getElementById('docName').value;
+	// Hide the document creation div and redisplay the loading screen
+	document.getElementById('createDoc').style.display = "none";
+	displayLoadingScreen();
+	// Create a new document, add it to the URL
+	realtimeUtils.createRealtimeFile(fileName, function(createResponse) {
+		window.history.pushState(null, null, '?id=' + createResponse.id);
+		realtimeUtils.load(createResponse.id, onFileLoaded, onFileInitialize);
+	});
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Mar 15 2016 22:34:04 GMT-0600 (Canada Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
