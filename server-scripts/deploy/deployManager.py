@@ -26,8 +26,8 @@ def start():
     if response == 'y':
       flag = 1
 
-  print("Please enter your sudo credentials.")
   #Now execute the deployment script
-  call(['sudo', 'screen', '-dmS', branchName, 'python', 'deployToWeb.py', branchName])
+  call(['sudo', 'screen', '-dmS', branchName, 'python', 'deployWorker.py', branchName])
+  print("To connect to the session run 'sudo screen -r " + branchName + "'.")
 
 start()
