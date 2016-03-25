@@ -1,12 +1,8 @@
 import time
 import os
 import sys
+import signal
 from subprocess import call
-
-###Global variables###
-# Both are assigned to in start() after we check to make sure of the argv count
-repoPath = ""
-webPath = ""
 
 #The routine to run, every hour it pulls from GitHub
 #This causes everything in the src folder to be put on display on the webserver
@@ -22,7 +18,7 @@ def start():
 
   #Otherwise it's business as normal; assign to the global variables
   repoPath = "/home/shared/QM-Lab_Repos/" + str(sys.argv[1]) + "/"
-  webPath = "/var/www/html/demo/" + str(sys.argv[1]) + "/"
+  webPath = "/var/www/html/" + str(sys.argv[1]) + "/"
   #This should execute the pull into the shared directory folder
   #Set up the branch repository
   setupBranch(repoPath, str(sys.argv[1]))
@@ -49,7 +45,8 @@ def pushContentToWeb():
   call(["mkdir", "-p", webPath])
   #Copy new src/ contents into webPath
   call(["cp", "-r", repoPath + "QM-Lab/src/", webPath])
-
+  #As well, copy new /doc/js_docs/ contents into webPath
+  call(["cp", "-r", repoPath + "QM-Lab/doc/js_docs/", webPath])
 
 # Routine to create a new directory in /var/www/html/ based on input
 def setupBranch(newPath, branchName):
@@ -96,11 +93,7 @@ def cleanUpWebPath():
   #Clean up the apache directory
   call(["rm", "-rf", webPath])
 
-
-try:
-  #Run the program until a keyboard interrupt is caught.
-  start()
-except KeyboardInterrupt:
+def interruptRoutine():
   #Global vars
   global repoPath
   global webPath
@@ -110,3 +103,10 @@ except KeyboardInterrupt:
     print("Clean up complete, exiting program.")
   else:
     print("Interrupt received, exiting program.")
+
+try:
+  #Run the program until a keyboard interrupt is caught.
+  signal.signal(signal.SIGTERM, interruptRoutine)
+  start()
+except KeyboardInterrupt:
+  interruptRoutine()
