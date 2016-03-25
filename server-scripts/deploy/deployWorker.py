@@ -1,6 +1,7 @@
 import time
 import os
 import sys
+import signal
 from subprocess import call
 
 #The routine to run, every hour it pulls from GitHub
