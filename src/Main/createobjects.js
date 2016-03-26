@@ -62,18 +62,9 @@ function createStock(pos) {
  */
 function createLink(pos, connector) {
 	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
-	var newLink; 
-	if(typeof objectAtPoint[0] !== 'undefined')
-	{
-		newLink = new localLink(pos, false, false, false, connector);
-		newLink.set('source', {id: objectAtPoint[0].id});
-		console.log("hi");
-		console.log(newLink);
-		targetFollow(newLink);
-
-	}else {
-		newLink = new localLink(pos, false, false, false, connector);
-	}
+	var newLink = new localLink(pos, false, false, false, connector);
+	//calls the function in linkJoining that will attach the new link to an element if is was created on one
+	targetFollow(newLink);
 	setUpNewCell(newLink, "", "#000000", "#000000");
 	console.log('New cell added');
 	return newLink;
@@ -321,8 +312,9 @@ function createText(pos) {
  */
 function createFlow(pos) {
 	var newFlow = new localFlow(pos, false, false, false, false);
+	//calls the function in linkJoining that will attach the new link to an element if is was created on one
+	targetFollow(newFlow);
 	setUpNewCell(newFlow, "", "#000000", "#000000");
-
 	console.log("A flow was created.");
 	return newFlow;
 }
