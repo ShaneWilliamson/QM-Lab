@@ -61,9 +61,20 @@ function createStock(pos) {
  * @memberOf create_objects
  */
 function createLink(pos, connector) {
-	var newLink = new localLink(pos, false, false, false, connector);
-	setUpNewCell(newLink, "", "#000000", "#000000");
+	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
+	var newLink; 
+	if(typeof objectAtPoint[0] !== 'undefined')
+	{
+		newLink = new localLink(pos, false, false, false, connector);
+		newLink.set('source', {id: objectAtPoint[0].id});
+		console.log("hi");
+		console.log(newLink);
+		targetFollow(newLink);
 
+	}else {
+		newLink = new localLink(pos, false, false, false, connector);
+	}
+	setUpNewCell(newLink, "", "#000000", "#000000");
 	console.log('New cell added');
 	return newLink;
 }
