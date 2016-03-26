@@ -14,16 +14,16 @@ function targetFollow(newLink){
 	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 	if(typeof objectAtPoint[0] !== 'undefined')
 	{
-		console.log(newLink);
+		//console.log(newLink);
 		lastLink = newLink;
-		console.log("test");
-		console.log(objectAtPoint[0]);
+		//console.log("test");
+		//console.log(objectAtPoint[0]);
 		lastLink.set('source', {id: objectAtPoint[0].id});
 
 		var paperDiv = document.getElementById("paperView");
 		paperDiv.addEventListener("mousemove", mouseTracker);
 		paper.$el.on('mousedown', linkTargeter);
-		console.log(lastLink);
+		//console.log(lastLink);
 	}
 	
 }
@@ -49,7 +49,7 @@ function mouseTracker(e){
  */
 function linkTargeter(e){
 	updateMousePos(e);
-	console.log(curMousePos);
+	//console.log(curMousePos);
 	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 	if(typeof objectAtPoint[0] !== 'undefined')
 	{
@@ -61,6 +61,7 @@ function linkTargeter(e){
 	}
 	var paperDiv = document.getElementById("paperView");
 	paperDiv.removeEventListener("mousemove", mouseTracker);
+	paper.$el.off('mousedown', linkTargeter);
 	lastLink = null; 
 
 }
