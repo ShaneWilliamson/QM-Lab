@@ -1,6 +1,8 @@
 
 var lastLink;
 
+const LINK_OFFSET = 15;
+
 
 /**
  * If there is an element under the mouse when this function is called the given link will have that slement set to be it's "source" element, the "target" side of the link will then follow the mouse and be set to the element or position under the mouse on the next mouse down event
@@ -37,7 +39,7 @@ function targetFollow(newLink){
  */
 function mouseTracker(e){
 	updateMousePos(e);
-	lastLink.set('target', { x:curMousePos.x -15 , y:curMousePos.y  });
+	lastLink.set('target', { x:curMousePos.x -LINK_OFFSET , y:curMousePos.y  });
 }
 
 /**
