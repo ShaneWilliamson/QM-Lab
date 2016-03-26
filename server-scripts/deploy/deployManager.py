@@ -4,8 +4,7 @@ from subprocess import call
 #The routine to run, every hour it pulls from GitHub
 #This causes everything in the src folder to be put on display on the webserver
 def start():
-  global branchName
-
+  branchName = ""
   #Get user input on which branch to deploy.
   flag = 0
   while flag == 0:
@@ -27,6 +26,8 @@ def start():
       flag = 1
 
   #Now execute the deployment script
+  #This will prompt the user to enter sudo credentials, meaning that executing this script requires
+  #  sudo access to the server.
   call(['sudo', 'screen', '-dmS', branchName, 'python', 'deployWorker.py', branchName])
   print("To connect to the session run 'sudo screen -r " + branchName + "'.")
 
