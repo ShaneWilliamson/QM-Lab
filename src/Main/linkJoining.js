@@ -9,7 +9,7 @@ var lastLink;
  * @postconditions If the new link was created over an element, that element will become the source of the link and mouse listeners for on mouse down on will be added to the paper calling linkTargeter, and an on mouse move event listener will be added to the paper dic which will call mouseTracker
  * @memberOf linkJoining
  */
-function targetFollow(newLink){
+function targetFollowing(newLink){
 
 	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 	if(typeof objectAtPoint[0] !== 'undefined')
