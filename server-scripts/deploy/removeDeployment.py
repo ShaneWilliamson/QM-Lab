@@ -36,6 +36,8 @@ def start():
 #Executes the clean up routine for both the stored repository on the testing server, and the
 #  deployed sections on the public space of the server.
 def cleanUp():
+  #Kill the target screen running the deployment
+  call(["sudo", "screen", "-X", "-S", branchName, "kill"])
   cleanUpRepoPath()
   cleanUpWebPath()
 
