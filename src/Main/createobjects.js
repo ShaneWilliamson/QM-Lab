@@ -61,7 +61,6 @@ function createStock(pos) {
  * @memberOf create_objects
  */
 function createLink(pos, connector) {
-	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 	var newLink = new localLink(pos, false, false, false, connector);
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
 	targetFollow(newLink);
