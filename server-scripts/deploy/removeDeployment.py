@@ -6,7 +6,7 @@ from subprocess import call
 def start():
   global repoPath
   global webPath
-  branchName = ""
+  global branchName
   #Get user input on which deployed branch to remove.
   flag = 0
   while flag == 0:
