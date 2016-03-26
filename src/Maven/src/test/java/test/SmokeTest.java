@@ -68,7 +68,7 @@ public class SmokeTest {
   public void MainTest() throws Exception {
 	// Get the web page and go to it.
 	    wait = new WebDriverWait(driver, 20);
-	    driver.get(baseUrl + "/demo/development/src/Main/");
+	    driver.get(baseUrl + "development/src/Main/");
 	    final String previousURL = driver.getCurrentUrl();
 
 	    System.out.println(driver.toString());
