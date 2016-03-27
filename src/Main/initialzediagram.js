@@ -414,7 +414,7 @@ function stopDraggingAction() {
 	// if we were panning, stop the panning
 	if (movingViewPort) {
 		movingViewPort = false;
-		("Panning has stopped");
+		console.log("Panning has stopped");
 
 	// otherwise we need to end a box selection
 	} else if (boxSelectionX != null) {
@@ -470,13 +470,12 @@ function deselectAllCells() {
  * @memberOf initialize_diagram
  */
 function handleMouseMove(e) {
-	updateMousePos(e);
-
 	if (movingViewPort) {
 		moveViewPort(e);
 
 	// if we are currently dragging a selection box, we need to update it
 	} else if (boxSelectionX != null) {
+		updateMousePos(e);
 		console.log("A box select is currently being dragged");
 		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
 	}
