@@ -22,3 +22,24 @@ function compareArray(a1, a2) {
 		return false;
 	}
 }
+
+function smartRect(startX, startY, endX, endY) {
+	var rect = {};
+
+	if (endX >= startX) {
+		rect["x"] = startX;	
+	} else {
+		rect["x"] = endX;
+	}
+	rect["width"] = Math.abs(endX - startX);
+	
+	
+	if (endY >= startY) {
+		rect["y"] = startY;
+	} else {
+		rect["y"] = endY;
+	}
+	rect["height"] = Math.abs(endY - startY);
+	
+	return rect;
+}

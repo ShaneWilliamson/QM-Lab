@@ -54,21 +54,25 @@ function removeAllSelectionBoxes() {
 }
 
 function drawSelectionBox(startX, startY, endX, endY) {
+	// delete all previous selection boxes
+	$(".selectionBox").remove();
+
 	// get the main canvas
 	var svg = $.find("svg")[0];
 	
 	var box = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
 	box.setAttribute("class", "selectionBox");
 
-	box.setAttribute("x", startX);
-	box.setAttribute("y", startY);
+	// smart rect deals with negative widths/heights automagically
+	var rect = smartRect(startX, startY, endX, endY);
 
-	var width = Math.abs(endX - startX);
-	var height = Math.abs(endY - startY);
-	box.setAttribute("width", width);
-	box.setAttribute("height", height);
+	box.setAttribute("x", rect.x);
+	box.setAttribute("y", rect.y);
+	box.setAttribute("width", rect.width);
+	box.setAttribute("height", rect.height);
 
 	box.style.fill = "#55cecc";
+	box.setAttribute("fill-opacity", "0.4");
 	svg.appendChild(box);
 }
 
@@ -99,11 +103,9 @@ function initializePaper() {
 	addEvent(window, 'resize', resizePaper);
 	resizePaper();
 	
-	
 	// First, unembed the cell that has just been grabbed by the user.
 	paper.on('cell:pointerdown', bringParentlessCellToFront);
 	paper.on('cell:pointerdown', deParentCell);
-	
 	
 	paper.on('cell:pointerup', parentCell);	
 	paper.on('cell:pointerclick', selectClickedCell);
@@ -339,6 +341,7 @@ function paperOnMouseUp(e) {
 	genUI.deselectUIElements();
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
+	deselectAllCells();
 }
 
 
@@ -347,7 +350,9 @@ function selectClickedCell(cellView, evt) {
 	selected[0] = cellView.model;
 	updateProperties();
 
-	selected[0].setSelected(true);
+	var cell = selected[0];
+	var view = cell.findView(paper);
+	view.highlight();
 }
 
 
@@ -410,26 +415,27 @@ function stopDraggingAction() {
 	if (movingViewPort) {
 		movingViewPort = false;
 		("Panning has stopped");
+
 	// otherwise we need to end a box selection
 	} else if (boxSelectionX != null) {
-		var x = curMousePos.x;
-		var y = curMousePos.y
+		//deselect all of the previously selected cells
+		deselectAllCells();
 
-		var width = Math.abs(x - boxSelectionX);
-		var height = Math.abs(y - boxSelectionY);
-		var rect = {
-			'x' : x,
-			'y' : y,
-			'width' : width,
-			'height' : height
-		};
+		var curX = curMousePos.x;
+		var curY  = curMousePos.y
+
+		var rect = smartRect(boxSelectionX, boxSelectionY, curX, curY);
+
 		var enclosed = paper.findViewsInArea(rect);
 		for (var i = 0; i < enclosed.length; i++) {
-			enclosed.highlight();
+			enclosed[i].highlight();
 		}
 
 		// clear the property box
 		$$("propertiesFormId").reconstruct();
+
+		// remove all drawn selection boxes
+		$(".selectionBox").remove();
 
 		// reset the box selection start values
 		boxSelectionX = null;
@@ -438,6 +444,15 @@ function stopDraggingAction() {
 	}
 }
 
+function deselectAllCells() {
+	var cells = graph.getCells();
+	for (var i = 0; i < cells.length; i++) {
+		// currently cells refers to the data object of each cell
+		// we need to find the view associated with the data
+		var cellView = cells[i].findView(paper);
+		cellView.unhighlight();
+	}
+}
 
 /**
  * When the mouse moves, handle the logic of figuring out what further methods
@@ -455,13 +470,15 @@ function stopDraggingAction() {
  * @memberOf initialize_diagram
  */
 function handleMouseMove(e) {
+	updateMousePos(e);
+
 	if (movingViewPort) {
 		moveViewPort(e);
 
 	// if we are currently dragging a selection box, we need to update it
 	} else if (boxSelectionX != null) {
 		console.log("A box select is currently being dragged");
-		drawSelectionBox(boxSelectionX, boxSelectionY, e.x, e.y);
+		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
 	}
 }
 
