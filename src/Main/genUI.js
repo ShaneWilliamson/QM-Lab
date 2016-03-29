@@ -23,10 +23,14 @@ function QM_LabUI() {
 	@postcond creates an tabbar in the objectSelectTabbar div
 */
 QM_LabUI.prototype.genTabbar = function() {
+	var height = window.innerHeight - 250;
 	webix.ui({
 		container: "objectSelectTabbar",
-		type:"space", padding:8,
-
+		type:"space", 
+		padding:8,
+		height: height,
+		width: 225,
+		margin: 5,
 		rows:[
 			{
 				type:"clean",
@@ -163,23 +167,32 @@ QM_LabUI.prototype.genToolbar = function() {
 	@postcond creates a property box in the propertiesForm div
 */
 QM_LabUI.prototype.genPropertiesForm = function() {
-	QM_LabUI.prototype.propertiesForm = [
-		{ view:"label", label:"Properties", css:"sidebarTitle" },
-		{ view:"text", label:"Text", name:"text", id:"text" },
-		{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
-		{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
-		{ view:"text", label:"Width", name:"width", id:"width" },
-		{ view:"text", label:"Height", name:"height", id:"height" },
-		{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
-		{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
-	];
+
+	// { margin:5, cols:[
+ //            { view:"button", value:"Login" , type:"form" },
+ //            { view:"button", value:"Cancel" }
+ //    ]}
+
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
 
 	webix.ui({
 		id:"propertiesFormId",
 		container:"propertiesForm",
-		margin:30, cols:[
-			{ margin:30, rows:[
-				{ view:"form", scroll:false, width:250, elements: QM_LabUI.prototype.propertiesForm },
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+			{margin: 5, cols: [
+				{ view:"text", label:"Width", name:"width", id:"width" },
+				{ view:"text", label:"Height", name:"height", id:"height" },
+				{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
 			]}
 		]
 	});
