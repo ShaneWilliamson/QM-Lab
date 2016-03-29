@@ -16,64 +16,66 @@ const LINK_OFFSET_Y = 15;
  * @postconditions If the new link was created over an element, that element will become the source of the link and mouse listeners for on mouse down on will be added to the paper calling linkTargeter, and an on mouse move event listener will be added to the paper dic which will call mouseTracker
  * @memberOf linkJoining
  */
-function targetFollow(newLink, linkType){
-
-	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
-
-	//find the type of links we are using and set the variables 
-	if (linkType.localeCompare("flow") == 0)
+function targetFollow(newLink, linkType, pos){
+	if(pos = curMousePos)
 	{
-		isFlow = true;
-		isCurved = false;
-		isStraight = false;
-	}
-	else if (linkType.localeCompare("curved") == 0)
-	{
-		isFlow = false;
-		isCurved = true;
-		isStraight = false;
-	}
+		var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 
-	else if (linkType.localeCompare("straight") == 0)
-	{
-		isFlow = false;
-		isCurved = false;
-		isStraight = true;
-	}
-
-	else 
-	{
-		console.log("the wrong linke was passed in")
-	}
-
-
-	lastLink = newLink;
-	if(typeof objectAtPoint[0] !== 'undefined')
-	{
-		//console.log(newLink);
-		//console.log("test");
-		//console.log(objectAtPoint[0]);
-		lastLink.set('source', {id: objectAtPoint[0].id});
-		//console.log(lastLink);
-	}
-	else
-	{
-		if(isFlow)
+		//find the type of links we are using and set the variables 
+		if (linkType.localeCompare("flow") == 0)
 		{
-			var cloud = flowCloudPrep();
-			lastLink.set('source', {id: cloud.id});
+			isFlow = true;
+			isCurved = false;
+			isStraight = false;
+		}
+		else if (linkType.localeCompare("curved") == 0)
+		{
+			isFlow = false;
+			isCurved = true;
+			isStraight = false;
+		}
 
+		else if (linkType.localeCompare("straight") == 0)
+		{
+			isFlow = false;
+			isCurved = false;
+			isStraight = true;
+		}
+
+		else 
+		{
+			console.log("the wrong linke was passed in")
+		}
+
+
+		lastLink = newLink;
+		if(typeof objectAtPoint[0] !== 'undefined')
+		{
+			//console.log(newLink);
+			//console.log("test");
+			//console.log(objectAtPoint[0]);
+			lastLink.set('source', {id: objectAtPoint[0].id});
+			//console.log(lastLink);
 		}
 		else
 		{
-		lastLink.set('target', {x:curMousePos.x  , y:curMousePos.y  });
-		}
-	}
+			if(isFlow)
+			{
+				var cloud = flowCloudPrep();
+				lastLink.set('source', {id: cloud.id});
 
-	var paperDiv = document.getElementById("paperView");
-	paper.$el.on("mousemove", mouseTracker);
-	paper.$el.on('mouseup', addVertex);
-	paper.$el.on('dblclick', linkTargeter);
+			}
+			else
+			{
+			lastLink.set('target', {x:curMousePos.x  , y:curMousePos.y  });
+			}
+		}
+
+		var paperDiv = document.getElementById("paperView");
+		paper.$el.on("mousemove", mouseTracker);
+		paper.$el.on('mouseup', addVertex);
+		paper.$el.on('dblclick', linkTargeter);
+	}
 }
 
 /**

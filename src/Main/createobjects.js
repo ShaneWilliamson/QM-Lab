@@ -63,7 +63,7 @@ function createStock(pos) {
 function createLink(pos, connector) {
 	var newLink = new localLink(pos, false, false, false, connector);
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
-	targetFollow(newLink, connector);
+	targetFollow(newLink, connector,pos );
 	setUpNewCell(newLink, "", "#000000", "#000000");
 	console.log('New cell added');
 	return newLink;
@@ -312,7 +312,7 @@ function createText(pos) {
 function createFlow(pos) {
 	var newFlow = new localFlow(pos, false, false, false, false);
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
-	targetFollow(newFlow, "flow");
+	targetFollow(newFlow, "flow",pos);
 	setUpNewCell(newFlow, "", "#000000", "#000000");
 	console.log("A flow was created.");
 	return newFlow;
