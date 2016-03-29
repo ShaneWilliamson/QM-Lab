@@ -293,6 +293,7 @@ function paperEmptySelectionPressed(e) {
 		boxSelectionY = curMousePos.y;
 	}
 	
+	deselectAllCells();
 }
 
 
@@ -367,19 +368,10 @@ function selectClickedCell(cellView, evt) {
 	selected[0] = cellView.model;
 	updateProperties();
 
+	// select the cell
 	var cell = selected[0];
 	var view = cell.findView(paper);
 	view.highlight();
-}
-
-
-function deselectCell() {
-	if (selected.length > 0) {
-		selected[0].setSelected(false);	
-	}
-	
-	selected = {};
-	updateProperties();
 }
 
 
