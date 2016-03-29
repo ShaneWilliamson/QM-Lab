@@ -42,6 +42,7 @@ function updatePrintGraph(){
 	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
 }
 	
+
 function removeAllSelectionBoxes() {
 	var svg = $.find("svg")[0];
 	
@@ -53,6 +54,7 @@ function removeAllSelectionBoxes() {
 	}
 }
 
+
 function drawSelectionBox(startX, startY, endX, endY) {
 	// delete all previous selection boxes
 	$(".selectionBox").remove();
@@ -62,6 +64,18 @@ function drawSelectionBox(startX, startY, endX, endY) {
 	
 	var box = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
 	box.setAttribute("class", "selectionBox");
+
+	// translate coordinates to match the paper position
+	startX += paperOffsetX;
+	endX += paperOffsetX;
+	startY += paperOffsetY;
+	endY += paperOffsetY;
+
+	// scale to the current paper size
+	startX *= paperScale;
+	startY *= paperScale;
+	endX *= paperScale;
+	endY *= paperScale;
 
 	// smart rect deals with negative widths/heights automagically
 	var rect = smartRect(startX, startY, endX, endY);
@@ -94,7 +108,10 @@ function initializePaper() {
 		perpendicularLinks: true,
 		gridSize: 1
 	});
+
 	paperScale = 1;
+	paperOffsetX = 0;
+	paperOffsetY = 0;
 
 	paper.on('blank:pointerdown', paperEmptySelectionPressed);
 	paper.$el.on('wheel', paperZoom);
@@ -262,7 +279,7 @@ function shrinkPrintPaper(e){
  */
 function paperEmptySelectionPressed(e) {
 	console.log("The mouse was clicked in an empty paper location");
-	updateMousePos(e)
+	updateMousePos(e);
 	
 	// if the alt key is down, then initiate panning
 	if (e.altKey) {
@@ -497,7 +514,14 @@ function handleMouseMove(e) {
 function moveViewPort(e) {
 	updateMousePos(e);
 	var origin = paper.options.origin;
-	paper.setOrigin(((curMousePos.x - oldMousePos.x) * paperScale) + origin.x, ((curMousePos.y - oldMousePos.y) * paperScale) + origin.y);
+	var deltaX = curMousePos.x - oldMousePos.x;
+	var deltaY = curMousePos.y - oldMousePos.y;
+	paper.setOrigin((deltaX * paperScale) + origin.x, (deltaY * paperScale) + origin.y);
+
+	// save the paper translation
+	paperOffsetX += deltaX;
+	paperOffsetY += deltaY;
+
 	updateMousePos(e);
 }
 
