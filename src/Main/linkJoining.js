@@ -3,10 +3,10 @@ var lastLink;
 var isFlow;
 var isCurved;
 var isStraight;
+var hasMoved;
 
-
-const LINK_OFFSET = 15;
-
+const LINK_OFFSET_X = 15;
+const LINK_OFFSET_Y = 15;
 
 /**
  * If there is an element under the mouse when this function is called the given link will have that slement set to be it's "source" element, the "target" side of the link will then follow the mouse and be set to the element or position under the mouse on the next mouse down event
@@ -71,20 +71,52 @@ function targetFollow(newLink, linkType){
 	}
 
 	var paperDiv = document.getElementById("paperView");
-	paperDiv.addEventListener("mousemove", mouseTracker);
+	paper.$el.on("mousemove", mouseTracker);
+	paper.$el.on('mouseup', addVertex);
 	paper.$el.on('dblclick', linkTargeter);
+}
+
+/**
+ * Adds a vertex to the current link
+ * @param  {e} is the event that called addVertex
+ * @preconditions global variable lastLink is a valid link
+ * @postconditions adds a new vertex to lastLink at the current location of the mouse cursor
+ * @memberOf linkJoining
+ */
+function addVertex(e){
+	if(hasMoved)
+	{
+		console.log("everything");
+		updateMousePos(e);
+		var vertArray = lastLink.get('vertices');
+		var newArray;
+		if(typeof vertArray === 'undefined')
+		{
+			newArray = [{x:curMousePos.x  , y:curMousePos.y  }];
+		}
+		else
+		{
+			newArray =vertArray.concat([{x:curMousePos.x  , y:curMousePos.y  }]);
+		}
+		console.log(newArray);
+		lastLink.set('vertices', newArray );
+		lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+		console.log("log a click on addVertex");
+		hasMoved = false;
+	}
 }
 
 /**
  * Sets the target of the global variable lastLink to be the current position of the mouse cursor with a small offset so the user can not click on the link
  * @param  {e} is the event that called mouseTracker 
  * @preconditions global variable lastLink is a valid link
- * @postconditions The new target of the global variable lastLink will be set to the current position of the mouse cursor with a small offset of -10 x 
+ * @postconditions The new target of the global variable lastLink will be set to the current position of the mouse cursor with a small offset so the user can not click on it
  * @memberOf linkJoining
  */
 function mouseTracker(e){
 	updateMousePos(e);
-	lastLink.set('target', { x:curMousePos.x -LINK_OFFSET , y:curMousePos.y  });
+	lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+	hasMoved=true;
 }
 
 /**
@@ -104,12 +136,39 @@ function linkTargeter(e){
 	}
 	else
 	{
-		lastLink.set('target', {x:curMousePos.x  , y:curMousePos.y  });
+		if(isFlow)
+		{
+			var cloud = flowCloudPrep();
+			lastLink.set('target', {id: cloud.id});
+		}
+		else
+		{
+			lastLink.set('target', {x:curMousePos.x  , y:curMousePos.y  });
+		}
 	}
-	var paperDiv = document.getElementById("paperView");
-	paperDiv.removeEventListener("mousemove", mouseTracker);
-	paper.$el.off('mousedown', linkTargeter);
+	
+	var vertArray = lastLink.get('vertices');
+	var newArray;
+	if(typeof vertArray === 'undefined' || vertArray[0] === 'undefined')
+	{
+		newArray = [];
+	}
+	else
+	{
+		//console.log(vertArray);
+		newArray =vertArray.slice(0, vertArray.length-1);
+	}
+	//console.log(newArray);
+	lastLink.set('vertices', newArray );
+
+	paper.$el.off("mousemove", mouseTracker);
+	paper.$el.off('dblclick', linkTargeter);
+	paper.$el.off('mouseup', addVertex);
 	lastLink = null; 
+
+	isFlow = false;
+	isCurved = false;
+	isStraight = false;
 
 }
 
@@ -121,7 +180,7 @@ function linkTargeter(e){
  * @memberOf linkJoining
  */
  function flowCloudPrep(){
- 	//http://i.imgur.com/1TRqx2p.png this is a crappy cloud I drew
+ 	// http://i.imgur.com/1TRqx2p.png this is a crappy cloud I drew
 
  	pos = ({x:curMousePos.x -25 , y:curMousePos.y -25  })
  	var cloud = createImage(pos, "http://i.imgur.com/1TRqx2p.png", " ", 50,50);
