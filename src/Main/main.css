@@ -160,6 +160,7 @@ svg {
 	pointer-events: none;
 	box-sizing: border-box;
 	z-index: 2;
+	transform-origin: 0px 0px 0px;
 }
 .html-element div.top{
 	cursor: ns-resize;

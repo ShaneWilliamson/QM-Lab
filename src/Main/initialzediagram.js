@@ -157,13 +157,14 @@ function initializeView(){
 		},
 		updateBox: function(){
 			var bbox = this.model.getBBox();
+			var newX = bbox.x*paperScale + paper.options.origin.x;
+			var newY = bbox.y*paperScale + paper.options.origin.y;
+			console.log(bbox);
 			this.$box.css({ 
-				width: bbox.width, 
-				height: bbox.height, 
-				left: bbox.x + paper.options.origin.x*paperScale, 
-				top: bbox.y + paper.options.origin.y*paperScale , 
-				transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)', 
-				transform: 'scale(' + paperScale+ ', ' + paperScale + ')'
+				width: bbox.width*paperScale, 
+				height: bbox.height*paperScale,
+				transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				
 			});
 			this.$box.find('.bottom').css({
 				width: bbox.width,
@@ -201,8 +202,6 @@ function initializeView(){
 function startResizing(event){
 	document.getElementById("paperView").addEventListener("mousemove", dragResize);
 	document.getElementById("paperView").addEventListener("mouseup", stopResizing);
-	//paper.$el.on('mousemove', dragResize);
-	//paper.$el.on('mouseup', stopResizing);
 	console.log("resizing started");
 }
 function stopResizing(event){
@@ -210,22 +209,7 @@ function stopResizing(event){
 	document.getElementById("paperView").removeEventListener("mousemove", dragResize);
 	document.getElementById("paperView").removeEventListener("mouseup", stopResizing);
 	dropEdge();
-	//paper.$el.off('mousemove', dragResize);
-	//paper.$el.off('mouseup', stopResizing);
 }
-/*
-function resizeTop(event){
-	var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
-	var newWidth = selected[0].getXSize();
-	var newHeight = selected[0].getYSize() + selected[0].getYPos() - point.y;
-	var newXPos = selected[0].getXPos();
-	var newYPos = point.y;
-	//selected[0].setPos(newXPos, newYPos);
-	selected[0].position(newXPos, newYPos);
-	selected[0].setSize(newWidth, newHeight);
-	
-	console.log("resize top");
-}*/
 function dragResize(event){
 	if(selected[0]){
 		var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
