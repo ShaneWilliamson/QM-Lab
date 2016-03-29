@@ -86,13 +86,183 @@ function initializePaper() {
 	paper.on('cell:pointerclick', selectClickedCell);
 	paper.on('blank:pointerclick', deselectCell);
 	
+	paper.on('cell:pointerdown', getEdge);
+	paper.on('cell:pointermove', dragResize);
+	paper.on('cell:pointerup', dropEdge);
 	graph.on('change', function(cell) { 
 		if (isCollabRecordingAllowed()) {
 			selected[0] = cell;
 			updateProperties();
 		}
 		
-	})
+	});
+	initializeView();
+}
+var selectedEdge;
+function getEdge(cellView, evt, x, y){
+	if(selected[0]){
+		if(x == selected[0].getXPos()){ //Left side of element
+			selectedEdge = "left";
+		}else if(x == selected[0].getXPos()+selected[0].getXSize()){ //right side of element
+			selectedEdge = "right";
+		}else if(y == selected[0].getYPos()){ //Top of element
+			selectedEdge = "top";
+		}else if(y == selected[0].getYPos() + selected[0].getYSize()){ //bottom of element
+			selectedEdge = "bottom";
+		}
+	}
+}
+function dropEdge(cellView, evt, x, y){
+	if(selected[0]){
+		selectedEdge = "";
+	}
+}
+function initializeView(){
+	joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
+		template: [
+			'<div class="html-element">',
+			'<div class="top"></div>',
+			'<div class="bottom"></div>',
+			'<div class="left"></div>',
+			'<div class="right"></div>',
+			'</div>'
+		].join(''),
+	
+		initialize: function() {
+			_.bindAll(this, 'updateBox');
+			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+			this.$box = $(_.template(this.template)());
+			//prevent the paper from handling pointerdown
+			this.$box.find('.top').on('mouseover', function(evt) {evt.stopPropagation();});
+			//Add listeners
+			this.$box.find('.top').on('mousedown', function(evt){startResizing(evt); selectedEdge="top";});
+			this.$box.find('.left').on('mousedown', function(evt){startResizing(evt); selectedEdge="left";});
+			this.$box.find('.right').on('mousedown', function(evt){startResizing(evt); selectedEdge="right";});
+			this.$box.find('.bottom').on('mousedown', function(evt){startResizing(evt); selectedEdge="bottom";});
+			
+			paper.$el.on('wheel', this.updateBox);
+			paper.$el.on('mousedown', this.pan);
+			paper.$el.on('mousemove', this.updateBox);
+			//Update box position whenever underlying joint is updated
+			this.model.on('change', this.updateBox, this);
+			//Remove box when model is removed
+			this.model.on('remove', this.removeBox, this);
+			this.updateBox();
+		},
+		render: function(){
+			joint.dia.ElementView.prototype.render.apply(this, arguments);
+			this.paper.$el.prepend(this.$box);
+			this.updateBox();
+			return this;
+		},
+		updateBox: function(){
+			var bbox = this.model.getBBox();
+			this.$box.css({ 
+				width: bbox.width, 
+				height: bbox.height, 
+				left: bbox.x + paper.options.origin.x*paperScale, 
+				top: bbox.y + paper.options.origin.y*paperScale , 
+				transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)', 
+				transform: 'scale(' + paperScale+ ', ' + paperScale + ')'
+			});
+			this.$box.find('.bottom').css({
+				width: bbox.width,
+				height: '2px',
+				top: bbox.height - 2
+			});
+			this.$box.find('.top').css({
+				width: bbox.width,
+				height: '2px'
+			});
+			this.$box.find('.left').css({
+				width: '2px',
+				height: bbox.height
+			});
+			this.$box.find('.right').css({
+				width: '2px',
+				height: bbox.height,
+				left: bbox.width
+			});
+		},
+		removeBox: function(evt){
+			this.$box.remove();
+		},
+		pan: function(){
+			paper.$el.on('mousemove', this.updateBox);
+			paper.$el.on('mouseup', this.stopPan);
+		},
+		stopPan: function(){
+			paper.$el.off('mousemove', this.updateBox);
+			paper.$el.off('mouseup', this.stopPan);
+		}
+		
+	});
+}
+function startResizing(event){
+	document.getElementById("paperView").addEventListener("mousemove", dragResize);
+	document.getElementById("paperView").addEventListener("mouseup", stopResizing);
+	//paper.$el.on('mousemove', dragResize);
+	//paper.$el.on('mouseup', stopResizing);
+	console.log("resizing started");
+}
+function stopResizing(event){
+	console.log("resizing stopped");
+	document.getElementById("paperView").removeEventListener("mousemove", dragResize);
+	document.getElementById("paperView").removeEventListener("mouseup", stopResizing);
+	dropEdge();
+	//paper.$el.off('mousemove', dragResize);
+	//paper.$el.off('mouseup', stopResizing);
+}
+/*
+function resizeTop(event){
+	var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
+	var newWidth = selected[0].getXSize();
+	var newHeight = selected[0].getYSize() + selected[0].getYPos() - point.y;
+	var newXPos = selected[0].getXPos();
+	var newYPos = point.y;
+	//selected[0].setPos(newXPos, newYPos);
+	selected[0].position(newXPos, newYPos);
+	selected[0].setSize(newWidth, newHeight);
+	
+	console.log("resize top");
+}*/
+function dragResize(event){
+	if(selected[0]){
+		var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
+		if(selectedEdge == "left"){
+			console.log("resize left");
+			var newWidth = selected[0].getXSize() + selected[0].getXPos() - point.x;
+			var newHeight = selected[0].getYSize();
+			var newXPos = point.x;
+			var newYPos = selected[0].getYPos();
+			selected[0].setSize(newWidth, newHeight);
+			selected[0].position(newXPos, newYPos);
+		}else if(selectedEdge == "right"){
+			console.log("resize right");
+			var newWidth = point.x - selected[0].getXPos();
+			var newHeight = selected[0].getYSize();
+			var newXPos = selected[0].getXPos();
+			var newYPos = selected[0].getYPos();
+			selected[0].setSize(newWidth, newHeight);
+			selected[0].position(newXPos, newYPos);
+		}else if(selectedEdge == "top"){
+			console.log("resize top");
+			var newWidth = selected[0].getXSize();
+			var newHeight = selected[0].getYSize() + selected[0].getYPos() - point.y;
+			var newXPos = selected[0].getXPos();
+			var newYPos = point.y;
+			selected[0].setSize(newWidth, newHeight);
+			selected[0].position(newXPos, newYPos);
+		}else if(selectedEdge == "bottom"){
+			console.log("resize bottom");
+			var newWidth = selected[0].getXSize();
+			var newHeight = point.y - selected[0].getYPos();
+			var newXPos = selected[0].getXPos();
+			var newYPos = selected[0].getYPos();
+			selected[0].setSize(newWidth, newHeight);
+			selected[0].position(newXPos, newYPos);
+		}
+	}
 }
 
 /**
