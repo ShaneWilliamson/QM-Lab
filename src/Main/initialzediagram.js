@@ -135,10 +135,34 @@ function initializeView(){
 			//prevent the paper from handling pointerdown
 			this.$box.find('.top').on('mouseover', function(evt) {evt.stopPropagation();});
 			//Add listeners
-			this.$box.find('.top').on('mousedown', function(evt){startResizing(evt); selectedEdge="top";});
-			this.$box.find('.left').on('mousedown', function(evt){startResizing(evt); selectedEdge="left";});
-			this.$box.find('.right').on('mousedown', function(evt){startResizing(evt); selectedEdge="right";});
-			this.$box.find('.bottom').on('mousedown', function(evt){startResizing(evt); selectedEdge="bottom";});
+			this.$box.find('.top').on('mousedown', function(evt){
+				if(this.model!==selected[0]){
+					startResizing(evt); 
+					selectedEdge="top";
+					console.log("Got top edge");
+				}
+			});
+			this.$box.find('.left').on('mousedown', function(evt){
+				if(this.model!==selected[0]){
+					startResizing(evt); 
+					selectedEdge="left";
+					console.log("Got left edge");
+				}
+			});
+			this.$box.find('.right').on('mousedown', function(evt){
+				if(this.model!==selected[0]){
+					startResizing(evt); 
+					selectedEdge="right";
+					console.log("Got right edge");
+				}
+			});
+			this.$box.find('.bottom').on('mousedown', function(evt){
+				if(this.model!==selected[0]){
+					startResizing(evt); 
+					selectedEdge="bottom";
+					console.log("Got bottom edge");
+				}
+			});
 			
 			paper.$el.on('wheel', this.updateBox);
 			paper.$el.on('mousedown', this.pan);
@@ -159,7 +183,6 @@ function initializeView(){
 			var bbox = this.model.getBBox();
 			var newX = bbox.x*paperScale + paper.options.origin.x;
 			var newY = bbox.y*paperScale + paper.options.origin.y;
-			console.log(bbox);
 			this.$box.css({ 
 				width: bbox.width*paperScale, 
 				height: bbox.height*paperScale,
