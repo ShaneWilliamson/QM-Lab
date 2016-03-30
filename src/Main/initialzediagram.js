@@ -180,8 +180,8 @@ function restorePaperInteraction() {
 function resizePaper(e) {
 	var paperDiv = document.getElementById('paperView');
 	var heightOfPaper = window.innerHeight - 250;
-	if (heightOfPaper < 550) {
-		heightOfPaper = 550;
+	if (heightOfPaper < 450) {
+		heightOfPaper = 450;
 	}
 	paper.setDimensions(paperDiv.clientWidth - 20, heightOfPaper);
 }
