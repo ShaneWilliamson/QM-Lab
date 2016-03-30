@@ -375,6 +375,16 @@ function selectClickedCell(cellView, evt) {
 }
 
 
+function deselectCell() {
+   if (selected.length > 0) {
+       selected[0].setSelected(false); 
+   }
+   
+   selected = {};
+   updateProperties();
+}
+
+
 /**
  * When the user hits a key, check which key was pressed. Handle state
  *   accordingly.
@@ -450,6 +460,8 @@ function stopDraggingAction() {
 		boxSelectionX = null;
 		boxSelectionY = null;
 		console.log("Box selection has stopped");
+		
+		selected = graph.findModelsInArea(rect);
 	}
 }
 
@@ -461,6 +473,8 @@ function deselectAllCells() {
 		var cellView = cells[i].findView(paper);
 		cellView.unhighlight();
 	}
+
+	selected = [];
 }
 
 /**
@@ -479,6 +493,8 @@ function deselectAllCells() {
  * @memberOf initialize_diagram
  */
 function handleMouseMove(e) {
+	var highlightedCount = getHighlightedItems().length;
+
 	if (movingViewPort) {
 		moveViewPort(e);
 
@@ -487,9 +503,21 @@ function handleMouseMove(e) {
 		updateMousePos(e);
 		console.log("A box select is currently being dragged");
 		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
+	} else if (highlightedCount > 1) {
+		updateMousePos(e);
+		moveSelectedItems();
 	}
 }
 
+function moveSelectedItems() {
+	var deltaX = curMousePos.x - oldMousePos.x;
+	var deltaY = curMousePos.y - oldMousePos.y;
+
+	for (var i = 0; i < selected.length; i++) {
+		var selectedItem = selected[i];
+		selectedItem.translate(deltaX, deltaY);
+	}
+}
 
 /**
  * This function checks where the mouse currently is, and where it used to be in

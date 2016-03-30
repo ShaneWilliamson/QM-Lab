@@ -43,3 +43,21 @@ function smartRect(startX, startY, endX, endY) {
 	
 	return rect;
 }
+
+
+function getHighlightedItems() {
+	var svg = $("svg")[0];
+	var children = svg.getElementsByTagName("*");
+	var highlightedItems = [];
+
+	for (var i = 0; i < children.length; i++) {
+		var child = children[i];
+		var isHighlighted = child.classList.contains("highlighted");
+
+		if (isHighlighted) {
+			highlightedItems.push(child);
+		}
+	}
+
+	return highlightedItems;
+}
