@@ -141,6 +141,7 @@ function initializeStockView(){
 			var bbox = this.model.getBBox();
 			var newX = bbox.x*paperScale + paper.options.origin.x;
 			var newY = bbox.y*paperScale + paper.options.origin.y;
+			
 			this.$box.css({ 
 				width: bbox.width*paperScale, 
 				height: bbox.height*paperScale,
@@ -164,6 +165,15 @@ function initializeStockView(){
 				height: bbox.height,
 				left: bbox.width
 			});
+			if(newX > paper.options.width || newY > paper.options.height){
+				this.$box.css({
+					display: 'none'
+				});
+			}else{
+				this.$box.css({
+					display: 'block'
+				});
+			}
 			if(this.model == selected[0]){
 				this.$box.find('.bottom').css({
 					cursor: 'ns-resize'
