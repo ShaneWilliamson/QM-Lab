@@ -163,26 +163,22 @@ svg {
 	transform-origin: 0px 0px 0px;
 }
 .html-element div.top{
-	cursor: ns-resize;
 	pointer-events: auto;
 	border: 2px solid #2980B9;
 	position: absolute;
 }
 .html-element div.bottom{
-	cursor: ns-resize;
 	pointer-events: auto;
 	border: 2px solid #2980B9;
 	position: absolute;
 }
 .html-element div.left{
-	cursor: ew-resize;
 	pointer-events: auto;
 	border: 2px solid #2980B9;
 	position: absolute;
 }
 
 .html-element div.right{
-	cursor: ew-resize;
 	pointer-events: auto;
 	border: 2px solid #2980B9;
 	position: absolute;

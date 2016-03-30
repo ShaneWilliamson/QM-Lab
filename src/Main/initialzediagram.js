@@ -86,8 +86,6 @@ function initializePaper() {
 	paper.on('cell:pointerclick', selectClickedCell);
 	paper.on('blank:pointerclick', deselectCell);
 	
-	paper.on('cell:pointerdown', getEdge);
-	paper.on('cell:pointermove', dragResize);
 	paper.on('cell:pointerup', dropEdge);
 	graph.on('change', function(cell) { 
 		if (isCollabRecordingAllowed()) {
@@ -99,25 +97,17 @@ function initializePaper() {
 	initializeView();
 }
 var selectedEdge;
-function getEdge(cellView, evt, x, y){
-	if(selected[0]){
-		if(x == selected[0].getXPos()){ //Left side of element
-			selectedEdge = "left";
-		}else if(x == selected[0].getXPos()+selected[0].getXSize()){ //right side of element
-			selectedEdge = "right";
-		}else if(y == selected[0].getYPos()){ //Top of element
-			selectedEdge = "top";
-		}else if(y == selected[0].getYPos() + selected[0].getYSize()){ //bottom of element
-			selectedEdge = "bottom";
-		}
-	}
-}
+
 function dropEdge(cellView, evt, x, y){
 	if(selected[0]){
 		selectedEdge = "";
 	}
 }
+
 function initializeView(){
+	initializeStockView();
+}
+function initializeStockView(){
 	joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
 		template: [
 			'<div class="html-element">',
@@ -132,40 +122,8 @@ function initializeView(){
 			_.bindAll(this, 'updateBox');
 			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
 			this.$box = $(_.template(this.template)());
-			//prevent the paper from handling pointerdown
-			this.$box.find('.top').on('mouseover', function(evt) {evt.stopPropagation();});
-			//Add listeners
-			this.$box.find('.top').on('mousedown', function(evt){
-				if(this.model!==selected[0]){
-					startResizing(evt); 
-					selectedEdge="top";
-					console.log("Got top edge");
-				}
-			});
-			this.$box.find('.left').on('mousedown', function(evt){
-				if(this.model!==selected[0]){
-					startResizing(evt); 
-					selectedEdge="left";
-					console.log("Got left edge");
-				}
-			});
-			this.$box.find('.right').on('mousedown', function(evt){
-				if(this.model!==selected[0]){
-					startResizing(evt); 
-					selectedEdge="right";
-					console.log("Got right edge");
-				}
-			});
-			this.$box.find('.bottom').on('mousedown', function(evt){
-				if(this.model!==selected[0]){
-					startResizing(evt); 
-					selectedEdge="bottom";
-					console.log("Got bottom edge");
-				}
-			});
-			
+			//When zooming or moving mouse on page, make sure html is updated
 			paper.$el.on('wheel', this.updateBox);
-			paper.$el.on('mousedown', this.pan);
 			paper.$el.on('mousemove', this.updateBox);
 			//Update box position whenever underlying joint is updated
 			this.model.on('change', this.updateBox, this);
@@ -187,7 +145,6 @@ function initializeView(){
 				width: bbox.width*paperScale, 
 				height: bbox.height*paperScale,
 				transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				
 			});
 			this.$box.find('.bottom').css({
 				width: bbox.width,
@@ -207,20 +164,78 @@ function initializeView(){
 				height: bbox.height,
 				left: bbox.width
 			});
+			if(this.model == selected[0]){
+				this.$box.find('.bottom').css({
+					cursor: 'ns-resize'
+				});
+				this.$box.find('.top').css({
+					cursor: 'ns-resize'
+				});
+				this.$box.find('.left').css({
+					cursor: 'ew-resize'
+				});
+				this.$box.find('.right').css({
+					cursor: 'ew-resize'
+				});
+				this.$box.find('.top').on('mousedown', startResizingTop);
+				this.$box.find('.left').on('mousedown', startResizingLeft);
+				this.$box.find('.right').on('mousedown', startResizingRight);
+				this.$box.find('.bottom').on('mousedown', startResizingBottom);
+			}else{
+				this.$box.find('.bottom').css({
+					cursor: 'default'
+				});
+				this.$box.find('.top').css({
+					cursor: 'default'
+				});
+				this.$box.find('.left').css({
+					cursor: 'default'
+				});
+				this.$box.find('.right').css({
+					cursor: 'default'
+				});
+				this.$box.find('.top').off('mousedown');
+				this.$box.find('.bottom').off('mousedown');
+				this.$box.find('.left').off('mousedown');
+				this.$box.find('.right').off('mousedown');
+			}
 		},
 		removeBox: function(evt){
 			this.$box.remove();
-		},
-		pan: function(){
-			paper.$el.on('mousemove', this.updateBox);
-			paper.$el.on('mouseup', this.stopPan);
-		},
-		stopPan: function(){
-			paper.$el.off('mousemove', this.updateBox);
-			paper.$el.off('mouseup', this.stopPan);
 		}
-		
 	});
+}
+function startResizingTop(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="top";
+		console.log("Got top edge");
+	}
+}
+function startResizingBottom(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="bottom";
+		console.log("Got bottom edge");
+	}
+}
+function startResizingLeft(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="left";
+		console.log("Got left edge");
+	}
+}
+function startResizingRight(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="right";
+		console.log("Got right edge");
+	}
 }
 function startResizing(event){
 	document.getElementById("paperView").addEventListener("mousemove", dragResize);
@@ -242,32 +257,42 @@ function dragResize(event){
 			var newHeight = selected[0].getYSize();
 			var newXPos = point.x;
 			var newYPos = selected[0].getYPos();
-			selected[0].setSize(newWidth, newHeight);
-			selected[0].position(newXPos, newYPos);
+			if(newWidth > 1 && newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
 		}else if(selectedEdge == "right"){
 			console.log("resize right");
 			var newWidth = point.x - selected[0].getXPos();
 			var newHeight = selected[0].getYSize();
 			var newXPos = selected[0].getXPos();
 			var newYPos = selected[0].getYPos();
-			selected[0].setSize(newWidth, newHeight);
-			selected[0].position(newXPos, newYPos);
+			if(newWidth > 1 && newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
 		}else if(selectedEdge == "top"){
 			console.log("resize top");
 			var newWidth = selected[0].getXSize();
 			var newHeight = selected[0].getYSize() + selected[0].getYPos() - point.y;
 			var newXPos = selected[0].getXPos();
 			var newYPos = point.y;
-			selected[0].setSize(newWidth, newHeight);
-			selected[0].position(newXPos, newYPos);
+			if(newWidth > 1 && newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
 		}else if(selectedEdge == "bottom"){
 			console.log("resize bottom");
 			var newWidth = selected[0].getXSize();
 			var newHeight = point.y - selected[0].getYPos();
 			var newXPos = selected[0].getXPos();
 			var newYPos = selected[0].getYPos();
-			selected[0].setSize(newWidth, newHeight);
-			selected[0].position(newXPos, newYPos);
+			if(newWidth > 1 && newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
+		}else{
+			console.log("No valid edge grabbed");
 		}
 	}
 }
