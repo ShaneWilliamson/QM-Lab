@@ -1056,6 +1056,99 @@
 		}
 	}
 	
+	function setInitialHTML(view){
+		var bbox = view.model.getBBox();
+		var newX = bbox.x*paperScale + paper.options.origin.x;
+		var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+		view.$box.css({ 
+			width: bbox.width*paperScale, 
+			height: bbox.height*paperScale,
+			transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+		});
+		view.$box.find('.bottom').css({
+			width: bbox.width,
+			height: '2px',
+			top: bbox.height - 2
+		});
+		view.$box.find('.top').css({
+			width: bbox.width,
+			height: '2px'
+		});
+		view.$box.find('.left').css({
+			width: '2px',
+			height: bbox.height
+		});
+		view.$box.find('.right').css({
+			width: '2px',
+			height: bbox.height,
+			left: bbox.width
+		});
+		if(newX > paper.options.width || newY > paper.options.height){
+			view.$box.css({
+				display: 'none'
+			});
+		}else{
+			view.$box.css({
+				display: 'block'
+			});
+		}
+	}
+	
+	function setSelectedHTML(view){
+		if(view.model == selected[0]){
+			view.$box.find('.bottom').css({
+				cursor: 'ns-resize',
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.top').css({
+				cursor: 'ns-resize',
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.left').css({
+				cursor: 'ew-resize',
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.right').css({
+				cursor: 'ew-resize',
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.top').on('mousedown', startResizingTop);
+			view.$box.find('.left').on('mousedown', startResizingLeft);
+			view.$box.find('.right').on('mousedown', startResizingRight);
+			view.$box.find('.bottom').on('mousedown', startResizingBottom);
+		}else{
+			view.$box.find('.bottom').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.top').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.left').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.right').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.top').off('mousedown');
+			view.$box.find('.bottom').off('mousedown');
+			view.$box.find('.left').off('mousedown');
+			view.$box.find('.right').off('mousedown');
+		}
+	}
+	
 	function initializeStockView(){
 		joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
 			template: [
@@ -1087,91 +1180,16 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
 			}
 		});
 	}
+	
+
 
 	function initializeImageNodeView(){
 		joint.shapes.QMLab.ImageNodeView = joint.dia.ElementView.extend({
@@ -1204,85 +1222,8 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1321,85 +1262,8 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1438,85 +1302,8 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1555,85 +1342,8 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1672,85 +1382,8 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1789,85 +1422,8 @@
 				return this;
 			},
 			updateBox: function(){
-				var bbox = this.model.getBBox();
-				var newX = bbox.x*paperScale + paper.options.origin.x;
-				var newY = bbox.y*paperScale + paper.options.origin.y;
-				
-				this.$box.css({ 
-					width: bbox.width*paperScale, 
-					height: bbox.height*paperScale,
-					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-				});
-				this.$box.find('.bottom').css({
-					width: bbox.width,
-					height: '4px',
-					top: bbox.height - 2
-				});
-				this.$box.find('.top').css({
-					width: bbox.width,
-					height: '4px'
-				});
-				this.$box.find('.left').css({
-					width: '4px',
-					height: bbox.height
-				});
-				this.$box.find('.right').css({
-					width: '4px',
-					height: bbox.height,
-					left: bbox.width
-				});
-				if(newX > paper.options.width || newY > paper.options.height){
-					this.$box.css({
-						display: 'none'
-					});
-				}else{
-					this.$box.css({
-						display: 'block'
-					});
-				}
-				if(this.model == selected[0]){
-					this.$box.find('.bottom').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').css({
-						cursor: 'ns-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.left').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.right').css({
-						cursor: 'ew-resize',
-						border: '2px solid #2980B9'
-					});
-					this.$box.find('.top').on('mousedown', startResizingTop);
-					this.$box.find('.left').on('mousedown', startResizingLeft);
-					this.$box.find('.right').on('mousedown', startResizingRight);
-					this.$box.find('.bottom').on('mousedown', startResizingBottom);
-				}else{
-					this.$box.find('.bottom').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.left').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.right').css({
-						cursor: 'default',
-						border: 'none'
-					});
-					this.$box.find('.top').off('mousedown');
-					this.$box.find('.bottom').off('mousedown');
-					this.$box.find('.left').off('mousedown');
-					this.$box.find('.right').off('mousedown');
-				}
+				setInitialHTML(this);
+				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
