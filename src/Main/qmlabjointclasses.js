@@ -282,6 +282,9 @@
 	joint.shapes.basic.Circle.prototype.getXSize = joint.shapes.basic.Rect.prototype.getXSize;
 	joint.shapes.basic.Circle.prototype.getYSize = joint.shapes.basic.Rect.prototype.getYSize;
 	joint.shapes.basic.Circle.prototype.getImage = joint.shapes.basic.Rect.prototype.getImage;
+	joint.shapes.basic.Circle.prototype.getXPos = joint.shapes.basic.Rect.prototype.getXPos;
+	joint.shapes.basic.Circle.prototype.getYPos = joint.shapes.basic.Rect.prototype.getYPos;
+	
 
 
 	/*
@@ -958,6 +961,9 @@
 		return this.attr("image/xlink:href");
 	}
 	
+	/**
+	 * Resets the selectedEdge variable once an edge is let go of.
+	 */
 	function dropEdge(cellView, evt, x, y){
 		if(selected[0]){
 			selectedEdge = "";
@@ -1056,9 +1062,102 @@
 		}
 	}
 	
+	/**
+	 * Sets the initial HTML style, location and size of drag resizing handles in the views.
+	 * 
+	 */
 	function setInitialHTML(view){
 		var bbox = view.model.getBBox();
 		var newX = bbox.x*paperScale + paper.options.origin.x;
+		var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+		view.$box.css({ 
+			width: bbox.width*paperScale, 
+			height: bbox.height*paperScale,
+			transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+		});
+		view.$box.find('.bottom').css({
+			width: bbox.width,
+			height: '2px',
+			top: bbox.height - 2
+		});
+		view.$box.find('.top').css({
+			width: bbox.width,
+			height: '2px'
+		});
+		view.$box.find('.left').css({
+			width: '2px',
+			height: bbox.height
+		});
+		view.$box.find('.right').css({
+			width: '2px',
+			height: bbox.height,
+			left: bbox.width
+		});
+		//If the element is off of the paper change display to none so it does not create scroll bars in the window
+		if(newX > paper.options.width || newY > paper.options.height){
+			view.$box.css({
+				display: 'none'
+			});
+		}else{
+			view.$box.css({
+				display: 'block'
+			});
+		}
+	}
+	
+	/**
+	 * Specialized version of setInitialHTML for Branches which offsets the bounding box by half the total width
+	 * because the default x position is in the centre of the branch.
+	 */
+	function setInitialHTMLBranch(view){
+		var bbox = view.model.getBBox();
+		var newX = bbox.x*paperScale + paper.options.origin.x - bbox.width*paperScale/2;
+		var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+		view.$box.css({ 
+			width: bbox.width*paperScale, 
+			height: bbox.height*paperScale,
+			transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+		});
+		view.$box.find('.bottom').css({
+			width: bbox.width,
+			height: '2px',
+			top: bbox.height - 2
+		});
+		view.$box.find('.top').css({
+			width: bbox.width,
+			height: '2px'
+		});
+		view.$box.find('.left').css({
+			width: '2px',
+			height: bbox.height
+		});
+		view.$box.find('.right').css({
+			width: '2px',
+			height: bbox.height,
+			left: bbox.width
+		});
+		if(newX > paper.options.width || newY > paper.options.height){
+			view.$box.css({
+				display: 'none'
+			});
+		}else{
+			view.$box.css({
+				display: 'block'
+			});
+		}
+	}
+	/**
+	 * Specialized version of setInitialHTML for TextBoxes which offsets the bounding box based on the 
+	 * distance between the point on the text box and the main box.
+	 */
+	function setInitialHTMLText(view){
+		//Offset to compensate for the point of the text box
+		//The distance between the main box and the point is approx 12% of the total width
+		var pointOffset = 0.12;
+		var bbox = view.model.getBBox();
+		var newX = bbox.x*paperScale + paper.options.origin.x - bbox.width*paperScale*pointOffset;
 		var newY = bbox.y*paperScale + paper.options.origin.y;
 				
 		view.$box.css({ 
@@ -1095,6 +1194,18 @@
 		}
 	}
 	
+	/**
+	 * Modifies the style of the HTML and sets listeners for the drag resizing handles in the views for each element
+	 * based on whether the element is the selected element or not.
+	 * If it is the selected element then it gives the HTML a background, a border and adds the drag listeners to
+	 * the appropriate HTML elements. If it is not the selected element it removes the background, border and all listeners attached to
+	 * the HTML. This function is called when the view is updated, which happens as the mouse is moved so the HTML is guaranteed to 
+	 * appear when selected and disappear when deselected.
+	 * @preconditions the view exists.
+	 * @postconditions The HTML style and listeners are updated
+	 * @param {view} view The view that is associated with a QMLab object that contains the HTML used for outlining and resizing
+	 * @memberOf qmlabjointclasses
+	 */
 	function setSelectedHTML(view){
 		if(view.model == selected[0]){
 			view.$box.find('.bottom').css({
@@ -1262,7 +1373,7 @@
 				return this;
 			},
 			updateBox: function(){
-				setInitialHTML(this);
+				setInitialHTMLText(this);
 				setSelectedHTML(this);
 			},
 			removeBox: function(evt){
@@ -1393,6 +1504,88 @@
 
 	function initializeBranchView(){
 		joint.shapes.QMLab.BranchView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				setInitialHTMLBranch(this);
+				setSelectedHTML(this);
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+	
+	
+	
+	function initializeVariableView(){
+		joint.shapes.QMLab.VariableView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				setInitialHTML(this);
+				setSelectedHTML(this);
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+	
+	function initializeParameterView(){
+		joint.shapes.QMLab.ParameterView = joint.dia.ElementView.extend({
 			template: [
 				'<div class="html-element">',
 				'<div class="top"></div>',
