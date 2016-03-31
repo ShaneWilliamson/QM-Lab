@@ -208,7 +208,7 @@
 			colour = "#0000FF";
 		} else {
 			// set colour to transparent blue
-			colour = "#000000FF";
+			colour = "#000000";
 		}
 
 		this.prop('rect/stroke', colour);
@@ -957,3 +957,921 @@
 	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
 		return this.attr("image/xlink:href");
 	}
+	
+	function dropEdge(cellView, evt, x, y){
+		if(selected[0]){
+			selectedEdge = "";
+		}
+	}
+	
+	function startResizingTop(evt){
+		//makes sure selected is actually set
+		if(undefined!=selected[0]){
+			startResizing(evt); 
+			selectedEdge="top";
+			console.log("Got top edge");
+		}
+	}
+	function startResizingBottom(evt){
+		//makes sure selected is actually set
+		if(undefined!=selected[0]){
+			startResizing(evt); 
+			selectedEdge="bottom";
+			console.log("Got bottom edge");
+		}
+	}
+	function startResizingLeft(evt){
+		//makes sure selected is actually set
+		if(undefined!=selected[0]){
+			startResizing(evt); 
+			selectedEdge="left";
+			console.log("Got left edge");
+		}
+	}
+	function startResizingRight(evt){
+		//makes sure selected is actually set
+		if(undefined!=selected[0]){
+			startResizing(evt); 
+			selectedEdge="right";
+			console.log("Got right edge");
+		}
+	}
+	function startResizing(event){
+		document.getElementById("paperView").addEventListener("mousemove", dragResize);
+		document.getElementById("paperView").addEventListener("mouseup", stopResizing);
+		console.log("resizing started");
+	}
+	function stopResizing(event){
+		console.log("resizing stopped");
+		document.getElementById("paperView").removeEventListener("mousemove", dragResize);
+		document.getElementById("paperView").removeEventListener("mouseup", stopResizing);
+		dropEdge();
+	}
+	function dragResize(event){
+		if(selected[0]){
+			var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
+			if(selectedEdge == "left"){
+				console.log("resize left");
+				var newWidth = selected[0].getXSize() + selected[0].getXPos() - point.x;
+				var newHeight = selected[0].getYSize();
+				var newXPos = point.x;
+				var newYPos = selected[0].getYPos();
+				if(newWidth > 1 && newHeight >1){
+					selected[0].setSize(newWidth, newHeight);
+					selected[0].position(newXPos, newYPos);
+				}
+			}else if(selectedEdge == "right"){
+				console.log("resize right");
+				var newWidth = point.x - selected[0].getXPos();
+				var newHeight = selected[0].getYSize();
+				var newXPos = selected[0].getXPos();
+				var newYPos = selected[0].getYPos();
+				if(newWidth > 1 && newHeight >1){
+					selected[0].setSize(newWidth, newHeight);
+					selected[0].position(newXPos, newYPos);
+				}
+			}else if(selectedEdge == "top"){
+				console.log("resize top");
+				var newWidth = selected[0].getXSize();
+				var newHeight = selected[0].getYSize() + selected[0].getYPos() - point.y;
+				var newXPos = selected[0].getXPos();
+				var newYPos = point.y;
+				if(newWidth > 1 && newHeight >1){
+					selected[0].setSize(newWidth, newHeight);
+					selected[0].position(newXPos, newYPos);
+				}
+			}else if(selectedEdge == "bottom"){
+				console.log("resize bottom");
+				var newWidth = selected[0].getXSize();
+				var newHeight = point.y - selected[0].getYPos();
+				var newXPos = selected[0].getXPos();
+				var newYPos = selected[0].getYPos();
+				if(newWidth > 1 && newHeight >1){
+					selected[0].setSize(newWidth, newHeight);
+					selected[0].position(newXPos, newYPos);
+				}
+			}else{
+				console.log("No valid edge grabbed");
+			}
+		}
+	}
+	
+	function initializeStockView(){
+		joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+
+	function initializeImageNodeView(){
+		joint.shapes.QMLab.ImageNodeView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+	
+	function initializeTextView(){
+		joint.shapes.QMLab.TextView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+	
+	function initializeAgentView(){
+		joint.shapes.QMLab.AgentView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+
+	function initializeStateView(){
+		joint.shapes.QMLab.StateView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+
+	function initializeTerminalStateView(){
+		joint.shapes.QMLab.TerminalStateView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+
+	function initializeBranchView(){
+		joint.shapes.QMLab.BranchView = joint.dia.ElementView.extend({
+			template: [
+				'<div class="html-element">',
+				'<div class="top"></div>',
+				'<div class="bottom"></div>',
+				'<div class="left"></div>',
+				'<div class="right"></div>',
+				'</div>'
+			].join(''),
+		
+			initialize: function() {
+				_.bindAll(this, 'updateBox');
+				joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+				this.$box = $(_.template(this.template)());
+				//When zooming or moving mouse on page, make sure html is updated
+				paper.$el.on('wheel', this.updateBox);
+				paper.$el.on('mousemove', this.updateBox);
+				//Update box position whenever underlying joint is updated
+				this.model.on('change', this.updateBox, this);
+				//Remove box when model is removed
+				this.model.on('remove', this.removeBox, this);
+				this.updateBox();
+			},
+			render: function(){
+				joint.dia.ElementView.prototype.render.apply(this, arguments);
+				this.paper.$el.prepend(this.$box);
+				this.updateBox();
+				return this;
+			},
+			updateBox: function(){
+				var bbox = this.model.getBBox();
+				var newX = bbox.x*paperScale + paper.options.origin.x;
+				var newY = bbox.y*paperScale + paper.options.origin.y;
+				
+				this.$box.css({ 
+					width: bbox.width*paperScale, 
+					height: bbox.height*paperScale,
+					transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+				});
+				this.$box.find('.bottom').css({
+					width: bbox.width,
+					height: '4px',
+					top: bbox.height - 2
+				});
+				this.$box.find('.top').css({
+					width: bbox.width,
+					height: '4px'
+				});
+				this.$box.find('.left').css({
+					width: '4px',
+					height: bbox.height
+				});
+				this.$box.find('.right').css({
+					width: '4px',
+					height: bbox.height,
+					left: bbox.width
+				});
+				if(newX > paper.options.width || newY > paper.options.height){
+					this.$box.css({
+						display: 'none'
+					});
+				}else{
+					this.$box.css({
+						display: 'block'
+					});
+				}
+				if(this.model == selected[0]){
+					this.$box.find('.bottom').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').css({
+						cursor: 'ns-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.left').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.right').css({
+						cursor: 'ew-resize',
+						border: '2px solid #2980B9'
+					});
+					this.$box.find('.top').on('mousedown', startResizingTop);
+					this.$box.find('.left').on('mousedown', startResizingLeft);
+					this.$box.find('.right').on('mousedown', startResizingRight);
+					this.$box.find('.bottom').on('mousedown', startResizingBottom);
+				}else{
+					this.$box.find('.bottom').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.left').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.right').css({
+						cursor: 'default',
+						border: 'none'
+					});
+					this.$box.find('.top').off('mousedown');
+					this.$box.find('.bottom').off('mousedown');
+					this.$box.find('.left').off('mousedown');
+					this.$box.find('.right').off('mousedown');
+				}
+			},
+			removeBox: function(evt){
+				this.$box.remove();
+			}
+		});
+	}
+	

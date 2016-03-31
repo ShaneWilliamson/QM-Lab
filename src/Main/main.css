@@ -164,23 +164,19 @@ svg {
 }
 .html-element div.top{
 	pointer-events: auto;
-	border: 2px solid #2980B9;
 	position: absolute;
 }
 .html-element div.bottom{
 	pointer-events: auto;
-	border: 2px solid #2980B9;
 	position: absolute;
 }
 .html-element div.left{
 	pointer-events: auto;
-	border: 2px solid #2980B9;
 	position: absolute;
 }
 
 .html-element div.right{
 	pointer-events: auto;
-	border: 2px solid #2980B9;
 	position: absolute;
 }
 
