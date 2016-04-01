@@ -128,6 +128,7 @@ function initializePaper() {
 	paper.on('cell:pointerclick', selectClickedCell);
 	paper.on('blank:pointerclick', deselectCell);
 	
+	paper.on('cell:pointerup', dropEdge);
 	graph.on('change', function(cell) { 
 		if (isCollabRecordingAllowed()) {
 			selected[0] = cell;
@@ -139,7 +140,30 @@ function initializePaper() {
 	// initialize the variables used to hold the starting drag location
 	boxSelectionX = null;
 	boxSelectionY = null;
+	initializeView();
+
 }
+
+
+/**
+ * Initializes all the views used for drag resizing.
+ * @preconditions The classes each view is for must already be defined.
+ * @postconditions The views are initialized
+ * @memberOf initialize_diagram
+ */
+function initializeView(){
+	initializeStockView();
+	initializeImageNodeView();
+	initializeTextView();
+	initializeAgentView();
+	initializeStateView();
+	initializeTerminalStateView();
+	initializeBranchView();
+	initializeVariableView();
+	initializeParameterView();
+}
+
+
 
 /**
  * This initialzes the local "paper" object that is used for printing purposes from joint.js to be able to display
@@ -372,16 +396,19 @@ function selectClickedCell(cellView, evt) {
 	var cell = selected[0];
 	var view = cell.findView(paper);
 	view.highlight();
+
 }
 
 
 function deselectCell() {
+
    if (selected.length > 0) {
        selected[0].setSelected(false); 
    }
    
    selected = {};
    updateProperties();
+
 }
 
 
