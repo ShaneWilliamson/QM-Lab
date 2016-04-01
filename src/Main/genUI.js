@@ -172,7 +172,195 @@ QM_LabUI.prototype.genPropertiesForm = function() {
  //            { view:"button", value:"Login" , type:"form" },
  //            { view:"button", value:"Cancel" }
  //    ]}
+		document.getElementById("propertiesForm").innerHTML = "";
+		if(selected[0]) {
+			console.log(selected[0].attributes.type);
+			if (selected[0].attributes.type === "QMLab.Connection") {
+				this.createConnectionPropertyForm();
+			}
+			else if (selected[0].attributes.type === "QMLab.Transition" ||
+					 selected[0].attributes.type === "QMLab.Flow") {
+					 
+				this.createLinkPropertyForm();
+			}
+			else {
+				this.createDefaultPropertyForm();
+			}
+		}
+		else {
+			this.createEmptyPropertyForm();
+		}
 
+	
+		
+		
+	
+	
+}
+
+QM_LabUI.prototype.createEmptyPropertyForm = function() { 
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			
+		]
+	});
+}
+
+
+
+
+
+QM_LabUI.prototype.createLinkPropertyForm = function() {
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
+	
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+		]
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+	
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+}
+
+
+
+
+
+
+
+QM_LabUI.prototype.createConnectionPropertyForm = function() {
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
+	
+	
+
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+			{margin: 5, cols: [
+				{ view:"button", label:"Positive", name:"positive", id:"positive" },
+				{ view:"button", label:"Negative", name:"negative", id:"negative" },
+				{ view:"button", label:"Ambiguous", name:"ambiguous", id:"ambiguous" },
+				{ view:"button", label:"No Type", name:"none", id:"none" },
+			]}
+		]
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+	
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	$$("positive").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setPositiveTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	$$("negative").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setNegativeTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	$$("ambiguous").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setAmbiguousTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	$$("none").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setNoTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	
+	
+}
+
+
+QM_LabUI.prototype.createDefaultPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
 	width -= preventOverhangOffset;

@@ -83,7 +83,7 @@ function initializePaper() {
 	
 	
 	paper.on('cell:pointerup', parentCell);	
-	paper.on('cell:pointerclick', selectClickedCell);
+	paper.on('cell:pointerup', selectClickedCell);
 	paper.on('blank:pointerclick', deselectCell);
 	
 	graph.on('change', function(cell) { 
@@ -271,14 +271,17 @@ function paperOnMouseUp(e) {
 	} else if (genUI.lastClickedValue == "Agent") {
 		createAgent(curMousePos);
 		
+	} else if (genUI.lastClickedValue == "Intervention") {
+		createIntervention(curMousePos);
+		
 	} else if (genUI.lastClickedValue == "Text Area") {
 		createText(curMousePos);
 		
-	} else if (genUI.lastClickedValue == "Simple Straight") {
-		createLink(curMousePos, "normal");
+	} else if (genUI.lastClickedValue == "Transition") {
+		createTransition(curMousePos);
 		
-	} else if (genUI.lastClickedValue == "Simple Curved") {
-		createLink(curMousePos, "smooth");
+	} else if (genUI.lastClickedValue == "Connection") {
+		createConnection(curMousePos);
 		
 	} else if (genUI.lastClickedValue == "Image") {
 		createImage(curMousePos);
@@ -302,18 +305,20 @@ function paperOnMouseUp(e) {
 
 
 function selectClickedCell(cellView, evt) {
+	
 	bringChildrenOfParentToFront(cellView.model);
 	selected[0] = cellView.model;
-	updateProperties();
-
 	selected[0].setSelected(true);
+	updateProperties();
 }
 
 
 function deselectCell() {
-	selected[0].setSelected(false);
-	selected = {};
-	updateProperties();
+	if (selected[0]) {
+		selected[0].setSelected(false);
+		selected = {};
+		updateProperties();
+	}
 }
 
 

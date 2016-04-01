@@ -87,20 +87,22 @@
 	post: The localCell's size has been updated to {width, height}
 	*/
 	joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
-		this.prop('rect/width', width);
-		this.prop('rect/height', height);
-		this.attr('rect/width', width);
-		this.attr('rect/height', height);
-		this.prop('image/width', width);
-		this.prop('image/height', height);
-		this.attr('image/width', width);
-		this.attr('image/height', height);
+		//this.setAttr('rect/width', width);
+		//this.setAttr('rect/height', height);
+		//this.setAttr('image/width', width);
+		//this.setAttr('image/height', height);
+
+		var r = (width > height) ? width : height;
+		//this.setAttr('circle/radius', radius);
+		
 		this.resize(width, height);
 
 		this.attr('text/ref-x', (width / 2));
-		if (this.attributes.type === "QMLab.Agent" || this.attributes.type === "QMLab.ImageNode")
+		if (this.attributes.type === "QMLab.Agent" || this.attributes.type === "QMLab.ImageNode" || 
+		    this.attributes.type === "QMLab.Variable" || this.attributes.type === "QMLab.Parameter" ||
+			this.attributes.type === "QMLab.Intervention")
 		{
-			this.attr('text/ref-y', height);
+			this.attr('text/ref-y', (height + this.getTextSize));
 		}
 		else {
 			this.attr('text/ref-y', ((height / 2) - 10));
@@ -187,8 +189,7 @@
 	return: The z-order of the localNode
 	*/
 	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
-		this.prop('text/text', text);
-		this.attr('text/text', text);
+		this.setAttr('text/text', text);
 	}
 
 
@@ -207,26 +208,19 @@
 			// set colour to blue
 			colour = "#0000FF";
 		} else {
-			// set colour to transparent blue
-			colour = "#000000FF";
+			// set colour to black
+			colour = "#000000";
 		}
 
-		this.prop('rect/stroke', colour);
-		this.attr('rect/stroke', colour);
-		this.prop('path/stroke', colour);
-		this.attr('path/stroke', colour);
-		this.prop('circle/stroke', colour);
-		this.attr('circle/stroke', colour);
+		this.setAttr('rect/stroke', colour);
+		this.setAttr('path/stroke', colour);
+		this.setAttr('circle/stroke', colour);
 	}	
 
 
 	joint.shapes.basic.Rect.prototype.setColour = function(colour) {
-		this.prop('rect/fill', colour);
-		this.attr('rect/fill', colour);
-		this.prop('path/fill', colour);
-		this.attr('path/fill', colour);
-		this.prop('circle/fill', colour);
-		this.attr('circle/fill', colour);
+		this.setAttr('rect/fill', colour);
+		this.setAttr('path/fill', colour);
 	}
 
 	joint.shapes.basic.Rect.prototype.getColour = function(colour) {
@@ -235,8 +229,7 @@
 
 
 	joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
-		this.prop('text/fill', colour);
-		this.attr('text/fill', colour);
+		this.setAttr('text/fill', colour);
 	}
 
 	joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
@@ -245,13 +238,12 @@
 
 	joint.shapes.basic.Rect.prototype.setTextSize = function(size) {
 		if(!isNaN(size)) {
-			this.prop('text/fontsize', size);
-			this.attr('text/font-size', size);
+			this.setAttr('text/font-size', size);
 		}
 	}
 
 	joint.shapes.basic.Rect.prototype.getTextSize = function() {
-		return this.attributes.text.fontsize;
+		return this.attr('text/font-size');
 	}
 
 	joint.shapes.basic.Rect.prototype.setImage = function() {
@@ -261,14 +253,23 @@
 	joint.shapes.basic.Rect.prototype.getImage = function() {
 		return "";
 	}
+	
+	joint.shapes.basic.Rect.prototype.setAttr = function(property, value) {
+		this.prop(property, value);
+		this.attr(property, value);
+	}
 
 
 
-
+	joint.shapes.basic.Circle.prototype.setAttr = joint.shapes.basic.Rect.prototype.setAttr;
 	joint.shapes.basic.Circle.prototype.setLabel = joint.shapes.basic.Rect.prototype.setLabel;
 	joint.shapes.basic.Circle.prototype.setTextSize = joint.shapes.basic.Rect.prototype.setTextSize;
 	joint.shapes.basic.Circle.prototype.setTextColour = joint.shapes.basic.Rect.prototype.setTextColour;
-	joint.shapes.basic.Circle.prototype.setColour = joint.shapes.basic.Rect.prototype.setColour;
+	joint.shapes.basic.Circle.prototype.setColour = function(colour) {
+		this.setAttr('rect/fill', colour);
+		this.setAttr('path/fill', 'black');
+		this.setAttr('circle/fill', colour);
+	}
 	joint.shapes.basic.Circle.prototype.setSelected = joint.shapes.basic.Rect.prototype.setSelected;
 	joint.shapes.basic.Circle.prototype.setWidth = joint.shapes.basic.Rect.prototype.setWidth;
 	joint.shapes.basic.Circle.prototype.setHeight = joint.shapes.basic.Rect.prototype.setHeight;
@@ -382,32 +383,10 @@
 
 	*/
 	function localFlow (pos, label, source, target, connector) {
-		var newFlow = new joint.shapes.QMLab.localLink();
+		var newFlow = new joint.shapes.QMLab.Flow();
 		var localPos = $.extend(true, {}, pos);
 
-		//If a source was passed, set the link's source that
-		if (source) {
-			if (graph.getCell(source.id)) {
-				newFlow.setStartNodeFromCell(source)
-			}
-		}
-		//Otherwise, use the passed in point
-		else {
-			newFlow.set('source', { x: localPos.x, y: localPos.y });
-		}
-
-		//If a target was passed, set the link's target to that
-		if (target) {
-			if (graph.getCell(target.id)) {
-				newFlow.setEndNodeFromCell(target)
-			}
-		}
-		//Otherwise, use the passed in point
-		else {
-			//For the moment, simply set the target to be a point to the right
-			localPos.x += 400;
-			newFlow.setEndNodeFromPoint(localPos);
-		}
+		newFlow.initialzeSourceAndTarget(localPos, source, target);
 
 		//If a label was passed in, set the link's text to that
 		if (label) {
@@ -424,6 +403,8 @@
 
 		return newFlow;
 	}
+	
+	
 
 
 
@@ -559,8 +540,11 @@
 	joint.dia.Link.prototype.setTextSize = function(textsize) {
 		var text = this.getLabel();
 		var colour = this.getTextColour();
-		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
-		this.prop('text/textsize', textsize);
+		this.set('labels', [
+			{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } },
+			{ position: 0.75, attrs: { text: { text: 'TEST', 'font-size': textsize, fill: colour }, rect: { stroke: '#7c68fc', 'stroke-width': 1, y: 20, rx: 5, ry: 5 } } }
+		]);
+		this.attr('text/text-size', textsize);
 	}
 
 	/*
@@ -571,7 +555,7 @@
 	post: The label text of the node has been set to the passed in text
 	*/
 	joint.dia.Link.prototype.getTextSize = function(textsize) {
-		return this.attributes.text.textsize;
+		return this.attr('text/text-size');
 	}
 
 
@@ -602,7 +586,7 @@
 	joint.dia.Link.prototype.setColour = function(colour) {
 		this.prop('colour', colour);
 		this.attr( {
-			'.connection': { stroke: colour, fill: colour },
+			'.connection': { stroke: colour, fill: 'white' },
 			'.marker-target': {stroke: colour, fill: colour },
 			'.marker-source': {stroke: colour, fill: colour },
 		});
@@ -619,13 +603,14 @@
 		var text = this.getLabel();
 		var textsize = this.getTextSize();
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
-		this.prop('text/textcolour', colour);
+		this.attr('text/text-colour', colour);
 	}
 
 	//This is a placeholder
 	joint.dia.Link.prototype.getTextColour = function() {
-		if (this.attributes.text) {
-			return this.attributes.text.textcolour;
+		var retVal = this.attr('text/text-colour');
+		if (retVal) {
+			return retVal;
 		}
 		else {
 			return "#000000";
@@ -660,6 +645,65 @@
 					}
 				}
 	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setSelected = function(value) {
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setPositiveTransition = function() {
+		this.attr({
+			'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z M 0 20 L 0 30 M -5 25 L 5 25 M 0 -10 L 0 -20 M -5 -15 L 5 -15' },
+		});
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setNegativeTransition = function() {
+		this.attr({
+			'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z M -5 25 L 5 25 M 0 -15' },
+		});
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setAmbiguousTransition = function() {
+		this.attr({
+			'.marker-target': { d: 'M 18 0 L 8 5 L 18 10 z M 0 20 C 5 10 20 25 5 25 L 5 28 3 28 3 23  C 15 25 0 15 2 21 M 3 30 C 4 29 4 29 5 30 C 4 31 4 31 3 30M 0 -20 ' },
+		});
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.setNoTransition = function() {
+		this.attr({
+			'.marker-target': { d: 'M 20 0 L 10 5 L 20 10 z' },
+		});
+	}
+	
+	//This is a placeholder
+	joint.dia.Link.prototype.initialzeSourceAndTarget = function(localPos, source, target) {
+		//If a source was passed, set the link's source that
+		if (source) {
+			if (graph.getCell(source.id)) {
+				this.setStartNodeFromCell(source)
+			}
+		}
+		//Otherwise, use the passed in point
+		else {
+			this.set('source', { x: localPos.x, y: localPos.y });
+		}
+
+		//If a target was passed, set the link's target to that
+		if (target) {
+			if (graph.getCell(target.id)) {
+				this.setEndNodeFromCell(target)
+			}
+		}
+		//Otherwise, use the passed in point
+		else {
+			//For the moment, simply set the target to be a point to the right
+			localPos.x += 400;
+			this.setEndNodeFromPoint(localPos);
+		}
+	}
 
 
 	/*
@@ -682,6 +726,34 @@
 
 		}, joint.dia.Link.prototype.defaults),
 	});
+	
+	/*
+	This is the shape definition of the "localLink" type. It extends joint.js' Link,
+	allowing us to easily customize it.	By default, sets the Link to behave exactly
+	link a default joint.js basic Link.
+
+	*/
+	joint.shapes.QMLab.Flow = joint.shapes.QMLab.localLink.extend({
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.Flow'
+
+		}, joint.dia.Link.prototype.defaults),
+	});
+	
+	/*
+	This is the shape definition of the "localLink" type. It extends joint.js' Link,
+	allowing us to easily customize it.	By default, sets the Link to behave exactly
+	link a default joint.js basic Link.
+
+	*/
+	joint.shapes.QMLab.Transition = joint.shapes.QMLab.localLink.extend({
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.Transition'
+
+		}, joint.dia.Link.prototype.defaults),
+	});
 
 
 	/*
@@ -690,12 +762,13 @@
 	link a default joint.js basic Link.
 
 	*/
-	joint.shapes.QMLab.localLink = joint.dia.Link.extend({
+	joint.shapes.QMLab.Connection = joint.shapes.QMLab.localLink.extend({
 		defaults: joint.util.deepSupplement({
 
-			type: 'QMLab.localLink',
+			type: 'QMLab.Connection',
 			/*Creates the arrow head at one end of the link*/
-			attrs: {'.marker-target': {stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z'}}
+			
+			
 		}, joint.dia.Link.prototype.defaults),
 	});
 
@@ -857,8 +930,6 @@
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.Variable',
-			size: { width: 20, height: 20 },
-			attrs: { text: { text: 'Variable', 'ref-y': 30, ref: 'circle' }, circle: { fill: 'gray' } },
 
 		}, joint.shapes.basic.Circle.prototype.defaults)
 	});
@@ -875,16 +946,6 @@
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.Parameter',
-			size: { width: 20, height: 20 },
-
-			attrs: {
-				text: { text: 'Parameter', 'ref-y': 30, ref: 'circle' },
-				circle: { fill: 'gray' },
-				//path: { fill: 'green', stroke: "black", d: "M40,50  L50,35  A30,30 1 0,1 30,10 z"}
-				//Currently, leaving this out of the build. But throw another shape of a pie chart or something
-				//to show that this is different from a variable. Especially considering the default 'name' in the
-				//text field won't be used very often in the final release.
-				},
 
 		}, joint.shapes.basic.Circle.prototype.defaults)
 	});
@@ -934,26 +995,71 @@
 
 		}, joint.shapes.basic.Rect.prototype.defaults)
 	});
+	
+	
+	
+	/*
+	This is the shape definition of the "Intervention" type. It extends joint.js' Circle shape,
+	allowing us to easily customize it.
+	*/
+	joint.shapes.QMLab.Intervention = joint.shapes.basic.Circle.extend({
+
+		markup: '<g class="rotatable"><g class="scalable"><circle/><path/></g><text/></g>',
+
+		defaults: joint.util.deepSupplement({
+
+			type: 'QMLab.Intervention',
+
+		}, joint.shapes.basic.Circle.prototype.defaults)
+	});
 
 
 	joint.shapes.QMLab.ImageNode.prototype.setImage = function(url) {
-		this.prop('url', url);
-		this.attr('image/xlink:href', url);
+		this.setAttr('image/xlink:href', url);
 	}
 
 	joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
-		return this.attributes.url;
+		return this.attr('image/link:href');
 	}
 
 	joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
-		this.prop('url', url);
-		this.attr('image/xlink:href', url);
+		this.setAttr('image/xlink:href', url);
 	}
 
 	joint.shapes.QMLab.Agent.prototype.getImage = function() {
-		return this.attributes.url;
+		return this.attr('image/link:href');
 	}
 
 	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
 		return this.attr("image/xlink:href");
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

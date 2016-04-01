@@ -62,8 +62,9 @@ function createStock(pos) {
  */
 function createLink(pos, connector) {
 	var newLink = new localLink(pos, false, false, false, connector);
+	newLink.attributes.type = "QMLab." + connector;
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
-	targetFollow(newLink, connector,pos );
+	targetFollow(newLink, connector, pos );
 	setUpNewCell(newLink, "", "#000000", "#000000");
 	console.log('New cell added');
 	return newLink;
@@ -130,11 +131,17 @@ function createImage(pos, pictureURL, label, sizeX, sizeY) {
 function createVariable(pos) {
 	var newVariable = new joint.shapes.QMLab.Variable({
 		position: {x: pos.x, y: pos.y},
-		size: { width: 20, height: 20 },
-		attrs: { text: { text: 'Variable', 'ref-y': 30, ref: 'circle' }, circle: { fill: 'gray' } },
+		size: { width: 10000, height: 10000 },
+		attrs: { 
+			text: { text: 'Variable', 'ref-y': 30, ref: 'circle' }, 
+			circle: { fill: 'gray', stroke: 'black', r: 5000 },
+			path: { 'd': 'M -4000 -4000 L -1000 -4000 -1150 -3750 -2500 -3750 250 2750 2000 -3750 1150 -3750 1000 -4000 4000 -4000 3750 -3750 3000 -3750 250 5000 -3500 -3750 -3750 -3750 z' },
+		},
 	});
-	setUpNewCell(newVariable, "Variable", "#aaaaaa", "#000000");
-
+	newVariable.setSize(20, 20);
+	newVariable.setSelected(false);
+	setUpNewCell(newVariable, "Variable", "#ffa500", "#000000");
+	
 	console.log("A variable was created.");
 	return newVariable;
 }
@@ -152,14 +159,47 @@ function createVariable(pos) {
 function createParameter(pos) {
 	var newParameter = new joint.shapes.QMLab.Parameter({
 		position: {x: pos.x, y: pos.y},
-		size: { width: 20, height: 20 },
-		attrs: {
-			text: { text: 'Parameter', 'ref-y': 30, ref: 'circle' },
-			circle: { fill: 'gray' },
+		size: { width: 10000, height: 10000 },
+		attrs: { 
+			text: { text: 'Parameter', 'ref-y': 30, ref: 'circle' }, 
+			circle: { fill: 'gray', stroke: 'black', r: 5000 },
+			path: { 'd': 'M -3000 -4000 C  6000 -4000 3200 -50 -800 500 L -800 -100 C 2500 250 5000 -3700 -2000 -3250 L -2000 3800 -1500 3800 -1500 4000 -3000 4000 -3000 3800 -2800 3800 -2800 -3000   z' },
 		},
 	});
-	setUpNewCell(newParameter, "Parameter", "#aaaaaa", "#000000");
+	newParameter.setSize(20, 20);
+	newParameter.setSelected(false);
+	setUpNewCell(newParameter, "Parameter", "#9efffe", "#000000");
+	
+	console.log("A parameter was created.");
+	return newParameter;
+}
 
+
+
+/**
+ * Creates an intervention at the given location
+ * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
+ * @preconditions A collaborative intervention has been created with its top-left
+ *   corner positioned at point "pos". The collaborative graph has been updated
+ * @param  {position} pos valid coordinate with 'x' and 'y' fields
+ * @return {Parameter}     the object of the new parameter created at position
+ *   pos
+ * @memberOf create_objects
+ */
+function createIntervention(pos) {
+	var newParameter = new joint.shapes.QMLab.Intervention({
+		position: {x: pos.x, y: pos.y},
+		size: { width: 10000, height: 10000 },
+		attrs: { 
+			text: { text: 'Intervention', 'ref-y': 30, ref: 'circle' }, 
+			circle: { fill: 'red', stroke: 'black', r: 5000 },
+			path: { 'd': 'M 4000 -5500 L -4000 200 -1000 200 -4000 5500 4000 -100 1500 -100 z' },
+		},
+	});
+	newParameter.setSize(20, 20);
+	newParameter.setSelected(false);
+	setUpNewCell(newParameter, "Intervention", "#ff0000", "#000000");
+	
 	console.log("A parameter was created.");
 	return newParameter;
 }
@@ -310,13 +350,71 @@ function createText(pos) {
  * @memberOf create_objects
  */
 function createFlow(pos) {
-	var newFlow = new localFlow(pos, false, false, false, false);
+	var newFlow = new joint.shapes.QMLab.Flow();
+	var localPos = $.extend(true, {}, pos);
+	newFlow.initialzeSourceAndTarget(localPos, false, false);
+	newFlow.set('router', { name: 'orthogonal' });	
+	newFlow.attr({
+        '.connection': { 'stroke-width': 4 },
+		'.marker-target': { stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z' },
+    });
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
-	targetFollow(newFlow, "flow",pos);
+	targetFollow(newFlow, "flow", pos);
 	setUpNewCell(newFlow, "", "#000000", "#000000");
 	console.log("A flow was created.");
 	return newFlow;
 }
+
+
+/**
+ * Creates a flow at the given location
+ * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
+ * @preconditions A collaborative flow has been created with its top-left corner
+ *   positioned at point "pos". The collaborative graph has been updated
+ * @param  {position} pos valid coordinate with 'x' and 'y' fields
+ * @return {localFlow}     the object of the new flow created at position pos
+ * @memberOf create_objects
+ */
+function createTransition(pos) {
+	var newTransition = new joint.shapes.QMLab.Transition();
+	var localPos = $.extend(true, {}, pos);
+	newTransition.initialzeSourceAndTarget(localPos, false, false);
+	newTransition.set('connector', { name: 'normal' });	
+	newTransition.attr({
+		'.marker-target': { stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z' },
+    });
+	//calls the function in linkJoining that will attach the new link to an element if is was created on one
+	targetFollow(newTransition, "transition", pos);
+	setUpNewCell(newTransition, "", "#000000", "#000000");
+	console.log("A transition was created.");
+	return newTransition;
+}
+
+
+/**
+ * Creates a flow at the given location
+ * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
+ * @preconditions A collaborative flow has been created with its top-left corner
+ *   positioned at point "pos". The collaborative graph has been updated
+ * @param  {position} pos valid coordinate with 'x' and 'y' fields
+ * @return {localFlow}     the object of the new flow created at position pos
+ * @memberOf create_objects
+ */
+function createConnection(pos) {
+	var newConnection = new joint.shapes.QMLab.Connection();
+	var localPos = $.extend(true, {}, pos);
+	newConnection.initialzeSourceAndTarget(localPos, false, false);
+	newConnection.set('connector', { name: 'smooth' });	
+	newConnection.attr({
+		'.marker-target': { stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z' },
+    });
+	//calls the function in linkJoining that will attach the new link to an element if is was created on one
+	targetFollow(newConnection, "connection", pos);
+	setUpNewCell(newConnection, "", "#000000", "#000000");
+	console.log("A connection was created.");
+	return newConnection;
+}
+
 
 /**
  * Adds initialzed cell to the graph, then creates a collab cell to parallel it.

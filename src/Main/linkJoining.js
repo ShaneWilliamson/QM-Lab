@@ -28,14 +28,14 @@ function targetFollow(newLink, linkType, pos){
 			isCurved = false;
 			isStraight = false;
 		}
-		else if (linkType.localeCompare("curved") == 0)
+		else if (linkType.localeCompare("connection") == 0)
 		{
 			isFlow = false;
 			isCurved = true;
 			isStraight = false;
 		}
 
-		else if (linkType.localeCompare("straight") == 0)
+		else if (linkType.localeCompare("transition") == 0)
 		{
 			isFlow = false;
 			isCurved = false;
@@ -73,7 +73,7 @@ function targetFollow(newLink, linkType, pos){
 
 		var paperDiv = document.getElementById("paperView");
 		paper.$el.on("mousemove", mouseTracker);
-		paper.$el.on('mouseup', addVertex);
+		paper.$el.on('click', addVertex);
 		paper.$el.on('dblclick', linkTargeter);
 	}
 }
@@ -94,11 +94,11 @@ function addVertex(e){
 		var newArray;
 		if(typeof vertArray === 'undefined')
 		{
-			newArray = [{x:curMousePos.x  , y:curMousePos.y  }];
+			newArray = [{ x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y   }];
 		}
 		else
 		{
-			newArray =vertArray.concat([{x:curMousePos.x  , y:curMousePos.y  }]);
+			newArray =vertArray.concat([{ x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y  }]);
 		}
 		console.log(newArray);
 		lastLink.set('vertices', newArray );
@@ -131,6 +131,8 @@ function mouseTracker(e){
 function linkTargeter(e){
 	updateMousePos(e);
 	console.log(curMousePos);
+	
+	
 	var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 	if(typeof objectAtPoint[0] !== 'undefined')
 	{
@@ -165,7 +167,7 @@ function linkTargeter(e){
 
 	paper.$el.off("mousemove", mouseTracker);
 	paper.$el.off('dblclick', linkTargeter);
-	paper.$el.off('mouseup', addVertex);
+	paper.$el.off('click', addVertex);
 	lastLink = null; 
 
 	isFlow = false;

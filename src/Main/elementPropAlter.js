@@ -15,6 +15,8 @@ var selectElement = null;
  * @postconditions The properties will be displayed to reflect whether an object is selected
  */
 function updateProperties() {
+	genUI.genPropertiesForm();
+	
 	var selectedObj = selected[0];
 	var formName = "propertiesFormId";
 	
@@ -49,14 +51,28 @@ function updateProperties() {
  */
 function setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url) {
 	
-		document.querySelector('div[view_id="text"] input').value = text;
-		document.querySelector('div[view_id="textsize"] input').value = textsize;
-		document.querySelector('div[view_id="textcolor"] div.webix_input_icon').style.background = textcolour;
-		document.querySelector('div[view_id="textcolor"] div.webix_inp_static').innerHTML = textcolour;
-		document.querySelector('div[view_id="width"] input').value = width;
-		document.querySelector('div[view_id="height"] input').value = height;
-		document.querySelector('div[view_id="color"] div.webix_input_icon').style.background = colour;
-		document.querySelector('div[view_id="color"] div.webix_inp_static').innerHTML = colour;
-		document.querySelector('div[view_id="url"] input').value = url;
+	setPropertyInputBoxValueIfExists('text', text);
+	setPropertyInputBoxValueIfExists('textsize', textsize);
+	setPropertyInputBoxValueIfExists('width', width);
+	setPropertyInputBoxValueIfExists('height', height);
+	setPropertyInputBoxValueIfExists('url', url);
+	setPropertyColourPickerValueIfExists('textcolor', textcolour);
+	setPropertyColourPickerValueIfExists('color', textcolour);
+}
+
+
+function setPropertyInputBoxValueIfExists(name, value) {
+	var inputBox = document.querySelector('div[view_id="' + name + '"] input');
+	if (inputBox){
+		inputBox.value = value;
+	}
+}
+
+function setPropertyColourPickerValueIfExists(name, value) {
+	var div = document.querySelector('div[view_id="' + name + '"] div.webix_input_icon');
+	if (div){
+		document.querySelector('div[view_id="' + name + '"] div.webix_input_icon').style.background = value;
+		document.querySelector('div[view_id="' + name + '"] div.webix_inp_static').innerHTML = value;
+	}
 
 }
