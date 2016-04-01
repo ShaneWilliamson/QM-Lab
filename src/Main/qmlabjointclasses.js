@@ -969,7 +969,9 @@
 			selectedEdge = "";
 		}
 	}
-	
+	/**
+	 * Sets the selected edge to top and calls startResizing to add event listeners to the paper.
+	 */
 	function startResizingTop(evt){
 		//makes sure selected is actually set
 		if(undefined!=selected[0]){

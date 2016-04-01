@@ -325,18 +325,14 @@ function paperOnMouseUp(e) {
 
 
 function selectClickedCell(cellView, evt) {
-	//selected[0].setSelected(false);
-	//updateProperties();
 	bringChildrenOfParentToFront(cellView.model);
 	selected[0] = cellView.model;
 	updateProperties();
 
-	//selected[0].setSelected(true);
 }
 
 
 function deselectCell() {
-	//selected[0].setSelected(false);
 	selected = {};
 	updateProperties();
 }
