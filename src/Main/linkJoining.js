@@ -117,7 +117,52 @@ function addVertex(e){
  */
 function mouseTracker(e){
 	updateMousePos(e);
-	lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+	var vertArray = lastLink.get('vertices');
+		var newArray;
+		if(typeof vertArray === 'undefined')
+		{
+			
+			if( typeof lastLink.get('source').id === 'undefined' )
+			{
+				if( lastLink.get('source').x < curMousePos.x)
+				{
+					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+				else
+				{
+					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+			}
+			else
+			{
+				var temp = lastLink.getSourceElement();
+				var sourceid = temp.id;
+
+				var actualSource = graph.getCell(sourceid);
+
+				if(actualSource.position.x < curMousePos)
+				{
+					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+				else
+				{
+					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+			}
+		}
+		else
+		{
+			var popArray = vertArray[vertArray.length -1];
+
+			if(popArray.x < curMousePos.x)
+				{
+					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+				else
+				{
+					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+		}
 	hasMoved=true;
 }
 
