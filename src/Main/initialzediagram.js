@@ -460,8 +460,6 @@ function stopDraggingAction() {
 		boxSelectionX = null;
 		boxSelectionY = null;
 		console.log("Box selection has stopped");
-		
-		selected = graph.findModelsInArea(rect);
 	}
 }
 
@@ -503,7 +501,8 @@ function handleMouseMove(e) {
 		updateMousePos(e);
 		console.log("A box select is currently being dragged");
 		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
-	} else if (highlightedCount > 1) {
+
+	} else if ((highlightedCount > 1) && e.buttons) {
 		updateMousePos(e);
 		moveSelectedItems();
 	}
@@ -513,10 +512,24 @@ function moveSelectedItems() {
 	var deltaX = curMousePos.x - oldMousePos.x;
 	var deltaY = curMousePos.y - oldMousePos.y;
 
-	for (var i = 0; i < selected.length; i++) {
-		var selectedItem = selected[i];
-		selectedItem.translate(deltaX, deltaY);
+	var highlightedItems = getHighlightedItems();
+	var cells = graph.getCells();
+
+	for (var i = 0; i < highlightedItems.length; i++) {
+		var highlightedItem = highlightedItems[i];
+		var htmlId = highlightedItem.getAttribute("model-id");
+
+		for (var j = 0; j < cells.length; j++) {
+			var cell = cells[j];
+			var modelId = cell.attributes.id;
+
+			if (modelId == htmlId) {
+				cell.translate(deltaX, deltaY);
+			}
+		}
 	}
+
+	selected[0].translate(-deltaX, -deltaY);
 }
 
 /**
