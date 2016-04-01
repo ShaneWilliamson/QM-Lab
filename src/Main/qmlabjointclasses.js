@@ -1260,6 +1260,48 @@
 		}
 	}
 	
+	function setSelectedHTMLNoResize(view){
+		if(view.model == selected[0]){
+			view.$box.find('.bottom').css({
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.top').css({
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.left').css({
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+			view.$box.find('.right').css({
+				border: '2px solid #2980B9',
+				background: '#2980B9'
+			});
+		}else{
+			view.$box.find('.bottom').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.top').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.left').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+			view.$box.find('.right').css({
+				cursor: 'default',
+				border: 'none',
+				background: 'none'
+			});
+		}
+	}
+	
 	function initializeStockView(){
 		joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
 			template: [
@@ -1534,7 +1576,7 @@
 			},
 			updateBox: function(){
 				setInitialHTMLBranch(this);
-				setSelectedHTML(this);
+				setSelectedHTMLNoResize(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1576,7 +1618,7 @@
 			},
 			updateBox: function(){
 				setInitialHTML(this);
-				setSelectedHTML(this);
+				setSelectedHTMLNoResize(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();
@@ -1616,7 +1658,7 @@
 			},
 			updateBox: function(){
 				setInitialHTML(this);
-				setSelectedHTML(this);
+				setSelectedHTMLNoResize(this);
 			},
 			removeBox: function(evt){
 				this.$box.remove();

@@ -192,5 +192,22 @@ svg {
 	#printView{
 		display: block;
 	}
+	
 
+	.html-element{
+		display: none;
+	}
+	.html-element div.top{
+		display: none;
+	}
+	.html-element div.bottom{
+		display: none;
+	}
+	.html-element div.left{
+		display: none;
+	}
+
+	.html-element div.right{
+		display: none;
+	}
 }
