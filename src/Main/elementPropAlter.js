@@ -31,8 +31,11 @@ function updateProperties() {
 		width = selectedObj.getXSize();
 		height = selectedObj.getYSize();
 		colour = selectedObj.getColour();
-		if (selectedObj.attributes.type === "QMLab.ImageNode" || selectedObj.attributes.type === "QMLab.Agent") {
+		if (selectedObj.attributes.type === "QMLab.ImageNode" ) {
 			url = selectedObj.getImageURL();
+		}
+		if(selectedObj.attributes.type === "QMLab.Agent" ){
+			url = selectedObj.getImage();
 		}
 	}
 	
