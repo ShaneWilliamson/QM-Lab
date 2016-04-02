@@ -3,11 +3,6 @@
 * in the graph
 */
 
-//the id of the currently selected element, starts off unselected
-var selectId = null;
-//The object that we currently have selected
-var selectElement = null;
-
 
 /**
  * Fills the text boxes in the property pane with the given values based on whether an object is selected or not
@@ -57,7 +52,7 @@ function setPropertyDisplayValues(text, textsize, textcolour, width, height, col
 	setPropertyInputBoxValueIfExists('height', height);
 	setPropertyInputBoxValueIfExists('url', url);
 	setPropertyColourPickerValueIfExists('textcolor', textcolour);
-	setPropertyColourPickerValueIfExists('color', textcolour);
+	setPropertyColourPickerValueIfExists('color', colour);
 }
 
 

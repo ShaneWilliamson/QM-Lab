@@ -41,13 +41,54 @@ post: printGraph has the same contents of graph.
 function updatePrintGraph(){
 	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
 }
-
-
-
-function stopPanning() {
-	movingViewPort = false;
-}
 	
+
+function removeAllSelectionBoxes() {
+	var svg = $.find("svg")[0];
+	
+	// remove all of the current selection boxes from the screen
+	var selectionBoxes = $(".selectionBox");
+	for (var i = 0; i < selectionBoxes.length; i++) {
+		selectionBox = selectionBoxes[i];
+		svg.removeChild(selectionBox);
+	}
+}
+
+
+function drawSelectionBox(startX, startY, endX, endY) {
+	// delete all previous selection boxes
+	$(".selectionBox").remove();
+
+	// get the main canvas
+	var svg = $.find("svg")[0];
+	
+	var box = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+	box.setAttribute("class", "selectionBox");
+
+	// translate coordinates to match the paper position
+	startX += paperOffsetX;
+	endX += paperOffsetX;
+	startY += paperOffsetY;
+	endY += paperOffsetY;
+
+	// scale to the current paper size
+	startX *= paperScale;
+	startY *= paperScale;
+	endX *= paperScale;
+	endY *= paperScale;
+
+	// smart rect deals with negative widths/heights automagically
+	var rect = smartRect(startX, startY, endX, endY);
+
+	box.setAttribute("x", rect.x);
+	box.setAttribute("y", rect.y);
+	box.setAttribute("width", rect.width);
+	box.setAttribute("height", rect.height);
+
+	box.style.fill = "#55cecc";
+	box.setAttribute("fill-opacity", "0.4");
+	svg.appendChild(box);
+}
 
 /**
  * This initialzes the local "paper" object from joint.js to be able to display
@@ -67,33 +108,62 @@ function initializePaper() {
 		perpendicularLinks: true,
 		gridSize: 1
 	});
+
 	paperScale = 1;
+	paperOffsetX = 0;
+	paperOffsetY = 0;
 
 	paper.on('blank:pointerdown', paperEmptySelectionPressed);
 	paper.$el.on('wheel', paperZoom);
 	paper.$el.on('mouseup', paperOnMouseUp);
-	addEvent(window, 'mouseup', stopPanning);
+	addEvent(window, 'mouseup', stopDraggingAction);
 	addEvent(window, 'resize', resizePaper);
 	resizePaper();
-	
 	
 	// First, unembed the cell that has just been grabbed by the user.
 	paper.on('cell:pointerdown', bringParentlessCellToFront);
 	paper.on('cell:pointerdown', deParentCell);
 	
-	
 	paper.on('cell:pointerup', parentCell);	
 	paper.on('cell:pointerup', selectClickedCell);
 	paper.on('blank:pointerclick', deselectCell);
 	
+	paper.on('cell:pointerup', dropEdge);
 	graph.on('change', function(cell) { 
 		if (isCollabRecordingAllowed()) {
 			selected[0] = cell;
 			updateProperties();
 		}
 		
-	})
+	});
+
+	// initialize the variables used to hold the starting drag location
+	boxSelectionX = null;
+	boxSelectionY = null;
+	initializeView();
+
 }
+
+
+/**
+ * Initializes all the views used for drag resizing.
+ * @preconditions The classes each view is for must already be defined.
+ * @postconditions The views are initialized
+ * @memberOf initialize_diagram
+ */
+function initializeView(){
+	initializeStockView();
+	initializeImageNodeView();
+	initializeTextView();
+	initializeAgentView();
+	initializeStateView();
+	initializeTerminalStateView();
+	initializeBranchView();
+	initializeVariableView();
+	initializeParameterView();
+}
+
+
 
 /**
  * This initialzes the local "paper" object that is used for printing purposes from joint.js to be able to display
@@ -129,7 +199,6 @@ function initializePrintPaper() {
  * @memberOf initialize_diagram
  */
 function paperZoom(e) {
-	
 	
 	var oldPaperScale = paperScale;
 	
@@ -183,7 +252,8 @@ function resizePaper(e) {
 	if (heightOfPaper < 450) {
 		heightOfPaper = 450;
 	}
-	paper.setDimensions(paperDiv.clientWidth - 20, heightOfPaper);
+	paper.setDimensions(window.innerWidth - 275, heightOfPaper);
+	
 }
 
 /* 
@@ -233,9 +303,24 @@ function shrinkPrintPaper(e){
  * @memberOf initialize_diagram
  */
 function paperEmptySelectionPressed(e) {
-	updateMousePos(e)
-	movingViewPort = true;
+	console.log("The mouse was clicked in an empty paper location");
+	updateMousePos(e);
+	
+	// if the alt key is down, then initiate panning
+	if (e.altKey) {
+		movingViewPort = true;
+		console.log("Panning of the paper has been initiated");
+	
+	// otherwise start rectangle selection
+	} else {
+		console.log("Box selection has been initiated");
+		boxSelectionX = curMousePos.x;
+		boxSelectionY = curMousePos.y;
+	}
+	
+	deselectAllCells();
 }
+
 
 /**
  * When the user lets go of the mouse over the paper, call this function. Based
@@ -256,6 +341,7 @@ function paperEmptySelectionPressed(e) {
 function paperOnMouseUp(e) {
 	updateMousePos(e)
 
+	// TODO refactor into a switch???
 	if (genUI.lastClickedValue == "Stock") {
 		createStock(curMousePos);
 
@@ -301,6 +387,7 @@ function paperOnMouseUp(e) {
 	genUI.deselectUIElements();
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
+	deselectAllCells();
 }
 
 
@@ -308,17 +395,26 @@ function selectClickedCell(cellView, evt) {
 	
 	bringChildrenOfParentToFront(cellView.model);
 	selected[0] = cellView.model;
-	selected[0].setSelected(true);
+
 	updateProperties();
+
+	// select the cell
+	var cell = selected[0];
+	var view = cell.findView(paper);
+	view.highlight();
+
+
 }
 
 
 function deselectCell() {
-	if (selected[0]) {
-		selected[0].setSelected(false);
-		selected = {};
-		updateProperties();
-	}
+
+   if (selected.length > 0) {
+       selected[0].setSelected(false); 
+   }
+   
+   selected = {};
+   updateProperties();
 }
 
 
@@ -340,9 +436,6 @@ function deselectCell() {
 function handleKeyInput(e) {
 	if (e.keyCode == 46) {
 		deleteSelectedCell(e);
-	}
-	else {
-		//console.log("A key was pushed");
 	}
 }
 
@@ -367,6 +460,54 @@ function deleteSelectedCell(e) {
 	}
 }
 
+
+function stopDraggingAction() {
+	console.log("A drag has stopped");
+	// if we were panning, stop the panning
+	if (movingViewPort) {
+		movingViewPort = false;
+		console.log("Panning has stopped");
+
+	// otherwise we need to end a box selection
+	} else if (boxSelectionX != null) {
+		//deselect all of the previously selected cells
+		deselectAllCells();
+
+		var curX = curMousePos.x;
+		var curY  = curMousePos.y
+
+		var rect = smartRect(boxSelectionX, boxSelectionY, curX, curY);
+
+		var enclosed = paper.findViewsInArea(rect);
+		for (var i = 0; i < enclosed.length; i++) {
+			enclosed[i].highlight();
+		}
+
+		// clear the property box
+		$$("propertiesFormId").reconstruct();
+
+		// remove all drawn selection boxes
+		$(".selectionBox").remove();
+
+		// reset the box selection start values
+		boxSelectionX = null;
+		boxSelectionY = null;
+		console.log("Box selection has stopped");
+	}
+}
+
+function deselectAllCells() {
+	var cells = graph.getCells();
+	for (var i = 0; i < cells.length; i++) {
+		// currently cells refers to the data object of each cell
+		// we need to find the view associated with the data
+		var cellView = cells[i].findView(paper);
+		cellView.unhighlight();
+	}
+
+	selected = [];
+}
+
 /**
  * When the mouse moves, handle the logic of figuring out what further methods
  *   need to be dispatched.
@@ -383,11 +524,46 @@ function deleteSelectedCell(e) {
  * @memberOf initialize_diagram
  */
 function handleMouseMove(e) {
+	var highlightedCount = getHighlightedItems().length;
+
 	if (movingViewPort) {
 		moveViewPort(e);
+
+	// if we are currently dragging a selection box, we need to update it
+	} else if (boxSelectionX != null) {
+		updateMousePos(e);
+		console.log("A box select is currently being dragged");
+		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
+
+	} else if ((highlightedCount > 1) && e.buttons) {
+		updateMousePos(e);
+		moveSelectedItems();
 	}
 }
 
+function moveSelectedItems() {
+	var deltaX = curMousePos.x - oldMousePos.x;
+	var deltaY = curMousePos.y - oldMousePos.y;
+
+	var highlightedItems = getHighlightedItems();
+	var cells = graph.getCells();
+
+	for (var i = 0; i < highlightedItems.length; i++) {
+		var highlightedItem = highlightedItems[i];
+		var htmlId = highlightedItem.getAttribute("model-id");
+
+		for (var j = 0; j < cells.length; j++) {
+			var cell = cells[j];
+			var modelId = cell.attributes.id;
+
+			if (modelId == htmlId) {
+				cell.translate(deltaX, deltaY);
+			}
+		}
+	}
+
+	selected[0].translate(-deltaX, -deltaY);
+}
 
 /**
  * This function checks where the mouse currently is, and where it used to be in
@@ -404,7 +580,14 @@ function handleMouseMove(e) {
 function moveViewPort(e) {
 	updateMousePos(e);
 	var origin = paper.options.origin;
-	paper.setOrigin(((curMousePos.x - oldMousePos.x) * paperScale) + origin.x, ((curMousePos.y - oldMousePos.y) * paperScale) + origin.y);
+	var deltaX = curMousePos.x - oldMousePos.x;
+	var deltaY = curMousePos.y - oldMousePos.y;
+	paper.setOrigin((deltaX * paperScale) + origin.x, (deltaY * paperScale) + origin.y);
+
+	// save the paper translation
+	paperOffsetX += deltaX;
+	paperOffsetY += deltaY;
+
 	updateMousePos(e);
 }
 
