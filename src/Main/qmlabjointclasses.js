@@ -872,7 +872,10 @@ var FlowLinkView = joint.dia.LinkView.extend({
 
 			type: 'QMLab.localLink',
 			/*Creates the arrow head at one end of the link*/
-			attrs: {'.marker-target': {stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z'}}
+			attrs: {
+				'.connection': { stroke: '#000000', fill: '#ffffff'},
+				'.marker-target': {stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z'}
+			}
 		}, joint.dia.Link.prototype.defaults),
 	});
 
