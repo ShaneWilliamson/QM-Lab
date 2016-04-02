@@ -6439,6 +6439,7 @@ joint.dia.Link = joint.dia.Cell.extend({
     // The default markup for links.
     markup: [
         '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
+        '<path class="connection2" stroke="black" d="M 0 0 0 0"/>',
         '<path class="marker-source" fill="black" stroke="black" d="M 0 0 0 0"/>',
         '<path class="marker-target" fill="black" stroke="black" d="M 0 0 0 0"/>',
         '<path class="connection-wrap" d="M 0 0 0 0"/>',
@@ -7025,6 +7026,7 @@ joint.dia.LinkView = joint.dia.CellView.extend({
 
         // The markup needs to contain a `.connection`
         this._V.connection.attr('d', pathData);
+        this._V.connection2.attr('d', pathData);
         this._V.connectionWrap && this._V.connectionWrap.attr('d', pathData);
 
         this._translateAndAutoOrientArrows(this._V.markerSource, this._V.markerTarget);

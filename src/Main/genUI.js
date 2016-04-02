@@ -162,7 +162,6 @@ QM_LabUI.prototype.genPropertiesForm = function() {
  //    ]}
 		document.getElementById("propertiesForm").innerHTML = "";
 		if(selected[0]) {
-			console.log(selected[0].attributes.type);
 			if (selected[0].attributes.type === "QMLab.Connection") {
 				this.createConnectionPropertyForm();
 			}
@@ -267,8 +266,6 @@ QM_LabUI.prototype.createConnectionPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
 	width -= preventOverhangOffset;
-	
-	console.log("HI");
 
 	webix.ui({
 		id:"propertiesFormId",

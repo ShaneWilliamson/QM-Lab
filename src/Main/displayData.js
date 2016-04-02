@@ -3,7 +3,7 @@ var sample_nodes = [
 	{ id:0, value:"Stock"},
 	{ id:1, value:"Image"},
 	{ id:2, value:"State"},
-	{ id:3, value:"Terminal State"},
+	{ id:3, value:"Final State"},
 	{ id:4, value:"Branch"},
 	{ id:5, value:"Variable"},
 	{ id:6, value:"Parameter"},

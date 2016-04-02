@@ -348,8 +348,8 @@ function paperOnMouseUp(e) {
 	} else if (genUI.lastClickedValue == "State") {
 		createState(curMousePos);
 		
-	} else if (genUI.lastClickedValue == "Terminal State") {
-		createTerminalState(curMousePos);
+	} else if (genUI.lastClickedValue == "Final State") {
+		createFinalState(curMousePos);
 		
 	} else if (genUI.lastClickedValue == "Branch") {
 		createBranch(curMousePos);
