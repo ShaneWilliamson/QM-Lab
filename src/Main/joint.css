@@ -114,6 +114,12 @@ very thin.
    stroke-linejoin: round;
 }
 
+/* The 2nd possible line to be drawn. Used as a line overlay to give the effect of having 2 lines underneath. */
+.connection2 {
+  fill: none;
+  stroke-linejoin: round;
+}
+
 .marker-source, .marker-target {
 /* Cannot be in CSS otherwise it could not be overruled by attributes.
    fill: black;

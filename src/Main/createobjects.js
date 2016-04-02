@@ -226,7 +226,7 @@ function createState(pos) {
 	});
 	setUpNewCell(newState, "State", "#ffff00", "#000000");
 
-	console.log("State added")
+	console.log("State added");
 	return newState;
 }
 
@@ -252,7 +252,7 @@ function createTerminalState(pos) {
 	});
 	setUpNewCell(newTerminalState, "Terminal State", "#ff0000", "#000000");
 
-	console.log("Terminal State added")
+	console.log("Terminal State added");
 	return newTerminalState;
 }
 
@@ -277,7 +277,7 @@ function createBranch(pos) {
 	});
 	setUpNewCell(newBranch, "", "#ffffff", "#000000");
 
-	console.log("Branch added")
+	console.log("Branch added");
 	return newBranch;
 }
 
@@ -303,7 +303,7 @@ function createAgent(pos) {
 	newAgent.setSize(200, 200);
 	newAgent.setImage('http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png');
 	setUpNewCell(newAgent, "", "#ffffff", "#000000");
-	console.log("Agent added")
+	console.log("Agent added");
 	return newAgent;
 }
 
@@ -329,7 +329,7 @@ function createText(pos) {
 	newText.setLabel("HI");
 	newText.setSize(100, 100);
 	setUpNewCell(newText, "Hi!", "#aaaaaa", "#000000");
-	console.log("Text added")
+	console.log("Text added");
 	return newText;
 }
 
