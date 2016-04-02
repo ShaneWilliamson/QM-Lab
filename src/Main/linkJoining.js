@@ -4,6 +4,7 @@ var isFlow;
 var isCurved;
 var isStraight;
 var hasMoved;
+var flowEndings;
 
 const LINK_OFFSET_X = 15;
 const LINK_OFFSET_Y = 15;
@@ -17,7 +18,7 @@ const LINK_OFFSET_Y = 15;
  * @memberOf linkJoining
  */
 function targetFollow(newLink, linkType, pos){
-	if(pos = curMousePos)
+	if(pos == curMousePos)
 	{
 		var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 
@@ -208,6 +209,15 @@ function linkTargeter(e){
 	//console.log(newArray);
 	lastLink.set('vertices', newArray );
 
+	if(isFlow){
+		console.log("making new flow");
+		var newFlow = createFlow({x:1, y:1});
+		newFlow.set('source', { id: lastLink.getSourceElement().id});
+		newFlow.set('target',{id: lastLink.getTargetElement().id});
+		newFlow.set('source', { id: lastLink.getSourceElement().id});
+		newFlow.set('vertices', newArray );
+		lastLink.remove();
+	}
 	paper.$el.off("mousemove", mouseTracker);
 	paper.$el.off('dblclick', linkTargeter);
 	paper.$el.off('mouseup', addVertex);
@@ -229,8 +239,15 @@ function linkTargeter(e){
  function flowCloudPrep(){
  	// http://i.imgur.com/1TRqx2p.png this is a crappy cloud I drew
 
- 	pos = ({x:curMousePos.x -25 , y:curMousePos.y -25  })
+ 	pos = ({x:curMousePos.x -25 , y:curMousePos.y -25  });
  	var cloud = createImage(pos, "http://i.imgur.com/1TRqx2p.png", " ", 50,50);
-
+ 	//setting global variable link head to be the vector for the current link end
+ 	flowEndings = lastLink.attr('.marker-target/d');
+ 	console.log(flowEndings);
+ 	//setting the arrowhead of the flow to be a cloud
+ 	lastLink.attr('.marker-target/d', d="M 35.00,22.00 44.09,20.16 45.48,22.65 47.94,30.00 48.76,32.42 49.93,34.34 49.32,37.00 48.96,38.58 47.65,40.49 46.91,42.00 45.25,45.39 44.82,49.33 39.96,48.32 37.59,47.82 35.51,46.15 33.00,46.09 27.33,46.24 26.08,52.13 16.00,46.09 7.17,52.49 -4.12,40.95 7.00,35.00 5.71,33.40 4.36,31.87 3.46,30.00 -0.92,20.89 8.42,19.06 15.00,19.00 18.02,9.55 32.07,12.09 35.00,22.00 Z");
+ 	//console.log("setting fill");
+ 	lastLink.attr('.marker-target/fill', 'white');
+ 	//console.log("fill set");
  	return cloud;
  }
