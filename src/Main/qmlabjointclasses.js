@@ -16,7 +16,7 @@
 		if (label) {
 			newNode.setLabel(label);
 		}
-		return newNode
+		return newNode;
 	}
 
 
@@ -29,7 +29,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getXPos = function() {
 		return this.attributes.position.x;
-	}
+	};
 
 
 	/*
@@ -41,7 +41,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getYPos = function() {
 		return this.attributes.position.y;
-	}
+	};
 
 	/*
 	Setter for localNode position.
@@ -52,7 +52,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.setPos = function(x, y) {
 		this.attributes.position = {x: x, y: y};
-	}
+	};
 
 
 	/*
@@ -64,7 +64,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getXSize = function() {
 		return this.attributes.size.width;
-	}
+	};
 
 
 	/*
@@ -76,7 +76,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getYSize = function() {
 		return this.attributes.size.height;
-	}
+	};
 
 
 	/*
@@ -107,7 +107,7 @@
 		}
 
 
-	}
+	};
 
 
 	/*
@@ -121,7 +121,7 @@
 		if (height > 0) {
 			this.setSize(this.getXSize(), height);
 		}
-	}
+	};
 
 	/*
 	Setter for localNode width.
@@ -134,7 +134,7 @@
 		if (width > 0) {
 			this.setSize(width, this.getYSize());
 		}
-	}
+	};
 
 	/*
 	Getter for localNode z-order attribute. Will return the
@@ -146,7 +146,7 @@
 	*/
 	joint.shapes.basic.Rect.prototype.getZOrder = function() {
 		return this.attributes.z;
-	}
+	};
 
 	/*
 	Setter for localNode z-order. Changes what order it is drawn on the screen
@@ -159,7 +159,7 @@
 		if (!isNaN(z)) {
 			this.set('z', z);
 		}
-	}
+	};
 
 	/*
 	Getter for localNode label attribute. Will return the text associated with this node.
@@ -177,7 +177,7 @@
 		else {
 			return retval;
 		}
-	}
+	};
 
 	/*
 	Getter for localNode z-order attribute. Will return order in which it is drawn on the screen.
@@ -189,7 +189,7 @@
 	joint.shapes.basic.Rect.prototype.setLabel = function(text) {
 		this.prop('text/text', text);
 		this.attr('text/text', text);
-	}
+	};
 
 
 	/*
@@ -217,7 +217,7 @@
 		this.attr('path/stroke', colour);
 		this.prop('circle/stroke', colour);
 		this.attr('circle/stroke', colour);
-	}	
+	};
 
 
 	joint.shapes.basic.Rect.prototype.setColour = function(colour) {
@@ -227,40 +227,40 @@
 		this.attr('path/fill', colour);
 		this.prop('circle/fill', colour);
 		this.attr('circle/fill', colour);
-	}
+	};
 
 	joint.shapes.basic.Rect.prototype.getColour = function(colour) {
 		return this.attributes.rect.fill;
-	}
+	};
 
 
 	joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
 		this.prop('text/fill', colour);
 		this.attr('text/fill', colour);
-	}
+	};
 
 	joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
 		return this.attributes.text.fill;
-	}
+	};
 
 	joint.shapes.basic.Rect.prototype.setTextSize = function(size) {
 		if(!isNaN(size)) {
 			this.prop('text/fontsize', size);
 			this.attr('text/font-size', size);
 		}
-	}
+	};
 
 	joint.shapes.basic.Rect.prototype.getTextSize = function() {
 		return this.attributes.text.fontsize;
-	}
+	};
 
 	joint.shapes.basic.Rect.prototype.setImage = function() {
 
-	}
+	};
 
 	joint.shapes.basic.Rect.prototype.getImage = function() {
 		return "";
-	}
+	};
 
 
 
@@ -316,7 +316,7 @@
 		//If a source was passed, set the link's source that
 		if (source) {
 			if (graph.getCell(source.id)) {
-				newLink.setStartNodeFromCell(source)
+				newLink.setStartNodeFromCell(source);
 			}
 		}
 		//Otherwise, use the passed in point
@@ -327,7 +327,7 @@
 		//If a target was passed, set the link's target to that
 		if (target) {
 			if (graph.getCell(target.id)) {
-				newLink.setEndNodeFromCell(target)
+				newLink.setEndNodeFromCell(target);
 			}
 		}
 		//Otherwise, use the passed in point
@@ -343,7 +343,7 @@
 		}
 
 		//If a valid connector was passed in, set this link's connector to that
-		if (connector == "normal" || connector == "rounded" || connector == "smooth") {
+		if (connector === "normal" || connector === "rounded" || connector === "smooth") {
 			newLink.set('connector', { name: connector });
 		}
 
@@ -388,7 +388,7 @@
 		//If a source was passed, set the link's source that
 		if (source) {
 			if (graph.getCell(source.id)) {
-				newFlow.setStartNodeFromCell(source)
+				newFlow.setStartNodeFromCell(source);
 			}
 		}
 		//Otherwise, use the passed in point
@@ -399,7 +399,7 @@
 		//If a target was passed, set the link's target to that
 		if (target) {
 			if (graph.getCell(target.id)) {
-				newFlow.setEndNodeFromCell(target)
+				newFlow.setEndNodeFromCell(target);
 			}
 		}
 		//Otherwise, use the passed in point
@@ -415,7 +415,7 @@
 		}
 
 		//If a valid connector was passed in, set this link's connector to that
-		if (connector == "normal" || connector == "rounded" || connector == "smooth") {
+		if (connector === "normal" || connector === "rounded" || connector === "smooth") {
 			newFlow.set('connector', { name: connector });
 		}
 
@@ -427,6 +427,183 @@
 
 
 
+var FlowLinkView = joint.dia.LinkView.extend({
+
+    patternMarkup: [
+        '<pattern id="pattern-<%= id %>" patternUnits="userSpaceOnUse">',
+        '<image xlink:href=""/>',
+        '</pattern>'
+    ].join(''),
+
+    initialize: function() {
+
+        joint.dia.LinkView.prototype.initialize.apply(this, arguments);
+
+        _.bindAll(this, 'fillWithPattern');
+    },
+
+    render: function() {
+
+        joint.dia.LinkView.prototype.render.apply(this, arguments);
+
+        // make sure that pattern doesn't already exist
+        if (!this.pattern) {
+            
+            this.pattern = V(_.template(this.patternMarkup, { id: this.id }));
+            this.patternImage = this.pattern.findOne('image');
+
+            V(this.paper.svg).defs().append(this.pattern);
+        }
+
+        // tell the '.connection' path to use the pattern
+        var connection = V(this.el).findOne('.connection').attr({
+            stroke: 'url(#pattern-' + this.id + ')'
+        });
+
+        // cache the stroke width
+        this.strokeWidth = connection.attr('stroke-width') || 1;
+
+        return this;
+    },
+
+    remove: function() {
+
+        // make sure we stop an ongoing pattern update
+        joint.util.cancelFrame(this.frameId);
+
+        joint.dia.LinkView.prototype.remove.apply(this, arguments);
+
+        this.pattern.remove();
+    },
+    
+    update: function() {
+
+        joint.dia.LinkView.prototype.update.apply(this, arguments);
+
+        joint.util.cancelFrame(this.frameId);
+
+        this.frameId = joint.util.nextFrame(this.fillWithPattern);
+
+        return this;
+    },
+
+    fillWithPattern: function() {
+
+        var strokeWidth = this.strokeWidth;
+
+        // we get the bounding box of the linkView without the transformations
+        // and expand it to all 4 sides by the stroke width
+        // (making sure there is always enough room for drawing,
+        // even if the bounding box was tiny.
+        // Note that the bounding box doesn't include the stroke.)
+        var bbox = g.rect(V(this.el).bbox(true)).moveAndExpand({
+            x: - strokeWidth,
+            y: - strokeWidth,
+            width: 2 * strokeWidth,
+            height: 2 * strokeWidth
+        });
+
+        // create an array of all points the link goes through
+        // (route doesn't contain the connection points)
+        var points = [].concat(this.sourcePoint, this.route, this.targetPoint);
+
+        // transform all points to the links coordinate system
+        points = _.map(points, function(point) {
+            return g.point(point.x - bbox.x, point.y - bbox.y);
+        });
+
+        // create a canvas of the size same as the link bounding box
+        var canvas = document.createElement('canvas');
+        canvas.width = bbox.width;
+        canvas.height = bbox.height;
+
+        var ctx = canvas.getContext('2d');
+        ctx.lineWidth = strokeWidth;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        // iterate over the points and execute the drawing function
+        // for each segment
+        for (var i=0, pointsCount = points.length - 1; i < pointsCount; i++) {
+
+            ctx.save();
+            
+            var gradientPoints = this.gradientPoints(points[i], points[i+1], strokeWidth);
+            var gradient = ctx.createLinearGradient.apply(ctx, gradientPoints);
+
+            this.drawPattern.call(this, ctx, points[i], points[i+1], strokeWidth, gradient);
+            
+            ctx.restore();
+        }
+
+        // generate data URI from the canvas
+        var dataUri = canvas.toDataURL('image/png');
+
+        // update the pattern image and the dimensions
+        this.pattern.attr(bbox);
+        this.patternImage.attr({ width: bbox.width, height: bbox.height, 'xlink:href': dataUri });
+    },
+
+    // finds a gradient with perpendicular direction to a link segment
+    gradientPoints: function(from, to, width) {
+
+        var angle = g.toRad(from.theta(to) - 90);
+        var center = g.line(from, to).midpoint();
+        var start = g.point.fromPolar(width / 2, angle, center);
+        var end = g.point.fromPolar(width / 2, Math.PI + angle, center);
+
+        return [start.x, start.y, end.x, end.y];
+    },
+
+    // A drawing function executed for all links segments.
+    drawPattern: function(ctx, from, to, width, gradient) {
+
+        var innerWidth = width - 4;
+        var outerWidth = width;            
+        var buttFrom = g.point(from).move(to, -outerWidth / 2);
+        var buttTo = g.point(to).move(from, -outerWidth / 2);
+
+        ctx.beginPath();
+        ctx.lineWidth = outerWidth;
+        ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+        ctx.closePath();
+
+        gradient.addColorStop(0.000, 'rgba(86, 170, 255, 1)');
+        gradient.addColorStop(0.500, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(1.000, 'rgba(86, 170, 255, 1)');
+        
+        ctx.beginPath();
+        ctx.lineWidth = innerWidth;
+        ctx.strokeStyle = gradient;
+        ctx.moveTo(from.x, from.y);
+        
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.lineCap = "square";
+
+        ctx.beginPath();
+        ctx.lineWidth = innerWidth;
+        ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(buttFrom.x, buttFrom.y);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.lineWidth = innerWidth;
+        ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+        ctx.moveTo(to.x, to.y);
+        ctx.lineTo(buttTo.x, buttTo.y);
+        ctx.stroke();
+        ctx.closePath();
+    }
+});
 
 
 
@@ -446,7 +623,7 @@
 	*/
 	joint.dia.Link.prototype.getStartNode = function() {
 		return this.attributes.source;
-	}
+	};
 
 	/*
 	Setter for localLink start node. Since this sets by using the cell's "id",
@@ -471,7 +648,7 @@
 			console.log("There was an error when setting the source of a link by cell. The given cell was:");
 			console.log(source);
 		}
-	}
+	};
 
 	/*
 	Setter for localLink source node. Since this sets by using a point in the graph,
@@ -491,7 +668,7 @@
 			console.log(source);
 		}
 
-	}
+	};
 
 	/*
 	Getter for localLink end node. Will return what the link is currently
@@ -509,7 +686,7 @@
 	*/
 	joint.dia.Link.prototype.getEndNode = function() {
 		return this.attributes.target;
-	}
+	};
 
 	/*
 	Setter for localLink end node. Since this sets by using the cell's "id",
@@ -522,7 +699,7 @@
 	*/
 	joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
 		this.set('target', target.id);
-	}
+	};
 
 	/*
 	Setter for localLink target node. Since this sets by using a point in the graph,
@@ -535,7 +712,7 @@
 	*/
 	joint.dia.Link.prototype.setEndNodeFromPoint = function(target) {
 		this.set('target', { x: target.x, y: target.y });
-	}
+	};
 
 
 	/*
@@ -547,7 +724,7 @@
 	*/
 	joint.dia.Link.prototype.setLabel = function(text) {
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
-	}
+	};
 
 	/*
 	Setter for localLink label text.
@@ -561,7 +738,7 @@
 		var colour = this.getTextColour();
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
 		this.prop('text/textsize', textsize);
-	}
+	};
 
 	/*
 	Setter for localLink label text.
@@ -572,7 +749,7 @@
 	*/
 	joint.dia.Link.prototype.getTextSize = function(textsize) {
 		return this.attributes.text.textsize;
-	}
+	};
 
 
 	/*
@@ -597,7 +774,7 @@
 		else {
 			return "";
 		}
-	}
+	};
 
 	joint.dia.Link.prototype.setColour = function(colour) {
 		this.prop('colour', colour);
@@ -606,13 +783,13 @@
 			'.marker-target': {stroke: colour, fill: colour },
 			'.marker-source': {stroke: colour, fill: colour },
 		});
-	}
+	};
 
 
 
 	joint.dia.Link.prototype.getColour = function(colour) {
 		return this.attributes.colour;
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.setTextColour = function(colour) {
@@ -620,7 +797,7 @@
 		var textsize = this.getTextSize();
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
 		this.prop('text/textcolour', colour);
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.getTextColour = function() {
@@ -631,35 +808,35 @@
 			return "#000000";
 		}
 
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.getXSize = function() {
 		return "";
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.getYSize = function() {
 		return "";
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.setWidth = function() {
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.setHeight = function() {
-	}
+	};
 
 	//This is a placeholder
 	joint.dia.Link.prototype.attemptToParent = function() {
 		if (this.getSourceElement() != null &&
 			    this.getTargetElement() != null) {
-					if (this.getSourceElement().get('parent') != this.getTargetElement().get('parent')) {
+					if (this.getSourceElement().get('parent') !== this.getTargetElement().get('parent')) {
 						graph.getCell(this.get('parent')).unembed(this);
 					}
 				}
-	}
+	};
 
 
 	/*
@@ -690,7 +867,7 @@
 	link a default joint.js basic Link.
 
 	*/
-	joint.shapes.QMLab.localLink = joint.dia.Link.extend({
+	joint.shapes.QMLab.localFlow = joint.dia.Link.extend({
 		defaults: joint.util.deepSupplement({
 
 			type: 'QMLab.localLink',
@@ -939,21 +1116,21 @@
 	joint.shapes.QMLab.ImageNode.prototype.setImage = function(url) {
 		this.prop('url', url);
 		this.attr('image/xlink:href', url);
-	}
+	};
 
 	joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
 		return this.attributes.url;
-	}
+	};
 
 	joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
 		this.prop('url', url);
 		this.attr('image/xlink:href', url);
-	}
+	};
 
 	joint.shapes.QMLab.Agent.prototype.getImage = function() {
 		return this.attributes.url;
-	}
+	};
 
 	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
 		return this.attr("image/xlink:href");
-	}
+	};
