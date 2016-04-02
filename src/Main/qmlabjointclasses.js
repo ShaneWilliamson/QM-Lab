@@ -691,7 +691,7 @@
 	joint.shapes.QMLab.localFlow = joint.dia.Link.extend({
 		defaults: joint.util.deepSupplement({
 
-			type: 'QMLab.localLink',
+			type: 'QMLab.localFlow',
 			/*Creates the arrow head at one end of the link*/
 			attrs: {
 				'.connection': { stroke: '#000000', 'stroke-width': 6},
