@@ -170,7 +170,7 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 					 
 				this.createLinkPropertyForm();
 			}
-			else if (selected[0].attributes.type === "QMLab.Image" ||
+			else if (selected[0].attributes.type === "QMLab.ImageNode" ||
 					 selected[0].attributes.type === "QMLab.Agent") {
 					 
 				this.createImagePropertyForm();
