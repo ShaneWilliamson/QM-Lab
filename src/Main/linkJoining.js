@@ -218,6 +218,7 @@ function linkTargeter(e){
 		newFlow.set('target',{id: lastLink.getTargetElement().id});
 		newFlow.set('source', { id: lastLink.getSourceElement().id});
 		newFlow.set('vertices', newArray );
+		newFlow.setLabel(" ");
 		lastLink.remove();
 	}
 	paper.$el.off("mousemove", mouseTracker);

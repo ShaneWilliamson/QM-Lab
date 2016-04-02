@@ -539,6 +539,13 @@
 	*/
 	joint.dia.Link.prototype.setLabel = function(text) {
 		this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
+
+		if (this.attributes.type == "QMLab.Flow")
+		{
+			var newLine = "\n\n";
+			this.set('labels', [{ position: 0.5, attrs: { text: { text: newLine.concat(text) }} , rect: { stroke: '#7c68fc', 'stroke-width': 2, rx: 0, ry: 0 , fill: "#ffffff"} },
+				{ position: 0.5, attrs: { text: { text: '\u29D6' } }, rect: { stroke: '#7c68fc', 'stroke-width': 2, rx: 0, ry: 0 , fill: "#ffffff"} }]);
+		}
 	};
 
 	/*
