@@ -599,7 +599,7 @@
 	joint.dia.Link.prototype.setColour = function(colour) {
 		this.prop('colour', colour);
 		this.attr( {
-			'.connection': { stroke: colour, fill: 'white' },
+			'.connection': { stroke: colour, fill: colour },
 			'.marker-target': {stroke: colour, fill: colour },
 			'.marker-source': {stroke: colour, fill: colour },
 		});
