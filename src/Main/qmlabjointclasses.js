@@ -1053,7 +1053,7 @@
 	}
 
 	joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
-		return this.attr('image/link:href');
+		return this.attr('image/xlink:href');
 	}
 
 	joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
@@ -1061,7 +1061,7 @@
 	}
 
 	joint.shapes.QMLab.Agent.prototype.getImage = function() {
-		return this.attr('image/link:href');
+		return this.attr('image/xlink:href');
 	}
 
 	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
