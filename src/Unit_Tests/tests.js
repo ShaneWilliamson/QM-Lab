@@ -45,8 +45,8 @@ QUnit.test("Test Image Creation and qmlabjointclasses tests", function( assert )
 
   assert.notDeepEqual(newImage, null);
   assert.deepEqual(createImage(pos, pictureURL, label, null, null).attributes.position, newImage.attributes.position);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.size.height, newImage.attributes.rect.size.height);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.rect.size.width, newImage.attributes.rect.size.width);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.size.height, newImage.attributes.size.height);
+  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.size.width, newImage.attributes.size.width);
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attr('image/xlink:href'), newImage.attr('image/xlink:href'));
   assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.text.text, newImage.attributes.text.text);
   assert.equal(createImage(pos, pictureURL, null, sizeX, sizeY).attributes.text.text, "Your Image Here");
