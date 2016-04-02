@@ -212,7 +212,9 @@ function linkTargeter(e){
 	if(isFlow){
 		console.log("making new flow");
 		var newFlow = createFlow({x:1, y:1});
-		newFlow.set('source', { id: lastLink.getSourceElement().id});
+		//note this line doesn't really do anything, but it necesary because without it the lines under 
+		//it will not function as intended 
+		newFlow.set('source', {x:0 , y:0});
 		newFlow.set('target',{id: lastLink.getTargetElement().id});
 		newFlow.set('source', { id: lastLink.getSourceElement().id});
 		newFlow.set('vertices', newArray );
