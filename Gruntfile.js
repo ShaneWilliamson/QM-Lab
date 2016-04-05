@@ -21,12 +21,12 @@ module.exports = function(grunt) {
         }
       }
     },
-
-
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint']
     },
+
+
     qunit: {
       options: {
       	'--ignore-ssl-errors':true,
@@ -34,7 +34,23 @@ module.exports = function(grunt) {
       	'--load-images':false,
       	'--local-to-remote-url-access':true,
       	'--ssl-protocol':'any',
-        '--cookies-file':'cookies.txt'
+        '--cookies-file':'cookies.txt',
+        coverage: {
+          disposeCollector: true,
+          src: [
+            'src/Main/*.js',
+            '!src/Main/webix.js',
+            '!src/Main/backbone.js',
+            '!src/Main/joint.js',
+            '!src/Main/jquery.js',
+            '!src/Main/lodash.js'
+          ],
+          instrumentedFiles: 'temp/',
+          htmlReport: 'report/coverage',
+          lcovReport: 'report/coverage',
+          coberturaReport: 'report/',
+          linesThresholdPct: 40
+        }
       },
       all: ['src/Unit_Tests/*.html']
 
@@ -43,6 +59,9 @@ module.exports = function(grunt) {
   });
 	grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-qunit-istanbul');
+
+
 
   grunt.registerTask('syntax',['jshint']);
   grunt.registerTask('test', ['qunit']);
