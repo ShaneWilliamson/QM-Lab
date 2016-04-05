@@ -3,6 +3,7 @@
 ///////////////////////
 /**
  * Handles the parent cell's logic.
+ * @invariant cells are only brought forward, not backward
  * @class cell_parent_logic
  */
 
@@ -115,6 +116,12 @@ function bringParentlessCellToFront(cellView, evt, x, y) {
 	}
 }
 
+/**
+ * Brings the children of the cell to the front of the view
+ * @param  {cell} cell the cell being checked
+ * @preconditions the cell exists and has chidren
+ * @postconditions the children of cell are in the front
+ */
 function bringChildrenOfParentToFront(cell) {
 	var children = cell.getEmbeddedCells()
 	if (children) {
