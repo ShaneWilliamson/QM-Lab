@@ -1,0 +1,1431 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Main/genUI.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">Main/genUI.js</span></h1>
+    <h2>
+        Statements: <span class="metric">10.79% <small>(15 / 139)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 48)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">8.57% <small>(3 / 35)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">10.79% <small>(15 / 139)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">Main/</a> &#187; genUI.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/** NOTE a webix object is referenced like this $$("objectID"), 
+make sure that you are using the WEBIX OBJECT ID and not the html element id.
+They are not the same thing **/
+&nbsp;
+var genUI = new QM_LabUI();
+&nbsp;
+&nbsp;
+/**
+	Initializer for QM_LabUI class
+*/
+function QM_LabUI() {
+	this.lastClickedValue = "EDIT";	
+}
+&nbsp;
+&nbsp;
+/**
+	Creates the tabbar used to select a node/link to place
+	Instantiates the tabbar with data from displayData.js
+	@precond html doc exists
+			webix.js has been imported
+			displayData.js has been imported
+			the html doc has been loaded
+	@postcond creates an tabbar in the objectSelectTabbar div
+*/
+QM_LabUI.prototype.genTabbar = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >	var height = window.innerHeight - 250;</span>
+<span class="cstat-no" title="statement not covered" >	webix.ui({</span>
+		container: "objectSelectTabbar",
+		type:"space", 
+		padding:8,
+		height: height,
+		width: 225,
+		margin: 5,
+		rows:[
+			{
+				type:"clean",
+				rows:[
+&nbsp;
+					{
+						borderless:true, view:"tabbar", id:'tabbarSelect', value: 'nodeListView', multiview:true, 
+						options: [
+							{ value: 'Nodes', id: 'nodeListView'},
+							{ value: 'Links', id: 'linkListView'},
+						]
+					},
+					{
+						cells:[
+							{
+								id:"nodeListView",
+								view:"list",
+								template:"#value#",
+								type:{
+									height:60
+								},
+								select:true,
+&nbsp;
+								data:sample_nodes
+							},
+							{
+								id:"linkListView",
+								view:"list",
+								template:"#value#",
+								type:{
+									height:60
+								},
+								select:true,
+&nbsp;
+								data:sample_links
+							}
+						]
+					}
+				]
+			}
+		]
+	});  
+&nbsp;
+	// an event listener on nodes list view in the tabbar
+	// when an item is clicked, it's name is saved into genUI.lastClickedValue
+<span class="cstat-no" title="statement not covered" >	$$("nodeListView").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id, e){</span></span>
+<span class="cstat-no" title="statement not covered" >		var index = $$("nodeListView").getIndexById(id);</span>
+<span class="cstat-no" title="statement not covered" >		genUI.lastClickedValue = sample_nodes[index].value;</span>
+<span class="cstat-no" title="statement not covered" >		console.log("Value changed in the node list view to " + genUI.lastClickedValue);</span>
+	});
+&nbsp;
+&nbsp;
+	// an event listener on links list view in the tabbar
+	// when an item is clicked, it's name is saved into genUI.lastClickedValue
+<span class="cstat-no" title="statement not covered" >	$$("linkListView").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id, e){</span></span>
+<span class="cstat-no" title="statement not covered" >		var index = $$("linkListView").getIndexById(id);</span>
+<span class="cstat-no" title="statement not covered" >		genUI.lastClickedValue = sample_links[index].value;</span>
+<span class="cstat-no" title="statement not covered" >		console.log("Value changed in the link list view to " + genUI.lastClickedValue);</span>
+	});
+}
+&nbsp;
+&nbsp;
+&nbsp;
+/**
+	Creates the toolbar, tabbar and property box using webix.
+**/
+QM_LabUI.prototype.genUI = function() { 
+	genUI.genToolbar();
+<span class="cstat-no" title="statement not covered" >	genUI.genTabbar();</span>
+<span class="cstat-no" title="statement not covered" >	genUI.genPropertiesForm();</span>
+};
+&nbsp;
+&nbsp;
+/**
+	Creates the main toolbar at the top of the main page
+	@precond webix.js has been imported
+			the html doc has been loaded
+			the graph has been initialized
+	@postcond creates a toolbar in the mainToolbar div
+**/
+QM_LabUI.prototype.genToolbar = function() {
+	webix.ui({
+		container:"mainToolbar",
+		view:"toolbar",
+		elements: [
+				{ view:"button", width: 100, value: "New", id:"new"},
+				{ view:"button", width: 100, value: "Share", id:"share"},
+				{ view:"button", width: 100, value: "Print", id:"print"}
+			],
+		elementsConfig:{
+			width: 150,
+			labelAlign:"right",
+			value:"edit"}
+	});   
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	$$("new").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id, e){		</span></span>
+<span class="cstat-no" title="statement not covered" >        window.open(location.origin + location.pathname, '_blank');</span>
+	});
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	$$("share").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id, e){		</span></span>
+<span class="cstat-no" title="statement not covered" >        s.showSettingsDialog(); </span>// open the sharing dialog
+	});
+	
+<span class="cstat-no" title="statement not covered" >	$$("print").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id, e){</span></span>
+		//Make the printGraph up to date, enlarge printPaper and then shrink it after printing
+<span class="cstat-no" title="statement not covered" >		updatePrintGraph();</span>
+<span class="cstat-no" title="statement not covered" >		resizePrintPaper();</span>
+<span class="cstat-no" title="statement not covered" >		window.addEventListener("click", shrink = <span class="fstat-no" title="function not covered" >function(id, e){</span></span>
+<span class="cstat-no" title="statement not covered" >			shrinkPrintPaper();</span>
+<span class="cstat-no" title="statement not covered" >			window.removeEventListener("click", shrink);</span>
+		});
+<span class="cstat-no" title="statement not covered" >		window.print();</span>
+	});
+}
+&nbsp;
+&nbsp;
+/**
+	Creates the property display box
+	@precond webix.js has been imported
+			the html doc has been loaded
+			the graph has been instantiated
+	@postcond creates a property box in the propertiesForm div
+*/
+QM_LabUI.prototype.genPropertiesForm = <span class="fstat-no" title="function not covered" >function() {</span>
+&nbsp;
+	// { margin:5, cols:[
+ //            { view:"button", value:"Login" , type:"form" },
+ //            { view:"button", value:"Cancel" }
+ //    ]}
+<span class="cstat-no" title="statement not covered" >		document.getElementById("propertiesForm").innerHTML = "";</span>
+<span class="cstat-no" title="statement not covered" >		if(selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			if (selected[0].attributes.type === "QMLab.Connection") {</span>
+<span class="cstat-no" title="statement not covered" >				this.createConnectionPropertyForm();</span>
+			}
+			else <span class="cstat-no" title="statement not covered" >if (selected[0].attributes.type === "QMLab.Transition" ||</span>
+					 selected[0].attributes.type === "QMLab.Flow") {
+					 
+<span class="cstat-no" title="statement not covered" >				this.createLinkPropertyForm();</span>
+			}
+			else <span class="cstat-no" title="statement not covered" >if (selected[0].attributes.type === "QMLab.ImageNode" ||</span>
+					 selected[0].attributes.type === "QMLab.Agent") {
+					 
+<span class="cstat-no" title="statement not covered" >				this.createImagePropertyForm();</span>
+			}
+			else {
+<span class="cstat-no" title="statement not covered" >				this.createDefaultPropertyForm();</span>
+			}
+		}
+		else {
+<span class="cstat-no" title="statement not covered" >			this.createEmptyPropertyForm();</span>
+		}
+&nbsp;
+	
+		
+		
+	
+	
+}
+&nbsp;
+QM_LabUI.prototype.createEmptyPropertyForm = <span class="fstat-no" title="function not covered" >function() { </span>
+<span class="cstat-no" title="statement not covered" >	webix.ui({</span>
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			
+		]
+	});
+}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+QM_LabUI.prototype.createLinkPropertyForm = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >	var width = $(window).height();</span>
+<span class="cstat-no" title="statement not covered" >	var preventOverhangOffset = 75;</span>
+<span class="cstat-no" title="statement not covered" >	width -= preventOverhangOffset;</span>
+	
+<span class="cstat-no" title="statement not covered" >	webix.ui({</span>
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+		]
+	});
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("text"));
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("textsize"));
+	
+	
+<span class="cstat-no" title="statement not covered" >	$$("textcolor").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setTextColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	$$("color").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+QM_LabUI.prototype.createConnectionPropertyForm = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >	var width = $(window).height();</span>
+<span class="cstat-no" title="statement not covered" >	var preventOverhangOffset = 75;</span>
+<span class="cstat-no" title="statement not covered" >	width -= preventOverhangOffset;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	webix.ui({</span>
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"button", label:"Positive", name:"positive", id:"positive" },
+				{ view:"button", label:"Negative", name:"negative", id:"negative" },
+				{ view:"button", label:"Ambiguous", name:"ambiguous", id:"ambiguous" },
+				{ view:"button", label:"No Type", name:"none", id:"none" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
+			]},
+		]
+	});
+	
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	$$("color").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+<span class="cstat-no" title="statement not covered" >	$$("positive").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setPositiveTransition();</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+<span class="cstat-no" title="statement not covered" >	$$("negative").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setNegativeTransition();</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+<span class="cstat-no" title="statement not covered" >	$$("ambiguous").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setAmbiguousTransition();</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+<span class="cstat-no" title="statement not covered" >	$$("none").attachEvent("onItemClick", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setNoTransition();</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+	
+	
+}
+&nbsp;
+&nbsp;
+QM_LabUI.prototype.createDefaultPropertyForm = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >	var width = $(window).height();</span>
+<span class="cstat-no" title="statement not covered" >	var preventOverhangOffset = 75;</span>
+<span class="cstat-no" title="statement not covered" >	width -= preventOverhangOffset;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	webix.ui({</span>
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+		]
+	});
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("text"));
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("textsize"));
+	
+	
+<span class="cstat-no" title="statement not covered" >	$$("textcolor").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setTextColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+	
+<span class="cstat-no" title="statement not covered" >	$$("color").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+&nbsp;
+	
+}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+QM_LabUI.prototype.createImagePropertyForm = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >	var width = $(window).height();</span>
+<span class="cstat-no" title="statement not covered" >	var preventOverhangOffset = 75;</span>
+<span class="cstat-no" title="statement not covered" >	width -= preventOverhangOffset;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	webix.ui({</span>
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
+				{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
+			]},
+		]
+	});
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("text"));
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("textsize"));
+	
+	
+<span class="cstat-no" title="statement not covered" >	$$("textcolor").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setTextColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+	
+<span class="cstat-no" title="statement not covered" >	$$("color").attachEvent("onChange", <span class="fstat-no" title="function not covered" >function(id){		</span></span>
+<span class="cstat-no" title="statement not covered" >        if(selected[0]){</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setColour(id);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	});
+	
+<span class="cstat-no" title="statement not covered" >	webix.UIManager.addHotKey("Enter", <span class="fstat-no" title="function not covered" >function() { </span></span>
+<span class="cstat-no" title="statement not covered" >		if (selected[0]) {</span>
+<span class="cstat-no" title="statement not covered" >			selected[0].setImage(document.querySelector('div[view_id="url"] input').value);</span>
+<span class="cstat-no" title="statement not covered" >			updateCollabGraph();</span>
+		}
+	}, $$("url"));	
+	
+}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+/**
+	Deselects all of the elements from both views in the tabbar
+	@precond webix.js has been loaded
+			the tabbar has been initialized into objectSelectTabbar
+			the html doc has been loaded
+	@postcond the node tab and link tab for the item selection tabbar will not have an item selected
+**/
+QM_LabUI.prototype.deselectUIElements = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >	$$("nodeListView").unselectAll();</span>
+<span class="cstat-no" title="statement not covered" >	$$("linkListView").unselectAll();</span>
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 05 2016 15:27:23 GMT-0600 (CST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

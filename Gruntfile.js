@@ -49,7 +49,7 @@ module.exports = function(grunt) {
           htmlReport: 'report/coverage',
           lcovReport: 'report/coverage',
           coberturaReport: 'report/',
-          linesThresholdPct: 40
+          linesThresholdPct: 20
         }
       },
       all: ['src/Unit_Tests/*.html']
