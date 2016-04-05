@@ -52,11 +52,17 @@ function createStock(pos) {
 }
 
 /**
- * Creates a generic link at the given location. If the user clicked to have the link positioned over a node it will position its 'source' from the selected node.
+ * Creates a generic link at the given location. If the user clicked to have the
+ *   link positioned over a node it will position its 'source' from the selected
+ *   node.
  * @param  {position} pos     coordinates with 'x' and 'y' fields
  * @param  {link} connector an object is able to hold nodes it is connecting
- * @preconditions pos is a valid coordinate with 'x' and 'y' fields, connector is a valid object that contain a connection
- * @postconditions A collaborative link has been created with its source positioned at point "pos". In the event that the user created this link by selecting a node at point "pos", the node shall be the source instead. The collaborative graph has been updated.
+ * @preconditions pos is a valid coordinate with 'x' and 'y' fields, connector
+ *   is a valid object that contain a connection
+ * @postconditions A collaborative link has been created with its source
+ *   positioned at point "pos". In the event that the user created this link by
+ *   selecting a node at point "pos", the node shall be the source instead. The
+ *   collaborative graph has been updated.
  * @return {newLink} the link created with the position and connector
  * @memberOf create_objects
  */
@@ -204,17 +210,13 @@ function createIntervention(pos) {
 	return newParameter;
 }
 
-
-
-
-
-/*
-Creates a State at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative state has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Create a state at the given location
+ * @param  {coordinate} pos the point its being created at with x and y fields
+ * @return {State}     the new State object created by JointJS
+ * @preconditions pos has x and y fields
+ * @memberOf create_objects
+ */
 function createState(pos) {
 	var newState = new joint.shapes.QMLab.State({
 		position: { x: pos.x, y: pos.y },
@@ -230,17 +232,14 @@ function createState(pos) {
 	return newState;
 }
 
-
-
-
-
-/*
-Creates a terminal state at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative terminal state has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Creates a terminal state at the given location
+ * @param  {coordinate} pos a coordinate with 'x' and 'y' fields
+ * @preconditions pos has 'x' and 'y' fields
+ * @postconditions A collaborative terminal state has been created with its
+ *   top-left corner positioned at point "pos"
+ * @return {TerminalState}     the new terminal state at pos created by JointJS
+ */
 function createTerminalState(pos) {
 	var newTerminalState = new joint.shapes.QMLab.TerminalState({
 		position: { x: pos.x, y: pos.y },
@@ -255,9 +254,6 @@ function createTerminalState(pos) {
 	console.log("Terminal State added");
 	return newTerminalState;
 }
-
-
-
 
 /*
 Creates a branch at the given location

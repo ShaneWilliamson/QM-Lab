@@ -41,6 +41,7 @@ function deParentCell(cellView, evt, x, y) {
  * @param  {int} y        the y coordinate of the cell being dragged over
  * @preconditions the Realtime model is initialized, the cell is being dragged and dropped, the cells exist
  * @postconditions couples a cell dropped over another cell as the parent
+ * @memberOf cell_parent_logic
  */
 function parentCell(cellView, evt, x, y) {
 	var cell = cellView.model;
@@ -78,8 +79,10 @@ function parentCell(cellView, evt, x, y) {
  * Check if the cells are calling on themselves (ie. recurvise)
  * @param  {cell}  cell          the cell being check if its recurseive
  * @param  {view}  cellViewBelow the view below the cell being checked
- * @return {Boolean}               true if they are recursive to itself, false otherwise
- * @preconditions the cell is initialized and has a position, the 
+ * @return {Boolean}               true if they are recursive to itself, false
+ *   otherwise
+ * @preconditions the cell is initialized and has a position
+ * @memberOf cell_parent_logic
  */
 function isNotRecursiveEmbed(cell, cellViewBelow) {
 	var parents = cellViewBelow.model.getAncestors();
@@ -105,6 +108,7 @@ function isNotRecursiveEmbed(cell, cellViewBelow) {
  * @postconditions a parentless cell is brought to the front of the view
  * @history cells are only brought forward, not backward
  * @invariant the cell cannot have a parent
+ * @memberOf cell_parent_logic
  */
 function bringParentlessCellToFront(cellView, evt, x, y) {
 	var cell = cellView.model;
@@ -121,6 +125,7 @@ function bringParentlessCellToFront(cellView, evt, x, y) {
  * @param  {cell} cell the cell being checked
  * @preconditions the cell exists and has chidren
  * @postconditions the children of cell are in the front
+ * @memberOf cell_parent_logic
  */
 function bringChildrenOfParentToFront(cell) {
 	var children = cell.getEmbeddedCells()
