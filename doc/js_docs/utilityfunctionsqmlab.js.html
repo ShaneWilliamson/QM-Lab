@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: checkcollaballowed.js</title>
+    <title>JSDoc: Source: utilityfunctionsqmlab.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: checkcollaballowed.js</h1>
+    <h1 class="page-title">Source: utilityfunctionsqmlab.js</h1>
 
     
 
@@ -26,47 +26,39 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>//////////////////////////
-// check_collab_allowed //
-//////////////////////////
+            <pre class="prettyprint source linenums"><code>//////////////////////////////
+// utility_functions_qm_lab //
+//////////////////////////////
 /**
- * Manages if a collaborative object can be changed or not
- * @class check_collab_allowed
- * @invariant the object can either be changed or not
- * @preconditions the object exists, the object is collaborative
+ * Variety of helpful function
+ * @todo finish adding contracts
+ * @class utility_functions_qm_lab
  */
 
-/**
- * This function resets the global state logic to allow changes made to cells to
- *   update their respective collaborative object once more.
- * @preconditions the object exists, the object is collaborative
- * @postconditions the object will allow changes
- * @memberOf check_collab_allowed
- */
-function allowCollabRecording() {
-	collaborativeChangeReceived = false;
-}
+var addEvent = function(object, type, callback) {
+    if (object == null || typeof(object) == 'undefined') return;
+    if (object.addEventListener) {
+        object.addEventListener(type, callback, false);
+    } else if (object.attachEvent) {
+        object.attachEvent("on" + type, callback);
+    } else {
+        object["on"+type] = callback;
+    }
+};
 
-/**
- * This function changes the global state logic to not allow changes made to
- *   cells to update their respective collaborative object any more.
- * @preconditions the object exists, the object is collaborative
- * @postconditions the object will not allow changes
- * @memberOf check_collab_allowed
- */
-function stopCollabRecording() {
-	collaborativeChangeReceived = true;
-}
-
-/**
- * @preconditions the object exists, the object is collaborative
- * @return {Boolean} if the object can be changed
- * @memberOf check_collab_allowed
- */
-function isCollabRecordingAllowed() {
-	return !collaborativeChangeReceived;
-}
-</code></pre>
+function compareArray(a1, a2) {
+	if (a1.length === a2.length) {
+		var retVal = true;
+		for (var i = 0; i &lt; a1.length; i++){
+			if (a1[i] != a2[i]) {
+				retVal = false;
+			}
+		}
+		return retVal;
+	} else {
+		return false;
+	}
+}</code></pre>
         </article>
     </section>
 

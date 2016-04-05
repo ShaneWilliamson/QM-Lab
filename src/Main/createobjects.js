@@ -3,9 +3,9 @@
 ///////////////////
 /**
  * Contains functions for creating objects
+ * @todo finish adding contracts
  * @class create_objects
  */
-
 
 /**
  * Takes a Joint.js cell and uses it to create a collaborative cell. Adds a

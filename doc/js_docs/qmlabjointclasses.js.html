@@ -1,4 +1,32 @@
-//////////////////////////
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: qmlabjointclasses.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: qmlabjointclasses.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//////////////////////////
 // qm_lab_joint_classes //
 //////////////////////////
 /**
@@ -643,7 +671,7 @@
 
 	//This is a placeholder
 	joint.dia.Link.prototype.attemptToParent = function() {
-		if (this.getSourceElement() != null &&
+		if (this.getSourceElement() != null &amp;&amp;
 			    this.getTargetElement() != null) {
 					if (this.getSourceElement().get('parent') !== this.getTargetElement().get('parent')) {
 						graph.getCell(this.get('parent')).unembed(this);
@@ -793,7 +821,7 @@
 	or call the setter methods if another visual is desired.
 	*/
 	joint.shapes.QMLab.Node = joint.shapes.basic.Rect.extend( {
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -817,7 +845,7 @@
 	or call the setter methods if another visual is desired.
 	*/
 	joint.shapes.QMLab.Stock = joint.shapes.basic.Rect.extend( {
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -839,7 +867,7 @@
 	or call the setter methods if another visual is desired.
 	*/
 	joint.shapes.QMLab.State = joint.shapes.basic.Rect.extend( {
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -862,7 +890,7 @@
 	or call the setter methods if another visual is desired.
 	*/
 	joint.shapes.QMLab.TerminalState = joint.shapes.basic.Rect.extend( {
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -885,7 +913,7 @@
 	or call the setter methods if another visual is desired.
 	*/
 	joint.shapes.QMLab.Branch = joint.shapes.basic.Rect.extend( {
-		markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -917,7 +945,7 @@
 	*/
 	joint.shapes.QMLab.ImageNode = joint.shapes.basic.Rect.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><rect/><image/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;image/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -935,7 +963,7 @@
 	*/
 	joint.shapes.QMLab.Variable = joint.shapes.basic.Circle.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><circle/><path/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -951,7 +979,7 @@
 	*/
 	joint.shapes.QMLab.Parameter = joint.shapes.basic.Circle.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><circle/><path/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -971,7 +999,7 @@
 	*/
 	joint.shapes.QMLab.Agent = joint.shapes.basic.Rect.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><rect/><image/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;image/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -990,7 +1018,7 @@
 	*/
 	joint.shapes.QMLab.Text = joint.shapes.basic.Rect.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><rect/><path/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -1014,7 +1042,7 @@
 	*/
 	joint.shapes.QMLab.Intervention = joint.shapes.basic.Circle.extend({
 
-		markup: '<g class="rotatable"><g class="scalable"><circle/><path/></g><text/></g>',
+		markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
 
 		defaults: joint.util.deepSupplement({
 
@@ -1043,4 +1071,26 @@
 	joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
 		return this.attr("image/xlink:href");
 	};
-	
+	</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setPropertyDisplayValues">setPropertyDisplayValues</a></li><li><a href="global.html#updateProperties">updateProperties</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Apr 04 2016 21:32:08 GMT-0600 (Canada Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

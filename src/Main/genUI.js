@@ -1,3 +1,11 @@
+////////////
+// gen_ui //
+////////////
+/**
+ * Manages generating the ui
+ * @todo finish adding contracts
+ * @gen_ui
+ */
 /** NOTE a webix object is referenced like this $$("objectID"), 
 make sure that you are using the WEBIX OBJECT ID and not the html element id.
 They are not the same thing **/

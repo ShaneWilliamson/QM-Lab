@@ -1,3 +1,12 @@
+//////////////////////////////
+// utility_functions_qm_lab //
+//////////////////////////////
+/**
+ * Variety of helpful function
+ * @todo finish adding contracts
+ * @class utility_functions_qm_lab
+ */
+
 var addEvent = function(object, type, callback) {
     if (object == null || typeof(object) == 'undefined') return;
     if (object.addEventListener) {

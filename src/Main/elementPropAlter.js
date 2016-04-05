@@ -1,7 +1,11 @@
-/*
-* These functions are meant to grab the details of and alter values of elements
-* in the graph
-*/
+////////////////////////
+// element_prop_alter //
+////////////////////////
+/**
+ * These functions are meant to grab the details of and alter values of elements
+ *   in the graph.
+ * @class element_prop_alter
+ */
 
 //the id of the currently selected element, starts off unselected
 var selectId = null;

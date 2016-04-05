@@ -1,3 +1,11 @@
+/////////////////
+//link_joining //
+/////////////////
+/**
+ * Manages the joining of links
+ * @todo finish adding contracts
+ * @class link_joining
+ */
 
 var lastLink;
 var isFlow;
