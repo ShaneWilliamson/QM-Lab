@@ -1,3 +1,24 @@
+///////////////////////
+// cell_parent_logic //
+///////////////////////
+/**
+ * Handles the parent cell's logic.
+ * @class cell_parent_logic
+ */
+
+/**
+ * Decouples a parent cell.
+ * @todo  update parameters
+ * @param {view} cellView the view that the current cell is on
+ * @param {undefined} evt undefined
+ * @param {int} x x coordinate of the cell view
+ * @param {int} y y coordinate of the cell view
+ * @preconditions the Realtime model has been initiated, the x and y coordinates
+ *   represent the cell
+ * @postconditions the cell in the x and y coordinates is decoupled from its
+ *   parent
+ * @memberOf cell_parent_logic
+ */
 function deParentCell(cellView, evt, x, y) {
 	var cell = cellView.model;
 	
@@ -11,10 +32,17 @@ function deParentCell(cellView, evt, x, y) {
 	}
 	
 }
-	
 		
 // When the dragged cell is dropped over another cell, let it become a child of the
 // element below.
+/**
+ * When the dragged cell is dropped over another cell, make it the child of the element below it.
+ * @param  {view} cellView the view which the cell is dropped in
+ * @param  {[type]} evt      [description]
+ * @param  {[type]} x        [description]
+ * @param  {[type]} y        [description]
+ * @return {[type]}          [description]
+ */
 function parentCell(cellView, evt, x, y) {
 	var cell = cellView.model;
 	if (!cell.attributes.source) {
