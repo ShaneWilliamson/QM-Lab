@@ -32,16 +32,16 @@ function deParentCell(cellView, evt, x, y) {
 	}
 	
 }
-		
-// When the dragged cell is dropped over another cell, let it become a child of the
-// element below.
+
 /**
  * When the dragged cell is dropped over another cell, make it the child of the element below it.
  * @param  {view} cellView the view which the cell is dropped in
- * @param  {[type]} evt      [description]
- * @param  {[type]} x        [description]
- * @param  {[type]} y        [description]
- * @return {[type]}          [description]
+ * @todo define the evt parameter
+ * @param  {undefined} evt      undefined
+ * @param  {int} x        the x coordinate of the cell being dragged over
+ * @param  {int} y        the y coordinate of the cell being dragged over
+ * @preconditions the Realtime model is initialized, the cell is being dragged and dropped, the cells exist
+ * @postconditions couples a cell dropped over another cell as the parent
  */
 function parentCell(cellView, evt, x, y) {
 	var cell = cellView.model;
@@ -73,7 +73,6 @@ function parentCell(cellView, evt, x, y) {
 			}
 		}
 	}
-	
 }
 
 function isNotRecursiveEmbed(cell, cellViewBelow) {
