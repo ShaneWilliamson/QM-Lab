@@ -48,6 +48,35 @@ function initializeGraph() {
 	colGraph.graph = JSON.stringify(graph);
 }
 
+/*
+Initializes the graph used for printing to whatever is in the current editable graph.
+The print graph is not directly linked to the collaborative graph and is only updated at the
+time of printing so that the graph can not be changed as you are printing it.
+pre: graph exists.
+post: printGraph contains the contents of graph.
+*/
+function initializePrintGraph(){
+	printGraph = new joint.dia.Graph;
+	console.log("Print graph created.");
+	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
+}
+
+/*
+Updates the print graph with the contents of graph.
+pre: printGraph and graph exist.
+post: printGraph has the same contents of graph.
+*/
+function updatePrintGraph(){
+	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
+}
+
+
+
+function stopPanning() {
+	movingViewPort = false;
+}
+	
+
 /**
  * This initialzes the local "paper" object from joint.js to be able to display
  *   the diagram.
@@ -68,10 +97,53 @@ function initializePaper() {
 	});
 	paperScale = 1;
 
+	paper.on('blank:pointerdown', paperEmptySelectionPressed);
 	paper.$el.on('wheel', paperZoom);
 	paper.$el.on('mouseup', paperOnMouseUp);
+	addEvent(window, 'mouseup', stopPanning);
+	addEvent(window, 'resize', resizePaper);
+	resizePaper();
+	
+	
+	// First, unembed the cell that has just been grabbed by the user.
+	paper.on('cell:pointerdown', bringParentlessCellToFront);
+	paper.on('cell:pointerdown', deParentCell);
+	
+	
+	paper.on('cell:pointerup', parentCell);	
+	paper.on('cell:pointerup', selectClickedCell);
+	paper.on('blank:pointerclick', deselectCell);
+	
+	graph.on('change', function(cell) { 
+		if (isCollabRecordingAllowed()) {
+			selected[0] = cell;
+			updateProperties();
+		}
+		
+	})
+}
 
-	paper.on('blank:pointerdown', paperEmptySelectionPressed);
+/**
+ * This initialzes the local "paper" object that is used for printing purposes from joint.js to be able to display
+ *   the diagram.
+ * @preconditions The printPraph must exist. The HTML container "printView"
+ *   must exist.
+ * @postconditions The html container div "printView" will hold a hidden view of the
+ *   diagram, representing the back-end model.
+ * @memberOf initialize_diagram
+ */
+function initializePrintPaper() {
+	//Paper is initialized with 0 height and width so it does not take up space
+	//until it is needed for printing
+	printPaper = new joint.dia.Paper({
+		el: $('#printView'),
+		width: 1,
+		height: 1,
+		model: graph,
+		perpendicularLinks: true,
+		gridSize: 1
+	});
+	printPaper.scale(1,1);	
 }
 
 /**
@@ -85,12 +157,15 @@ function initializePaper() {
  * @memberOf initialize_diagram
  */
 function paperZoom(e) {
+	
+	
+	var oldPaperScale = paperScale;
+	
 	//For cross browser use, grab the direction the mouse wheel has turned
 	var delta = Math.max(-1, Math.min(1, (-e.originalEvent.deltaY || e.originalEvent.wheelDelta || -e.originalEvent.detail)));
 	//If the mouse wheel rolled "down", zoom out
 	if (delta > 0) {
 		paperScale += 0.1;
-
 	}
 	//If the mouse wheel rolled "up", zoom out
 	else if (paperScale > 0.2){ //The value is 0.2 because the objects disappear if it is 0.1
@@ -99,10 +174,77 @@ function paperZoom(e) {
 
 	//Set the actual zoom
 	paper.scale(paperScale, paperScale);
+	
+	//Reposition the origin to keep the upper left corner where it is
+	var xOffset = paper.options.origin.x;
+	var yOffset = paper.options.origin.y;
+	paper.setOrigin(xOffset * (paperScale / oldPaperScale), yOffset * (paperScale / oldPaperScale));
+	
 
 	//Prevent the mouse wheel event from scrolling
 	e.originalEvent.preventDefault();
+}	
+		
+
+/*
+pre: the paper must exist
+post: the user will no longer be able to interact with the paper
+*/
+function removePaperInteraction() {
+	selected = {};
+	paper.$el.addClass("nonInteractive");
 }
+
+/*
+This restores the user's ability to interact with the paper.
+
+pre: the paper must exist
+post: the user will once more be able to interact with the paper
+*/
+function restorePaperInteraction() {
+	paper.$el.removeClass("nonInteractive");
+}
+
+function resizePaper(e) {
+	var paperDiv = document.getElementById('paperView');
+	var heightOfPaper = window.innerHeight - 250;
+	if (heightOfPaper &lt; 450) {
+		heightOfPaper = 450;
+	}
+	paper.setDimensions(paperDiv.clientWidth - 20, heightOfPaper);
+}
+
+/* 
+Resizes the printing paper so that it fits a sheet of paper and scales the content
+so that it all fits inside the paper.
+pre: The printPaper must exist.
+post: The printPaper will be the size of a sheet of paper.
+*/
+function resizePrintPaper(e){
+	//The values 1000 and 1250 make the paper fit the print page nicely
+	var width = 1000;
+	var height = 1250;
+	printPaper.setDimensions(width, height);
+	printPaper.scaleContentToFit();
+}
+
+/*
+Shrinks the paper so that it no longer takes up space.
+This is done after printing is complete.
+This is required because the paper has a visibility of hidden,
+not a display of none. The paper can not have a display of none because
+there is an issue where the size of objects is changes when the paper goes from
+no display to block display.
+pre: The printPaper must exist.
+post: the printPaper will be the smallest possible size.
+*/
+function shrinkPrintPaper(e){
+	//Values are 1 and 1 because using 0 and 0 does not work
+	var width = 1;
+	var height = 1;
+	printPaper.setDimensions(width, height);
+}
+	
 
 /**
  * Trigger when the user has clicked on an empty part of the paper. At the
@@ -141,16 +283,33 @@ function paperEmptySelectionPressed(e) {
  */
 function paperOnMouseUp(e) {
 	updateMousePos(e)
-	selectSingleOnPoint(curMousePos);
 
 	if (genUI.lastClickedValue == "Stock") {
 		createStock(curMousePos);
 
-	} else if (genUI.lastClickedValue == "Simple Straight") {
-		createLink(curMousePos, "normal");
+	} else if (genUI.lastClickedValue == "State") {
+		createState(curMousePos);
 		
-	} else if (genUI.lastClickedValue == "Simple Curved") {
-		createLink(curMousePos, "smooth");
+	} else if (genUI.lastClickedValue == "Terminal State") {
+		createTerminalState(curMousePos);
+		
+	} else if (genUI.lastClickedValue == "Branch") {
+		createBranch(curMousePos);
+		
+	} else if (genUI.lastClickedValue == "Agent") {
+		createAgent(curMousePos);
+		
+	} else if (genUI.lastClickedValue == "Intervention") {
+		createIntervention(curMousePos);
+		
+	} else if (genUI.lastClickedValue == "Text Area") {
+		createText(curMousePos);
+		
+	} else if (genUI.lastClickedValue == "Transition") {
+		createTransition(curMousePos);
+		
+	} else if (genUI.lastClickedValue == "Connection") {
+		createConnection(curMousePos);
 		
 	} else if (genUI.lastClickedValue == "Image") {
 		createImage(curMousePos);
@@ -172,18 +331,24 @@ function paperOnMouseUp(e) {
 	movingViewPort = false;
 }
 
-/**
- * Update the "selected" array to hold all cells that are under a single point
- *   on the paper. This point should generally be the user's mouse position.
- * @preconditions The mouse is on the paper. The graph is initialized.
- * @postconditions The selected array is filled with all of the objects on the
- *   position of the mouse.
- * @param  {position} pos a valid coordinate with a 'x' field and 'y' field.
- * @memberOf initialize_diagram
- */
-function selectSingleOnPoint(pos) {
-	selected = graph.findModelsFromPoint(pos);
+
+function selectClickedCell(cellView, evt) {
+	
+	bringChildrenOfParentToFront(cellView.model);
+	selected[0] = cellView.model;
+	selected[0].setSelected(true);
+	updateProperties();
 }
+
+
+function deselectCell() {
+	if (selected[0]) {
+		selected[0].setSelected(false);
+		selected = {};
+		updateProperties();
+	}
+}
+
 
 /**
  * When the user hits a key, check which key was pressed. Handle state
@@ -205,9 +370,10 @@ function handleKeyInput(e) {
 		deleteSelectedCell(e);
 	}
 	else {
-		console.log("A key was pushed");
+		//console.log("A key was pushed");
 	}
 }
+
 
 /**
  * Deletes the currently selected node, as well as ensures other collaborators
@@ -225,8 +391,6 @@ function deleteSelectedCell(e) {
 		if (selected[0]) {
 			rootModel.getRoot().get(selected[0].id).action = 'remove';
 			selected[0].remove();
-			selected.shift();
-			updateCollabGraph();
 		}
 	}
 }
@@ -252,6 +416,7 @@ function handleMouseMove(e) {
 	}
 }
 
+
 /**
  * This function checks where the mouse currently is, and where it used to be in
  *   relation to a position on the paper. It then alters the view of the diagram
@@ -267,9 +432,10 @@ function handleMouseMove(e) {
 function moveViewPort(e) {
 	updateMousePos(e);
 	var origin = paper.options.origin;
-	paper.setOrigin((curMousePos.x - oldMousePos.x) + origin.x, (curMousePos.y - oldMousePos.y) + origin.y);
+	paper.setOrigin(((curMousePos.x - oldMousePos.x) * paperScale) + origin.x, ((curMousePos.y - oldMousePos.y) * paperScale) + origin.y);
 	updateMousePos(e);
 }
+
 
 /**
  * This function updates the current and previous mouse positions in relation to
@@ -299,13 +465,13 @@ function updateMousePos(e) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setPropertyDisplayValues">setPropertyDisplayValues</a></li><li><a href="global.html#updateProperties">updateProperties</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Mar 15 2016 22:34:04 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Apr 04 2016 19:17:28 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
