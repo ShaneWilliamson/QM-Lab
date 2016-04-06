@@ -4,32 +4,33 @@
 /**
  * Manages generating the ui
  * @todo finish adding contracts (gods speed to whomever takes this on)
- * @gen_ui
+ * @class gen_ui
  */
-/** NOTE a webix object is referenced like this $$("objectID"), 
-make sure that you are using the WEBIX OBJECT ID and not the html element id.
-They are not the same thing **/
+
 
 var genUI = new QM_LabUI();
 
+// NOTE a webix object is referenced like this $$("objectID"), make sure that
+// you are using the WEBIX OBJECT ID and not the html element id. They are not
+// the same thing
 
 /**
-	Initializer for QM_LabUI class
-*/
+ * Initializer for QM_LabUI class
+ * @postconditions The UI is initialized
+ * @memberOf gen_ui
+ */
 function QM_LabUI() {
 	this.lastClickedValue = "EDIT";	
 }
 
-
 /**
-	Creates the tabbar used to select a node/link to place
-	Instantiates the tabbar with data from displayData.js
-	@precond html doc exists
-			webix.js has been imported
-			displayData.js has been imported
-			the html doc has been loaded
-	@postcond creates an tabbar in the objectSelectTabbar div
-*/
+ * Creates the tabbar used to select a node/link to place. Instantiates the
+ *   tabbar with data from displayData.js.
+ * @preconditions html doc exists, displayData.js has been imported, the html
+ *   doc has been loaded.
+ * @postconditions creates an tabbar in the objectSelectTabbar div
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genTabbar = function() {
 	var height = window.innerHeight - 250;
 	webix.ui({
@@ -100,25 +101,25 @@ QM_LabUI.prototype.genTabbar = function() {
 	});
 }
 
-
-
 /**
-	Creates the toolbar, tabbar and property box using webix.
-**/
+ * Creates the toolbar, tabbar and property box using webix.
+ * @preconditions genUI has been initialized
+ * @postconditions genUI has the toolbar, tabbar and properties form setup
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genUI = function() { 
 	genUI.genToolbar();
 	genUI.genTabbar();
 	genUI.genPropertiesForm();
 };
 
-
 /**
-	Creates the main toolbar at the top of the main page
-	@precond webix.js has been imported
-			the html doc has been loaded
-			the graph has been initialized
-	@postcond creates a toolbar in the mainToolbar div
-**/
+ * Creates the main toolbar at the top of the main page
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been initialized.
+ * @postconditions creates a toolbar in the mainToolbar div
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genToolbar = function() {
 	webix.ui({
 		container:"mainToolbar",
@@ -166,46 +167,46 @@ QM_LabUI.prototype.genToolbar = function() {
 	});
 }
 
-
 /**
-	Creates the property display box
-	@precond webix.js has been imported
-			the html doc has been loaded
-			the graph has been instantiated
-	@postcond creates a property box in the propertiesForm div
-*/
+ * Creates the property display box
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions creates a property box in the propertiesForm div
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genPropertiesForm = function() {
 
-	// { margin:5, cols:[
- //            { view:"button", value:"Login" , type:"form" },
- //            { view:"button", value:"Cancel" }
- //    ]}
-		document.getElementById("propertiesForm").innerHTML = "";
-		if(selected[0]) {
-			console.log(selected[0].attributes.type);
-			if (selected[0].attributes.type === "QMLab.Connection") {
-				this.createConnectionPropertyForm();
-			}
-			else if (selected[0].attributes.type === "QMLab.Transition" ||
-					 selected[0].attributes.type === "QMLab.Flow") {
-					 
-				this.createLinkPropertyForm();
-			}
-			else {
-				this.createDefaultPropertyForm();
-			}
+// { margin:5, cols:[
+//            { view:"button", value:"Login" , type:"form" },
+//            { view:"button", value:"Cancel" }
+//    ]}
+	document.getElementById("propertiesForm").innerHTML = "";
+	if(selected[0]) {
+		console.log(selected[0].attributes.type);
+		if (selected[0].attributes.type === "QMLab.Connection") {
+			this.createConnectionPropertyForm();
+		}
+		else if (selected[0].attributes.type === "QMLab.Transition" ||
+				 selected[0].attributes.type === "QMLab.Flow") {
+				 
+			this.createLinkPropertyForm();
 		}
 		else {
-			this.createEmptyPropertyForm();
+			this.createDefaultPropertyForm();
 		}
-
-	
-		
-		
-	
-	
+	}
+	else {
+		this.createEmptyPropertyForm();
+	}
 }
 
+/**
+ * Creates an empty property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a properties form instantiated
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.createEmptyPropertyForm = function() { 
 	webix.ui({
 		id:"propertiesFormId",
@@ -218,10 +219,13 @@ QM_LabUI.prototype.createEmptyPropertyForm = function() {
 	});
 }
 
-
-
-
-
+/**
+ * Creates an empty link property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a link property form instantiated
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.createLinkPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
@@ -272,18 +276,17 @@ QM_LabUI.prototype.createLinkPropertyForm = function() {
 	});
 }
 
-
-
-
-
-
-
+/**
+ * Creates an empty connection property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a connection property form instantiated
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.createConnectionPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
 	width -= preventOverhangOffset;
-	
-	
 
 	webix.ui({
 		id:"propertiesFormId",
@@ -367,7 +370,13 @@ QM_LabUI.prototype.createConnectionPropertyForm = function() {
 	
 }
 
-
+/**
+ * Creates an empty default property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a default property form instantiated
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.createDefaultPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
@@ -448,12 +457,13 @@ QM_LabUI.prototype.createDefaultPropertyForm = function() {
 
 
 /**
-	Deselects all of the elements from both views in the tabbar
-	@precond webix.js has been loaded
-			the tabbar has been initialized into objectSelectTabbar
-			the html doc has been loaded
-	@postcond the node tab and link tab for the item selection tabbar will not have an item selected
-**/
+ * Deselects all of the elements from both views in the tabbar
+ * @preconditions webix.js has been loaded, the tabbar has been initialized into
+ *   objectSelectTabbar, the html doc has been loaded
+ * @postconditions the node tab and link tab for the item selection tabbar will
+ *   not have an item selected
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.deselectUIElements = function() {
 	$$("nodeListView").unselectAll();
 	$$("linkListView").unselectAll();

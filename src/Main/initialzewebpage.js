@@ -3,7 +3,6 @@
 /////////////////////////
 /**
  * Contains the model for intializing the document
- * @todo finish adding contracts
  * @class initialize_web_page
  */
 

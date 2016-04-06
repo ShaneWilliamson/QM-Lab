@@ -1,6 +1,6 @@
-/////////////////
-//link_joining //
-/////////////////
+//////////////////
+// link_joining //
+//////////////////
 /**
  * Manages the joining of links
  * @class link_joining
@@ -219,4 +219,3 @@ function linkTargeter(e){
 
  	return cloud;
  }
- 
