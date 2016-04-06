@@ -29,7 +29,7 @@ const LINK_OFFSET_Y = 15;
  *   will become the source of the link and mouse listeners for on mouse down on
  *   will be added to the paper calling linkTargeter, and an on mouse move event
  *   listener will be added to the paper dic which will call mouseTracker
- * @memberOf linkJoining
+ * @memberOf link_joining
  */
 function targetFollow(newLink, linkType, pos){
 	if(pos = curMousePos)
@@ -97,8 +97,9 @@ function targetFollow(newLink, linkType, pos){
  * Adds a vertex to the current link
  * @param  {e} is the event that called addVertex
  * @preconditions global variable lastLink is a valid link
- * @postconditions adds a new vertex to lastLink at the current location of the mouse cursor
- * @memberOf linkJoining
+ * @postconditions adds a new vertex to lastLink at the current location of the
+ *   mouse cursor
+ * @memberOf link_joining
  */
 function addVertex(e){
 	if(hasMoved)
@@ -124,11 +125,14 @@ function addVertex(e){
 }
 
 /**
- * Sets the target of the global variable lastLink to be the current position of the mouse cursor with a small offset so the user can not click on the link
- * @param  {e} is the event that called mouseTracker 
+ * Sets the target of the global variable lastLink to be the current position of
+ *   the mouse cursor with a small offset so the user can not click on the link
+ * @param  {e} is the event that called mouseTracker
  * @preconditions global variable lastLink is a valid link
- * @postconditions The new target of the global variable lastLink will be set to the current position of the mouse cursor with a small offset so the user can not click on it
- * @memberOf linkJoining
+ * @postconditions The new target of the global variable lastLink will be set to
+ *   the current position of the mouse cursor with a small offset so the user
+ *   can not click on it
+ * @memberOf link_joining
  */
 function mouseTracker(e){
 	updateMousePos(e);
@@ -137,11 +141,17 @@ function mouseTracker(e){
 }
 
 /**
- * Sets the target of the global variable lastLink to be either the current location of the mouse cursor, or the element that is currently under the mouse cursor if there is an element there
+ * Sets the target of the global variable lastLink to be either the current
+ *   location of the mouse cursor, or the element that is currently under the
+ *   mouse cursor if there is an element there
  * @param  {e} is the event that called linkTargeter
  * @preconditions global variable lastLink is a valid link
- * @postconditions The new target of the global variable lastLink will be set to be either the current location of the mouse cursor, or the element that is currently under the mouse cursor if there is an element there. lastLink will then be set to null and the event listeners for linkTargeter and mouseTracker will be removed
- * @memberOf linkJoining
+ * @postconditions The new target of the global variable lastLink will be set to
+ *   be either the current location of the mouse cursor, or the element that is
+ *   currently under the mouse cursor if there is an element there. lastLink
+ *   will then be set to null and the event listeners for linkTargeter and
+ *   mouseTracker will be removed
+ * @memberOf link_joining
  */
 function linkTargeter(e){
 	updateMousePos(e);
@@ -192,11 +202,14 @@ function linkTargeter(e){
 }
 
 /**
- * Will create a cloud at the current mouse position, This should be called during the time a flow link is being created
+ * Will create a cloud at the current mouse position, This should be called
+ *   during the time a flow link is being created
  * @preconditions the mouse position is a valid spot on the paper
- * @postconditions a cloud is made at the current location of the mouse, this should be made only at the ends or starts of flows. Also sets the global variable isFlow to true
+ * @postconditions a cloud is made at the current location of the mouse, this
+ *   should be made only at the ends or starts of flows. Also sets the global
+ *   variable isFlow to true
  * @return returns the new cloud image
- * @memberOf linkJoining
+ * @memberOf link_joining
  */
  function flowCloudPrep(){
  	// http://i.imgur.com/1TRqx2p.png this is a crappy cloud I drew
@@ -206,3 +219,4 @@ function linkTargeter(e){
 
  	return cloud;
  }
+ 
