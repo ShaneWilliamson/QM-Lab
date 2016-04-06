@@ -4,7 +4,6 @@
 /**
  * These functions are meant to grab the details of and alter values of elements
  *   in the graph.
- * @todo finish adding contracts  
  * @class element_prop_alter
  */
 

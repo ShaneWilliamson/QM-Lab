@@ -3,7 +3,7 @@
 ////////////
 /**
  * Manages generating the ui
- * @todo finish adding contracts
+ * @todo finish adding contracts (gods speed to whomever takes this on)
  * @gen_ui
  */
 /** NOTE a webix object is referenced like this $$("objectID"), 

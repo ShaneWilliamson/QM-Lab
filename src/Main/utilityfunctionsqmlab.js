@@ -3,10 +3,19 @@
 //////////////////////////////
 /**
  * Variety of helpful function
- * @todo finish adding contracts
  * @class utility_functions_qm_lab
  */
 
+/**
+ * Takes an object and adds an event to it
+ * @param {object}   object   an object we'd like to attach an event to
+ * @param {string}   type     the type of the object
+ * @param {event} callback the event we are attaching to the object
+ * @preconditions object can have an event listener attached to it
+ * @postconditions object has an event callback attached to it (if the object
+ *   exists), otherwise, nothing
+ * @memberOf utility_functions_qm_lab
+ */
 var addEvent = function(object, type, callback) {
     if (object == null || typeof(object) == 'undefined') return;
     if (object.addEventListener) {
@@ -18,6 +27,14 @@ var addEvent = function(object, type, callback) {
     }
 };
 
+/**
+ * Compares two arrays and if they are the same, return true
+ * @param  {array} a1 an array of values
+ * @param  {array} a2 an array of values
+ * @return {bool}    true if same array, false otherwise
+ * @preconditions a1 and a2 are valid arrays with objects in them
+ * @memberOf utility_functions_qm_lab
+ */
 function compareArray(a1, a2) {
 	if (a1.length === a2.length) {
 		var retVal = true;

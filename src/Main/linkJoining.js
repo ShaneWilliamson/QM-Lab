@@ -3,7 +3,6 @@
 /////////////////
 /**
  * Manages the joining of links
- * @todo finish adding contracts
  * @class link_joining
  */
 
@@ -17,11 +16,19 @@ const LINK_OFFSET_X = 15;
 const LINK_OFFSET_Y = 15;
 
 /**
- * If there is an element under the mouse when this function is called the given link will have that slement set to be it's "source" element, the "target" side of the link will then follow the mouse and be set to the element or position under the mouse on the next mouse down event
+ * If there is an element under the mouse when this function is called the given
+ *   link will have that slement set to be it's "source" element, the "target"
+ *   side of the link will then follow the mouse and be set to the element or
+ *   position under the mouse on the next mouse down event
  * @param  {newLink} is a valid link
- * @preconditions newLink is a valid link and has not been called in the setUpNewCell function, this will not work if called after setUpNewCell
- * @preconditions linkType is a string that describes the string that is passed in, either straight, curved, or flow
- * @postconditions If the new link was created over an element, that element will become the source of the link and mouse listeners for on mouse down on will be added to the paper calling linkTargeter, and an on mouse move event listener will be added to the paper dic which will call mouseTracker
+ * @preconditions newLink is a valid link and has not been called in the
+ *   setUpNewCell function, this will not work if called after setUpNewCell
+ * @preconditions linkType is a string that describes the string that is passed
+ *   in, either straight, curved, or flow
+ * @postconditions If the new link was created over an element, that element
+ *   will become the source of the link and mouse listeners for on mouse down on
+ *   will be added to the paper calling linkTargeter, and an on mouse move event
+ *   listener will be added to the paper dic which will call mouseTracker
  * @memberOf linkJoining
  */
 function targetFollow(newLink, linkType, pos){
