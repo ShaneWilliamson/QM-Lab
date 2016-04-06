@@ -318,6 +318,30 @@ QUnit.test("Test compareArray())", function(assert){
 
 });
 
+QUnit.test("Test stopPanning()", function(assert){
+  stopPanning();
+  assert.ok(!movingViewPort);
+});
+
+QUnit.test("Test handleMouseMove(e)", function(assert){
+  var evt = document.createEvent("MouseEvents");
+  evt.initEvent("mouseup", true, true);
+  movingViewPort = false;
+  handleMouseMove(evt);
+  assert.notOk(movingViewPort);
+});
+
+QUnit.test("Test updateProperties()", function(assert){
+  selected = [createStock({x: 3, y: 2}), false];
+
+  var stub = sinon.stub(document, "querySelector", function(){var v = document.createElement('input'); return v;})
+  
+
+  updateProperties();
+  stub.restore();
+  assert.ok(true);
+});
+
 // TODO: This test properly.
 QUnit.test("Test initializePaper()", function(assert){
   initializePrintPaper();
