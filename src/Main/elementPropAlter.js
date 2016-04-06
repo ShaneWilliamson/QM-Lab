@@ -4,6 +4,7 @@
 /**
  * These functions are meant to grab the details of and alter values of elements
  *   in the graph.
+ * @todo finish adding contracts  
  * @class element_prop_alter
  */
 
@@ -14,9 +15,13 @@ var selectElement = null;
 
 
 /**
- * Fills the text boxes in the property pane with the given values based on whether an object is selected or not
- * @preconditions If an object is selected, all proper fields have values and functions are declared
- * @postconditions The properties will be displayed to reflect whether an object is selected
+ * Fills the text boxes in the property pane with the given values based on
+ *   whether an object is selected or not
+ * @preconditions If an object is selected, all proper fields have values and
+ *   functions are declared
+ * @postconditions The properties will be displayed to reflect whether an object
+ *   is selected
+ * @memberOf element_prop_alter
  */
 function updateProperties() {
 	genUI.genPropertiesForm();
@@ -50,8 +55,17 @@ function updateProperties() {
 
 /**
  * Fills the text boxes in the property pane with the given values
- * @preconditions All textboxes and divs called exist in the DOM 
- * @postconditions The properties will be displayed to reflect the values passed in.
+ * @param {string} text       the text it is being set to
+ * @param {int} textsize   the size of the text
+ * @param {color} textcolour the colour of the text
+ * @param {int} width      the size of the element (horizontally)
+ * @param {int} height     the size of the element (vertically)
+ * @param {color} colour     the colour of the lement
+ * @param {string} url        the url which it links to (a image)
+ * @preconditions All textboxes and divs called exist in the DOM
+ * @postconditions The properties will be displayed to reflect the values passed
+ *   in.
+ * @memberOf element_prop_alter
  */
 function setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url) {
 	
@@ -64,7 +78,15 @@ function setPropertyDisplayValues(text, textsize, textcolour, width, height, col
 	setPropertyColourPickerValueIfExists('color', textcolour);
 }
 
-
+/**
+ * Sets the input values of the property, if the object exists
+ * @param {string} name  the name of the element
+ * @param {string} value the value the input box is being set to
+ * @preconditions the document exists
+ * @invariant Nothing is changed if the input box does not exist
+ * @history The input box only knows its most recent value
+ * @memberOf element_prop_alter
+ */
 function setPropertyInputBoxValueIfExists(name, value) {
 	var inputBox = document.querySelector('div[view_id="' + name + '"] input');
 	if (inputBox){
@@ -72,6 +94,15 @@ function setPropertyInputBoxValueIfExists(name, value) {
 	}
 }
 
+/**
+ * Sets the color values of the property, if the object exists
+ * @param {string} name  the name of the element
+ * @param {color} value the color the object is being set to
+ * @preconditions the document exists
+ * @invariant Nothing is changed if the input box does not exist
+ * @history The input box only knows its most recent value
+ * @memberOf element_prop_alter
+ */
 function setPropertyColourPickerValueIfExists(name, value) {
 	var div = document.querySelector('div[view_id="' + name + '"] div.webix_input_icon');
 	if (div){
