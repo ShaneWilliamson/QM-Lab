@@ -9,7 +9,7 @@ public class SmokeTest {
 	@Test
 	public void main(){
 
-		Class[] cls={Tests.class};  
+		Class[] cls={Smoke.class};  
 		JUnitCore.runClasses(ParallelComputer.methods(), cls);  
 	}
 }
