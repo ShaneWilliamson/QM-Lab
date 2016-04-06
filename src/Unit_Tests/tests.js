@@ -4,10 +4,10 @@ window.gapi.load('auth:client,drive-realtime,drive-share', start);
 function start() {
   var doc = gapi.drive.realtime.newInMemoryDocument();
   var model = doc.getModel();
+  registerCollaborativeObjectTypes();
   onFileInitialize(model);
   onFileLoaded(doc);
 }
-
 QUnit.config.collapse = false;
 
 QUnit.test("Test Stock Creation", function( assert ) {
@@ -37,21 +37,22 @@ QUnit.test("Test Image Creation and qmlabjointclasses tests", function( assert )
     position: { x: pos.x, y: pos.y },
   });
 
+
   var sizeX = 200;
   var sizeY = 200;
   newImage.setSize(sizeX, sizeY);
   newImage.setLabel(label);
   newImage.setImage(pictureURL);
 
-  assert.notDeepEqual(newImage, null);
-  assert.deepEqual(createImage(pos, pictureURL, label, null, null).attributes.position, newImage.attributes.position);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.size.height, newImage.attributes.size.height);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.size.width, newImage.attributes.size.width);
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attr('image/xlink:href'), newImage.attr('image/xlink:href'));
-  assert.deepEqual(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.text.text, newImage.attributes.text.text);
-  assert.equal(createImage(pos, pictureURL, null, sizeX, sizeY).attributes.text.text, "Your Image Here");
+  assert.notDeepEqual(newImage, null, "Test if not null");
+  assert.deepEqual(createImage(pos, pictureURL, label, null, null).attributes.position, newImage.attributes.position, "Test if positions are equal from creation");
+  assert.equal(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.size.height, newImage.attributes.size.height, "Test if heights are equal");
+  assert.equal(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.size.width, newImage.attributes.size.width, "Test if widths are equal");
+  assert.equal(createImage(pos, pictureURL, label, sizeX, sizeY).attr('image/xlink:href'), newImage.attr('image/xlink:href'), "Test if image urls are equal");
+  assert.equal(createImage(pos, pictureURL, label, sizeX, sizeY).attributes.text.text, newImage.attributes.text.text), "Test if labels are equal";
+  assert.equal(createImage(pos, pictureURL, null, sizeX, sizeY).attributes.text.text, "Your Image Here", "Test if default label is equal to expected");
   var defaultURL = "http://www.reliefjournal.com/wp-content/uploads/2012/03/600x400-Image-Placeholder.jpg"
-  assert.equal(createImage(pos, null, label, sizeX, sizeY).attr('image/xlink:href'), defaultURL);
+  assert.equal(createImage(pos, null, label, sizeX, sizeY).attr('image/xlink:href'), defaultURL, "Test if default ");
 
 
   assert.equal(newImage.getXSize(), sizeX);
@@ -142,13 +143,8 @@ QUnit.test("addGlobalEventListeners() Test", function( assert ) {
   eventListen.restore();
 });
 
-QUnit.test("registerCollaborativeObjectTypes() test", function( assert ){
-  var ignoreGAPI = sinon.stub(gapi);
-  var ignoreCG = sinon.mock(CollaborativeGraph);
-  registerCollaborativeObjectTypes();
-  assert.ok(ignoreGAPI, "Method ran.");
 
-});
+
 
 QUnit.test("doGraphOnLoaded() test", function( assert ){
   var spy = sinon.spy(console, "log");
@@ -287,6 +283,7 @@ QUnit.test("createAgent(pos) test", function (assert){
 
 });
 
+
 QUnit.test("Test initializeGraph()", function(assert){
   var spy = sinon.spy(JSON, "stringify");
   initializeGraph();
@@ -294,6 +291,7 @@ QUnit.test("Test initializeGraph()", function(assert){
   spy.restore();
 
 });
+
 
 QUnit.test("Test initializeGraph() and updatePrintGraph", function(assert){
   var spy = sinon.spy(printGraph, "fromJSON");
@@ -303,7 +301,6 @@ QUnit.test("Test initializeGraph() and updatePrintGraph", function(assert){
   assert.ok(spy);
   spy.restore();
 });
-
 
 QUnit.test("Test compareArray())", function(assert){
   var a1 = [];
@@ -317,31 +314,6 @@ QUnit.test("Test compareArray())", function(assert){
 
 
 });
-
-QUnit.test("Test stopPanning()", function(assert){
-  stopPanning();
-  assert.ok(!movingViewPort);
-});
-
-QUnit.test("Test handleMouseMove(e)", function(assert){
-  var evt = document.createEvent("MouseEvents");
-  evt.initEvent("mouseup", true, true);
-  movingViewPort = false;
-  handleMouseMove(evt);
-  assert.notOk(movingViewPort);
-});
-
-QUnit.test("Test updateProperties()", function(assert){
-  selected = [createStock({x: 3, y: 2}), false];
-
-  var stub = sinon.stub(document, "querySelector", function(){var v = document.createElement('input'); return v;})
-  
-
-  updateProperties();
-  stub.restore();
-  assert.ok(true);
-});
-
 // TODO: This test properly.
 QUnit.test("Test initializePaper()", function(assert){
   initializePrintPaper();
