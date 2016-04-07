@@ -205,7 +205,9 @@ Vertex markers are `<circle>` elements that appear at connection vertex position
 /* Cell highlighting - e.g a cell underneath the dragged link get highlighted.
    See joint.dia.cell.js highlight(); */
 .highlighted {
-    opacity: 0.7;
+    #opacity: 0.7;
+	outline: red;
+	stroke-width: 3;
 }
 
 /* For some reason, CSS `outline` property

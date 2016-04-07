@@ -320,11 +320,11 @@ function createAgent(pos) {
 		attrs: {
 			'rect': { 'fill': '#ffffff', 'stroke': '#000000', width: 10000, height: 10000 },
 			'text': { 'font-size': 14, text: 'Agent', 'ref-x': 100, 'ref-y': 230, ref: 'rect', fill: 'black' },
-			'image': { 'xlink:href': 'http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png', width: 10000, height: 10000 },
+			'image': { 'xlink:href': 'http://i.imgur.com/iujIYpD.png', width: 10000, height: 10000 },
 		}
 	});
 	newAgent.setSize(200, 200);
-	newAgent.setImage('http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png');
+	newAgent.setImage('http://i.imgur.com/iujIYpD.png');
 	setUpNewCell(newAgent, "", "#ffffff", "#000000");
 	console.log("Agent added");
 	return newAgent;
@@ -384,12 +384,12 @@ function createFlow(pos) {
 }
 
 /**
- * Creates a flow at the given location
+ * Creates a transition at the given location
  * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
- * @preconditions A collaborative flow has been created with its top-left corner
+ * @preconditions A collaborative transition has been created with its top-left corner
  *   positioned at point "pos". The collaborative graph has been updated
  * @param  {position} pos valid coordinate with 'x' and 'y' fields
- * @return {localFlow}     the object of the new flow created at position pos
+ * @return {localFlow}     the object of the new transition created at position pos
  * @memberOf create_objects
  */
 function createTransition(pos) {
@@ -409,12 +409,12 @@ function createTransition(pos) {
 }
 
 /**
- * Creates a flow at the given location
+ * Creates a connection at the given location
  * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
- * @preconditions A collaborative flow has been created with its top-left corner
+ * @preconditions A collaborative connection has been created with its top-left corner
  *   positioned at point "pos". The collaborative graph has been updated
  * @param  {position} pos valid coordinate with 'x' and 'y' fields
- * @return {localFlow}     the object of the new flow created at position pos
+ * @return {localFlow}     the object of the new connection created at position pos
  * @memberOf create_objects
  */
 function createConnection(pos) {
