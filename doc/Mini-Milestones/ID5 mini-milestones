@@ -1,0 +1,25 @@
+Must­have for Saturday 26th
+­ Parameters and variables have circles with p or v
+­ Let Royce know if dynamic (click and drag) size changing is possible
+­ Flow improvements
+­ Pipe with valve flow
+­ Transition with +, ­, ?
+
+Would­like
+­ Link chaining
+­ Select link type
+­ Click source (appears as cloud if flow, else regular anchor)
+­ Click anchor/elbow thing (even if click on node, it should not connect to node)
+­ Double­click to finish, whether on a node or not.  ­ If on node, it connects to node
+­ If flow, and not on node, it terminates on cloud
+­ If not flow and not on node, it terminates in empty space
+
+Must­have for Tuesday 29th
+­ Node chaining finished
+­ GUI fixes
+­ Properties box spread across bottom of screen
+­ Left node/link selector narrowed
+­ Dynamic drag resizing either finished or dropped
+­ Interventions completed. Described in 3/23 stakeholder notes in minutes section. 
+
+Code Freeze Thursday the 31st at noon
