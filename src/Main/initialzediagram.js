@@ -3,7 +3,6 @@
 ////////////////////////
 /**
  * Sets up the diagram's graph, paper, and controllers.
- * @todo finish adding contracts
  * @class initialize_diagram
  */
 
@@ -21,29 +20,37 @@ function initializeGraph() {
 	colGraph.graph = JSON.stringify(graph);
 }
 
-/*
-Initializes the graph used for printing to whatever is in the current editable graph.
-The print graph is not directly linked to the collaborative graph and is only updated at the
-time of printing so that the graph can not be changed as you are printing it.
-pre: graph exists.
-post: printGraph contains the contents of graph.
-*/
+/**
+ * Initializes the graph used for printing to whatever is in the current
+ *   editable graph. The print graph is not directly linked to the collaborative
+ *   graph and is only updated at the time of printing so that the graph can not
+ *   be changed as you are printing it.
+ * @preconditions graph exists.
+ * @postconditions printGraph contains the contents of graph.
+ * @memberOf initialize_diagram
+ */
 function initializePrintGraph(){
 	printGraph = new joint.dia.Graph;
 	console.log("Print graph created.");
 	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
 }
 
-/*
-Updates the print graph with the contents of graph.
-pre: printGraph and graph exist.
-post: printGraph has the same contents of graph.
-*/
+/**
+ * Updates the print graph with the contents of graph.
+ * @preconditions printGraph and graph exist.
+ * @postconditions printGraph has the same contents of graph.
+ * @memberOf initialize_diagram
+ */
 function updatePrintGraph(){
 	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
 }
 	
-
+/**
+ * Removes all of the selection boxes from the screen
+ * @preconditions The program has been initialized and a document opened
+ * @postconditions All selection boxes are removed from the screen
+ * @memberOf initialize_diagram
+ */
 function removeAllSelectionBoxes() {
 	var svg = $.find("svg")[0];
 	
@@ -55,7 +62,16 @@ function removeAllSelectionBoxes() {
 	}
 }
 
-
+/**
+ * Draws a selection box across certain coordinates
+ * @param  {int} startX starting x position of the box
+ * @param  {int} startY starting y position of the box
+ * @param  {int} endX   ending x position of the box
+ * @param  {int} endY   ending y position of the box
+ * @preconditions The document is initialized
+ * @postconditions A box is draw from startX and startY to endX and endY
+ * @memberOf initialize_diagram
+ */
 function drawSelectionBox(startX, startY, endX, endY) {
 	// delete all previous selection boxes
 	$(".selectionBox").remove();
@@ -167,12 +183,12 @@ function initializeView(){
 
 
 /**
- * This initialzes the local "paper" object that is used for printing purposes from joint.js to be able to display
- *   the diagram.
- * @preconditions The printPraph must exist. The HTML container "printView"
- *   must exist.
- * @postconditions The html container div "printView" will hold a hidden view of the
- *   diagram, representing the back-end model.
+ * This initialzes the local "paper" object that is used for printing purposes
+ *   from joint.js to be able to display the diagram.
+ * @preconditions The printPraph must exist. The HTML container "printView" must
+ *   exist.
+ * @postconditions The html container div "printView" will hold a hidden view of
+ *   the diagram, representing the back-end model.
  * @memberOf initialize_diagram
  */
 function initializePrintPaper() {
@@ -228,21 +244,23 @@ function paperZoom(e) {
 }	
 		
 
-/*
-pre: the paper must exist
-post: the user will no longer be able to interact with the paper
-*/
+/**
+ * Removes paper interation
+ * @preconditions the paper must exist
+ * @postconditions the user will no longer be able to interact with the paper
+ * @memberOf initialize_diagram
+ */
 function removePaperInteraction() {
 	selected = {};
 	paper.$el.addClass("nonInteractive");
 }
 
-/*
-This restores the user's ability to interact with the paper.
-
-pre: the paper must exist
-post: the user will once more be able to interact with the paper
-*/
+/**
+ * This restores the user's ability to interact with the paper.
+ * @preconditions the paper must exist
+ * @postconditions the user will once more be able to interact with the paper
+ * @memberOf initialize_diagram
+ */
 function restorePaperInteraction() {
 	paper.$el.removeClass("nonInteractive");
 }
