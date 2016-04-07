@@ -26,10 +26,14 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/*
-* These functions are meant to grab the details of and alter values of elements
-* in the graph
-*/
+            <pre class="prettyprint source linenums"><code>////////////////////////
+// element_prop_alter //
+////////////////////////
+/**
+ * These functions are meant to grab the details of and alter values of elements
+ *   in the graph.
+ * @class element_prop_alter
+ */
 
 //the id of the currently selected element, starts off unselected
 var selectId = null;
@@ -38,9 +42,13 @@ var selectElement = null;
 
 
 /**
- * Fills the text boxes in the property pane with the given values based on whether an object is selected or not
- * @preconditions If an object is selected, all proper fields have values and functions are declared
- * @postconditions The properties will be displayed to reflect whether an object is selected
+ * Fills the text boxes in the property pane with the given values based on
+ *   whether an object is selected or not
+ * @preconditions If an object is selected, all proper fields have values and
+ *   functions are declared
+ * @postconditions The properties will be displayed to reflect whether an object
+ *   is selected
+ * @memberOf element_prop_alter
  */
 function updateProperties() {
 	genUI.genPropertiesForm();
@@ -74,8 +82,17 @@ function updateProperties() {
 
 /**
  * Fills the text boxes in the property pane with the given values
- * @preconditions All textboxes and divs called exist in the DOM 
- * @postconditions The properties will be displayed to reflect the values passed in.
+ * @param {string} text       the text it is being set to
+ * @param {int} textsize   the size of the text
+ * @param {color} textcolour the colour of the text
+ * @param {int} width      the size of the element (horizontally)
+ * @param {int} height     the size of the element (vertically)
+ * @param {color} colour     the colour of the lement
+ * @param {string} url        the url which it links to (a image)
+ * @preconditions All textboxes and divs called exist in the DOM
+ * @postconditions The properties will be displayed to reflect the values passed
+ *   in.
+ * @memberOf element_prop_alter
  */
 function setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url) {
 	
@@ -88,7 +105,15 @@ function setPropertyDisplayValues(text, textsize, textcolour, width, height, col
 	setPropertyColourPickerValueIfExists('color', textcolour);
 }
 
-
+/**
+ * Sets the input values of the property, if the object exists
+ * @param {string} name  the name of the element
+ * @param {string} value the value the input box is being set to
+ * @preconditions the document exists
+ * @invariant Nothing is changed if the input box does not exist
+ * @history The input box only knows its most recent value
+ * @memberOf element_prop_alter
+ */
 function setPropertyInputBoxValueIfExists(name, value) {
 	var inputBox = document.querySelector('div[view_id="' + name + '"] input');
 	if (inputBox){
@@ -96,6 +121,15 @@ function setPropertyInputBoxValueIfExists(name, value) {
 	}
 }
 
+/**
+ * Sets the color values of the property, if the object exists
+ * @param {string} name  the name of the element
+ * @param {color} value the color the object is being set to
+ * @preconditions the document exists
+ * @invariant Nothing is changed if the input box does not exist
+ * @history The input box only knows its most recent value
+ * @memberOf element_prop_alter
+ */
 function setPropertyColourPickerValueIfExists(name, value) {
 	var div = document.querySelector('div[view_id="' + name + '"] div.webix_input_icon');
 	if (div){
@@ -113,13 +147,13 @@ function setPropertyColourPickerValueIfExists(name, value) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setPropertyDisplayValues">setPropertyDisplayValues</a></li><li><a href="global.html#updateProperties">updateProperties</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Apr 04 2016 19:17:28 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 06 2016 00:10:23 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

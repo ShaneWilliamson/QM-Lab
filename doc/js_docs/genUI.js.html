@@ -26,27 +26,48 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** NOTE a webix object is referenced like this $$("objectID"), 
-make sure that you are using the WEBIX OBJECT ID and not the html element id.
-They are not the same thing **/
+            <pre class="prettyprint source linenums"><code>////////////
+// gen_ui //
+////////////
+/**
+ * Manages generating the ui
+ * @todo finish adding contracts (gods speed to whomever takes this on)
+ * @class gen_ui
+ */
+
 
 var genUI = new QM_LabUI();
 
+// NOTE a webix object is referenced like this $$("objectID"), make sure that
+// you are using the WEBIX OBJECT ID and not the html element id. They are not
+// the same thing
 
+/**
+ * Initializer for QM_LabUI class
+ * @postconditions The UI is initialized
+ * @memberOf gen_ui
+ */
 function QM_LabUI() {
 	this.lastClickedValue = "EDIT";	
 }
 
-
 /**
-	Creates the tabbar used to select a node/link to place
-	Instantiates the tabbar with data from displayData.js
-**/
+ * Creates the tabbar used to select a node/link to place. Instantiates the
+ *   tabbar with data from displayData.js.
+ * @preconditions html doc exists, displayData.js has been imported, the html
+ *   doc has been loaded.
+ * @postconditions creates an tabbar in the objectSelectTabbar div
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genTabbar = function() {
+	var height = window.innerHeight - 250;
 	webix.ui({
 		container: "objectSelectTabbar",
-		type:"space", padding:8,
-
+		type:"space", 
+		padding:8,
+		height: height,
+		width: 225,
+		margin: 5,
 		rows:[
 			{
 				type:"clean",
@@ -90,7 +111,6 @@ QM_LabUI.prototype.genTabbar = function() {
 		]
 	});  
 
-
 	// an event listener on nodes list view in the tabbar
 	// when an item is clicked, it's name is saved into genUI.lastClickedValue
 	$$("nodeListView").attachEvent("onItemClick", function(id, e){
@@ -109,33 +129,35 @@ QM_LabUI.prototype.genTabbar = function() {
 	});
 }
 
-
-
 /**
-	Function creates the toolbar and tabbar using webix.
-**/
+ * Creates the toolbar, tabbar and property box using webix.
+ * @preconditions genUI has been initialized
+ * @postconditions genUI has the toolbar, tabbar and properties form setup
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genUI = function() { 
 	genUI.genToolbar();
 	genUI.genTabbar();
+	genUI.genPropertiesForm();
 };
 
-
 /**
-	Creates the main toolbar at the top of the main page
-**/
+ * Creates the main toolbar at the top of the main page
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been initialized.
+ * @postconditions creates a toolbar in the mainToolbar div
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.genToolbar = function() {
-		webix.ui({
+	webix.ui({
 		container:"mainToolbar",
 		view:"toolbar",
 		elements: [
-				{ view:"segmented", width:200, 
-					options:[
-						{id:"save", value:"Save"},
-						{id:"load", value:"Load"}
-					]
-				},
-				{ view:"button", width: 100, value: "Share", id:"share"
-				}
+				{ view:"button", width: 100, value: "New", id:"new"},
+				{ view:"button", width: 100, value: "Save", id:"save"},
+				{ view:"button", width: 100, value: "Load", id:"load"},
+				{ view:"button", width: 100, value: "Share", id:"share"},
+				{ view:"button", width: 100, value: "Print", id:"print"}
 			],
 		elementsConfig:{
 			width: 150,
@@ -143,20 +165,337 @@ QM_LabUI.prototype.genToolbar = function() {
 			value:"edit"}
 	});   
 
+	$$("new").attachEvent("onItemClick", function(id, e){		
+        window.open(location.origin + location.pathname, '_blank');
+	});
+
+	$$("save").attachEvent("onItemClick", function(id, e){		
+        function download(text, name, type) {
+		  var file = new Blob([text], {type: type});
+		  var href = URL.createObjectURL(file);
+		  window.open(href, '__blank');
+		}
+
+		download("fasfasfdasdf", "test.txt", "application/octet-stream");
+	});
+
 	$$("share").attachEvent("onItemClick", function(id, e){		
         s.showSettingsDialog(); // open the sharing dialog
 	});
+	
+	$$("print").attachEvent("onItemClick", function(id, e){
+		//Make the printGraph up to date, enlarge printPaper and then shrink it after printing
+		updatePrintGraph();
+		resizePrintPaper();
+		window.addEventListener("click", shrink = function(id, e){
+			shrinkPrintPaper();
+			window.removeEventListener("click", shrink);
+		});
+		window.print();
+	});
+}
+
+/**
+ * Creates the property display box
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions creates a property box in the propertiesForm div
+ * @memberOf gen_ui
+ */
+QM_LabUI.prototype.genPropertiesForm = function() {
+
+// { margin:5, cols:[
+//            { view:"button", value:"Login" , type:"form" },
+//            { view:"button", value:"Cancel" }
+//    ]}
+	document.getElementById("propertiesForm").innerHTML = "";
+	if(selected[0]) {
+		console.log(selected[0].attributes.type);
+		if (selected[0].attributes.type === "QMLab.Connection") {
+			this.createConnectionPropertyForm();
+		}
+		else if (selected[0].attributes.type === "QMLab.Transition" ||
+				 selected[0].attributes.type === "QMLab.Flow") {
+				 
+			this.createLinkPropertyForm();
+		}
+		else {
+			this.createDefaultPropertyForm();
+		}
+	}
+	else {
+		this.createEmptyPropertyForm();
+	}
+}
+
+/**
+ * Creates an empty property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a properties form instantiated
+ * @memberOf gen_ui
+ */
+QM_LabUI.prototype.createEmptyPropertyForm = function() { 
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			
+		]
+	});
+}
+
+/**
+ * Creates an empty link property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a link property form instantiated
+ * @memberOf gen_ui
+ */
+QM_LabUI.prototype.createLinkPropertyForm = function() {
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
+	
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+		]
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+	
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+}
+
+/**
+ * Creates an empty connection property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a connection property form instantiated
+ * @memberOf gen_ui
+ */
+QM_LabUI.prototype.createConnectionPropertyForm = function() {
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
+
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+			{margin: 5, cols: [
+				{ view:"button", label:"Positive", name:"positive", id:"positive" },
+				{ view:"button", label:"Negative", name:"negative", id:"negative" },
+				{ view:"button", label:"Ambiguous", name:"ambiguous", id:"ambiguous" },
+				{ view:"button", label:"No Type", name:"none", id:"none" },
+			]}
+		]
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+	
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	$$("positive").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setPositiveTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	$$("negative").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setNegativeTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	$$("ambiguous").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setAmbiguousTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	$$("none").attachEvent("onItemClick", function(id){		
+        if(selected[0]){
+			selected[0].setNoTransition();
+			updateCollabGraph();
+		}
+	});
+	
+	
+	
+}
+
+/**
+ * Creates an empty default property form in the webix ui
+ * @preconditions webix.js has been imported, the html doc has been loaded, the
+ *   graph has been instantiated
+ * @postconditions the webix ui has a default property form instantiated
+ * @memberOf gen_ui
+ */
+QM_LabUI.prototype.createDefaultPropertyForm = function() {
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
+
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
+			]},
+			{margin: 5, cols: [
+				{ view:"text", label:"Width", name:"width", id:"width" },
+				{ view:"text", label:"Height", name:"height", id:"height" },
+				{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
+			]}
+		]
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+	
+	
+	$$("textcolor").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setWidth(document.querySelector('div[view_id="width"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("width"));
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setHeight(document.querySelector('div[view_id="height"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("height"));
+	
+	
+	$$("color").attachEvent("onChange", function(id){		
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+	
+	webix.UIManager.addHotKey("Enter", function() { 
+		if (selected[0]) {
+			selected[0].setImage(document.querySelector('div[view_id="url"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("url"));
+	
 }
 
 
 /**
-	Deselects all of the elements from both views in the tabbar
-**/
+ * Deselects all of the elements from both views in the tabbar
+ * @preconditions webix.js has been loaded, the tabbar has been initialized into
+ *   objectSelectTabbar, the html doc has been loaded
+ * @postconditions the node tab and link tab for the item selection tabbar will
+ *   not have an item selected
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.deselectUIElements = function() {
 	$$("nodeListView").unselectAll();
 	$$("linkListView").unselectAll();
 }
-
 </code></pre>
         </article>
     </section>
@@ -167,13 +506,13 @@ QM_LabUI.prototype.deselectUIElements = function() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#genUI">genUI</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Mar 13 2016 20:24:33 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 06 2016 00:10:23 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: initialzewebpage.js</title>
+    <title>JSDoc: Class: qm_lab_joint_classes</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,57 +17,146 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: initialzewebpage.js</h1>
+    <h1 class="page-title">Class: qm_lab_joint_classes</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/////////////////////////
-// initialize_web_page //
-/////////////////////////
-/**
- * Contains the model for intializing the document
- * @class initialize_web_page
- */
+        <h2>qm_lab_joint_classes</h2>
+        
+    
+</header>
 
-var graph;
-var paper;
-var printGraph;
-var printPaper;
-var paperScale;
-var colGraph;
-var rootModel;
-var realDoc;
-var loading;
-var activeID;
-var collaborativeChangeReceived;
-var selected;
-var movingViewPort;
-var oldMousePos;
-var curMousePos;
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="qm_lab_joint_classes"><span class="type-signature"></span>qm_lab_joint_classes<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
 
 
-window.onload=onstartRun;
 
-/**
- * Attach event listeners to all buttons, start Google's Realtime API.
- * @preconditions The window has loaded the proper html file. 
- * @postconditions The Google Realtime has ensured the user is logged into their Google account.
- * @memberOf initialize_web_page
- */
-function onstartRun(){
-	selected = {}
-	authorize();
-	freeze = setInterval(checkAndFreeze, 1000);
-	movingViewPort = false;
-}
-</code></pre>
-        </article>
-    </section>
+<div class="description">
+    Different classes created for QM lab to be used by joint.js
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="qmlabjointclasses.js.html">qmlabjointclasses.js</a>, <a href="qmlabjointclasses.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>finish adding contracts</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

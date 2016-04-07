@@ -3,6 +3,7 @@
 ////////////////////////
 /**
  * Sets up the diagram's graph, paper, and controllers.
+ * @todo finish adding contracts
  * @class initialize_diagram
  */
 

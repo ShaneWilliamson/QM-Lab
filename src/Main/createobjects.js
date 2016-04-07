@@ -3,9 +3,9 @@
 ///////////////////
 /**
  * Contains functions for creating objects
+ * @todo finish adding contracts
  * @class create_objects
  */
-
 
 /**
  * Takes a Joint.js cell and uses it to create a collaborative cell. Adds a
@@ -52,11 +52,17 @@ function createStock(pos) {
 }
 
 /**
- * Creates a generic link at the given location. If the user clicked to have the link positioned over a node it will position its 'source' from the selected node.
+ * Creates a generic link at the given location. If the user clicked to have the
+ *   link positioned over a node it will position its 'source' from the selected
+ *   node.
  * @param  {position} pos     coordinates with 'x' and 'y' fields
  * @param  {link} connector an object is able to hold nodes it is connecting
- * @preconditions pos is a valid coordinate with 'x' and 'y' fields, connector is a valid object that contain a connection
- * @postconditions A collaborative link has been created with its source positioned at point "pos". In the event that the user created this link by selecting a node at point "pos", the node shall be the source instead. The collaborative graph has been updated.
+ * @preconditions pos is a valid coordinate with 'x' and 'y' fields, connector
+ *   is a valid object that contain a connection
+ * @postconditions A collaborative link has been created with its source
+ *   positioned at point "pos". In the event that the user created this link by
+ *   selecting a node at point "pos", the node shall be the source instead. The
+ *   collaborative graph has been updated.
  * @return {newLink} the link created with the position and connector
  * @memberOf create_objects
  */
@@ -204,17 +210,13 @@ function createIntervention(pos) {
 	return newParameter;
 }
 
-
-
-
-
-/*
-Creates a State at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative state has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Create a state at the given location
+ * @param  {coordinate} pos the point its being created at with x and y fields
+ * @return {State}     the new State object created by JointJS
+ * @preconditions pos has x and y fields
+ * @memberOf create_objects
+ */
 function createState(pos) {
 	var newState = new joint.shapes.QMLab.State({
 		position: { x: pos.x, y: pos.y },
@@ -230,17 +232,15 @@ function createState(pos) {
 	return newState;
 }
 
-
-
-
-
-/*
-Creates a terminal state at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative terminal state has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Creates a terminal state at the given location
+ * @param  {coordinate} pos a coordinate with 'x' and 'y' fields
+ * @preconditions pos has 'x' and 'y' fields
+ * @postconditions A collaborative terminal state has been created with its
+ *   top-left corner positioned at point "pos"
+ * @return {TerminalState}     the new terminal state at pos created by JointJS
+ * @memberOf create_objects
+ */
 function createTerminalState(pos) {
 	var newTerminalState = new joint.shapes.QMLab.TerminalState({
 		position: { x: pos.x, y: pos.y },
@@ -255,7 +255,6 @@ function createTerminalState(pos) {
 	console.log("Terminal State added");
 	return newTerminalState;
 }
-
 
 /*
 Creates a terminal state at the given location
@@ -281,17 +280,15 @@ function createFinalState(pos) {
 	return newFinalState;
 }
 
-
-
-
-
-/*
-Creates a branch at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative branch has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Creates a branch at the given location.
+ * @param  {coordinate} pos coordinate with a 'x' and 'y' field
+ * @preconditions pos has 'x' and 'y' fields
+ * @postconditions A collaborative branch has been created with its top-left
+ *   corner positioned at point "pos"
+ * @return {Branch}     a new Branch created by JointJS
+ * @memberOf create_objects
+ */
 function createBranch(pos) {
 	var newBranch = new joint.shapes.QMLab.Branch({
 		position: { x: pos.x, y: pos.y },
@@ -307,15 +304,15 @@ function createBranch(pos) {
 	return newBranch;
 }
 
-
-
-/*
-Creates an agent at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative agent has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Creates an agent at a given location
+ * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
+ * @postconditions A collaborative agent has been created with its top-left
+ *   corner positioned at point "pos". The collaborative graph has been updated.
+ * @param  {coordinate} pos the coordinate with an 'x' and 'y' field
+ * @return {Agent}     a new Agent shape made by JointJS
+ * @memberOf create_objects
+ */
 function createAgent(pos) {
 	var newAgent = new joint.shapes.QMLab.Agent({
 		position: { x: pos.x, y: pos.y },
@@ -333,15 +330,16 @@ function createAgent(pos) {
 	return newAgent;
 }
 
-
-
-/*
-Creates a text area at the given location
-
-pre: "pos" is a valid coordinate that contains "x" and "y" fields
-post: A collaborative text area has been created with its top-left corner positioned at point "pos"
-	  The collaborative graph has been updated
-*/
+/**
+ * Creates a text area at the given location
+ * @param  {coordinate} pos a coordinate with 'x' and 'y' fields
+ * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
+ * @postconditions A collaborative text area has been created with its top-left
+ *   corner positioned at point "pos". The collaborative graph has been updated.
+ * @todo Fix the magic number situation going on here.
+ * @return {Text}     a text shape created by Joint.js
+ * @memberOf create_objects
+ */
 function createText(pos) {
 	var newText = new joint.shapes.QMLab.Text({
 		position: { x: pos.x, y: pos.y },
@@ -358,13 +356,6 @@ function createText(pos) {
 	console.log("Text added");
 	return newText;
 }
-
-
-
-
-
-
-
 
 /**
  * Creates a flow at the given location
@@ -392,7 +383,6 @@ function createFlow(pos) {
 	return newFlow;
 }
 
-
 /**
  * Creates a flow at the given location
  * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
@@ -418,7 +408,6 @@ function createTransition(pos) {
 	return newTransition;
 }
 
-
 /**
  * Creates a flow at the given location
  * @preconditions "pos" is a valid coordinate that contains "x" and "y" fields
@@ -443,7 +432,6 @@ function createConnection(pos) {
 	console.log("A connection was created.");
 	return newConnection;
 }
-
 
 /**
  * Adds initialzed cell to the graph, then creates a collab cell to parallel it.
