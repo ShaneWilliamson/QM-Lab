@@ -265,6 +265,14 @@ function restorePaperInteraction() {
 	paper.$el.removeClass("nonInteractive");
 }
 
+/**
+ * Resizes the paper based on the window size
+ * @param  {undefined} e placeholder for joint.js
+ * @preconditions the document is initialized, has a paperView element, window
+ *   is initalized.
+ * @postconditions the paper is resized
+ * @memberOf initialize_diagram
+ */
 function resizePaper(e) {
 	var paperDiv = document.getElementById('paperView');
 	var heightOfPaper = window.innerHeight - 250;
@@ -275,12 +283,16 @@ function resizePaper(e) {
 	
 }
 
-/* 
-Resizes the printing paper so that it fits a sheet of paper and scales the content
-so that it all fits inside the paper.
-pre: The printPaper must exist.
-post: The printPaper will be the size of a sheet of paper.
-*/
+
+/**
+ * Resizes the printing paper so that it fits a sheet of paper and scales the
+ *   content so that it all fits inside the paper.
+ * @param  {undefined} e placeholder for joint.js
+ * @preconditions the paper is initialized
+ * @postconditions the print paper is resized to 1000x1250
+ * @todo  Remove magic numbers
+ * @memberOf initialize_diagram
+ */
 function resizePrintPaper(e){
 	//The values 1000 and 1250 make the paper fit the print page nicely
 	var width = 1000;
@@ -289,16 +301,17 @@ function resizePrintPaper(e){
 	printPaper.scaleContentToFit();
 }
 
-/*
-Shrinks the paper so that it no longer takes up space.
-This is done after printing is complete.
-This is required because the paper has a visibility of hidden,
-not a display of none. The paper can not have a display of none because
-there is an issue where the size of objects is changes when the paper goes from
-no display to block display.
-pre: The printPaper must exist.
-post: the printPaper will be the smallest possible size.
-*/
+/**
+ * Shrinks the paper so that it no longer takes up space. This is done after
+ *   printing is complete. This is required because the paper has a visibility
+ *   of hidden, not a display of none. The paper can not have a display of none
+ *   because there is an issue where the size of objects is changes when the
+ *   paper goes from no display to block display.
+ * @param  {undefined} e placeholder for joint.js
+ * @preconditions The printPaper must exist.
+ * @postconditions the printPaper will be the smallest possible size.
+ * @memberOf initialize_diagram
+ */
 function shrinkPrintPaper(e){
 	//Values are 1 and 1 because using 0 and 0 does not work
 	var width = 1;
@@ -315,7 +328,7 @@ function shrinkPrintPaper(e){
  * Later, our plans are to divide the functionality of this function into "pan
  *   when the user is also pressing a pan button" and "start multi selection"
  * @preconditions The user's mouse is over the paper in an empty part of the
- *   paper. The event actually happened. 
+ *   paper. The event actually happened.
  * @postconditions The user's mouse position has been recorded, and the
  *   "panning" functionality is activated.
  * @param  {event} e the click event which triggered the function call
@@ -408,7 +421,15 @@ function paperOnMouseUp(e) {
 	deselectAllCells();
 }
 
-
+/**
+ * Selects a cell that has been clicked
+ * @param  {view} cellView a view onto the cell
+ * @param  {undefined} evt      placeholder for joint.js
+ * @preconditions cellView has an initialized model, the document is created,
+ *   the paper has been created
+ * @postconditions a clicked cell is selected
+ * @memberOf initialize_diagram
+ */
 function selectClickedCell(cellView, evt) {
 	
 	bringChildrenOfParentToFront(cellView.model);
@@ -424,7 +445,12 @@ function selectClickedCell(cellView, evt) {
 
 }
 
-
+/**
+ * Deselected a cell
+ * @preconditions A cell is currently selected
+ * @postconditions A cell is no longer selected
+ * @memberOf initialize_diagram
+ */
 function deselectCell() {
 
    if (selected.length > 0) {
@@ -478,7 +504,12 @@ function deleteSelectedCell(e) {
 	}
 }
 
-
+/**
+ * If something is being dragged, stop dragging it
+ * @preconditions The document is initialized
+ * @postconditions Nothing is dragged is the mouse moves
+ * @memberOf initialize_diagram
+ */
 function stopDraggingAction() {
 	console.log("A drag has stopped");
 	// if we were panning, stop the panning
@@ -514,6 +545,14 @@ function stopDraggingAction() {
 	}
 }
 
+/**
+ * Takes whatever cells are selected and deselects them
+ * @preconditions the graph is initialized, the cellView exists
+ * @postconditions nothing is selected
+ * @invariant 0 or more cells are selected at any time
+ * @history the number of cells goes to 0 regardless of what it was at before
+ * @memberOf initialize_diagram
+ */
 function deselectAllCells() {
 	var cells = graph.getCells();
 	for (var i = 0; i < cells.length; i++) {
@@ -560,6 +599,12 @@ function handleMouseMove(e) {
 	// }
 }
 
+/**
+ * Takes the selected items and moves them with the mouse
+ * @preconditions the graph is initalized
+ * @postconditions items move linearly with the mouse
+ * @memberOf initialize_diagram
+ */
 function moveSelectedItems() {
 	var deltaX = curMousePos.x - oldMousePos.x;
 	var deltaY = curMousePos.y - oldMousePos.y;
