@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Main/utilityfunctionsqmlab.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">Main/utilityfunctionsqmlab.js</span></h1>
+    <h2>
+        Statements: <span class="metric">29.73% <small>(11 / 37)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">16.67% <small>(3 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">25% <small>(1 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">30.56% <small>(11 / 36)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">Main/</a> &#187; utilityfunctionsqmlab.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var addEvent = <span class="fstat-no" title="function not covered" >function(object, type, callback) {</span>
+<span class="cstat-no" title="statement not covered" >    if (object == null || typeof(object) == 'undefined') <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (object.addEventListener) {</span>
+<span class="cstat-no" title="statement not covered" >        object.addEventListener(type, callback, false);</span>
+    } else <span class="cstat-no" title="statement not covered" >if (object.attachEvent) {</span>
+<span class="cstat-no" title="statement not covered" >        object.attachEvent("on" + type, callback);</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >        object["on"+type] = callback;</span>
+    }
+};
+&nbsp;
+function compareArray(a1, a2) {
+	if (a1.length === a2.length) {
+		var retVal = true;
+		for (var i = 0; i &lt; a1.length; i++){
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (a1[i] != a2[i]) {
+				retVal = false;
+			}
+		}
+		return retVal;
+	} else {
+		return false;
+	}
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function smartRect(startX, startY, endX, endY) {</span>
+<span class="cstat-no" title="statement not covered" >	var rect = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	if (endX &gt;= startX) {</span>
+<span class="cstat-no" title="statement not covered" >		rect["x"] = startX;	</span>
+	} else {
+<span class="cstat-no" title="statement not covered" >		rect["x"] = endX;</span>
+	}
+<span class="cstat-no" title="statement not covered" >	rect["width"] = Math.abs(endX - startX);</span>
+	
+	
+<span class="cstat-no" title="statement not covered" >	if (endY &gt;= startY) {</span>
+<span class="cstat-no" title="statement not covered" >		rect["y"] = startY;</span>
+	} else {
+<span class="cstat-no" title="statement not covered" >		rect["y"] = endY;</span>
+	}
+<span class="cstat-no" title="statement not covered" >	rect["height"] = Math.abs(endY - startY);</span>
+	
+<span class="cstat-no" title="statement not covered" >	return rect;</span>
+}
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >function getHighlightedItems() {</span>
+<span class="cstat-no" title="statement not covered" >	var svg = $("svg")[0];</span>
+<span class="cstat-no" title="statement not covered" >	var children = svg.getElementsByTagName("*");</span>
+<span class="cstat-no" title="statement not covered" >	var highlightedItems = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	for (var i = 0; i &lt; children.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >		var child = children[i];</span>
+<span class="cstat-no" title="statement not covered" >		var isHighlighted = child.classList.contains("highlighted");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		if (isHighlighted) {</span>
+<span class="cstat-no" title="statement not covered" >			highlightedItems.push(child);</span>
+		}
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return highlightedItems;</span>
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 05 2016 15:27:23 GMT-0600 (CST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

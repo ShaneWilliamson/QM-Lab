@@ -1,4 +1,4 @@
-/** NOTE a webix object is referenced like this $$("objectID"), 
+/** NOTE a webix object is referenced like this $$("objectID"),
 make sure that you are using the WEBIX OBJECT ID and not the html element id.
 They are not the same thing **/
 
@@ -6,10 +6,10 @@ var genUI = new QM_LabUI();
 
 
 /**
-	Initializer for QM_LabUI class
+* Initializer for QM_LabUI class
 */
 function QM_LabUI() {
-	this.lastClickedValue = "EDIT";	
+	this.lastClickedValue = "EDIT";
 }
 
 
@@ -26,7 +26,7 @@ QM_LabUI.prototype.genTabbar = function() {
 	var height = window.innerHeight - 250;
 	webix.ui({
 		container: "objectSelectTabbar",
-		type:"space", 
+		type:"space",
 		padding:8,
 		height: height,
 		width: 225,
@@ -37,7 +37,7 @@ QM_LabUI.prototype.genTabbar = function() {
 				rows:[
 
 					{
-						borderless:true, view:"tabbar", id:'tabbarSelect', value: 'nodeListView', multiview:true, 
+						borderless:true, view:"tabbar", id:'tabbarSelect', value: 'nodeListView', multiview:true,
 						options: [
 							{ value: 'Nodes', id: 'nodeListView'},
 							{ value: 'Links', id: 'linkListView'},
@@ -72,7 +72,7 @@ QM_LabUI.prototype.genTabbar = function() {
 				]
 			}
 		]
-	});  
+	});
 
 	// an event listener on nodes list view in the tabbar
 	// when an item is clicked, it's name is saved into genUI.lastClickedValue
@@ -97,7 +97,7 @@ QM_LabUI.prototype.genTabbar = function() {
 /**
 	Creates the toolbar, tabbar and property box using webix.
 **/
-QM_LabUI.prototype.genUI = function() { 
+QM_LabUI.prototype.genUI = function() {
 	genUI.genToolbar();
 	genUI.genTabbar();
 	genUI.genPropertiesForm();
@@ -117,8 +117,6 @@ QM_LabUI.prototype.genToolbar = function() {
 		view:"toolbar",
 		elements: [
 				{ view:"button", width: 100, value: "New", id:"new"},
-				{ view:"button", width: 100, value: "Save", id:"save"},
-				{ view:"button", width: 100, value: "Load", id:"load"},
 				{ view:"button", width: 100, value: "Share", id:"share"},
 				{ view:"button", width: 100, value: "Print", id:"print"}
 			],
@@ -126,26 +124,16 @@ QM_LabUI.prototype.genToolbar = function() {
 			width: 150,
 			labelAlign:"right",
 			value:"edit"}
-	});   
+	});
 
-	$$("new").attachEvent("onItemClick", function(id, e){		
+	$$("new").attachEvent("onItemClick", function(id, e){
         window.open(location.origin + location.pathname, '_blank');
 	});
 
-	$$("save").attachEvent("onItemClick", function(id, e){		
-        function download(text, name, type) {
-		  var file = new Blob([text], {type: type});
-		  var href = URL.createObjectURL(file);
-		  window.open(href, '__blank');
-		}
-
-		download("fasfasfdasdf", "test.txt", "application/octet-stream");
-	});
-
-	$$("share").attachEvent("onItemClick", function(id, e){		
+	$$("share").attachEvent("onItemClick", function(id, e){
         s.showSettingsDialog(); // open the sharing dialog
 	});
-	
+
 	$$("print").attachEvent("onItemClick", function(id, e){
 		//Make the printGraph up to date, enlarge printPaper and then shrink it after printing
 		updatePrintGraph();
@@ -174,14 +162,18 @@ QM_LabUI.prototype.genPropertiesForm = function() {
  //    ]}
 		document.getElementById("propertiesForm").innerHTML = "";
 		if(selected[0]) {
-			console.log(selected[0].attributes.type);
 			if (selected[0].attributes.type === "QMLab.Connection") {
 				this.createConnectionPropertyForm();
 			}
 			else if (selected[0].attributes.type === "QMLab.Transition" ||
 					 selected[0].attributes.type === "QMLab.Flow") {
-					 
+
 				this.createLinkPropertyForm();
+			}
+			else if (selected[0].attributes.type === "QMLab.ImageNode" ||
+					 selected[0].attributes.type === "QMLab.Agent") {
+
+				this.createImagePropertyForm();
 			}
 			else {
 				this.createDefaultPropertyForm();
@@ -191,21 +183,21 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 			this.createEmptyPropertyForm();
 		}
 
-	
-		
-		
-	
-	
+
+
+
+
+
 }
 
-QM_LabUI.prototype.createEmptyPropertyForm = function() { 
+QM_LabUI.prototype.createEmptyPropertyForm = function() {
 	webix.ui({
 		id:"propertiesFormId",
 		container:"propertiesForm",
 		view: "form",
 		rows: [
 			{ view:"label", label:"Properties", css:"sidebarTitle" },
-			
+
 		]
 	});
 }
@@ -218,7 +210,7 @@ QM_LabUI.prototype.createLinkPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
 	width -= preventOverhangOffset;
-	
+
 	webix.ui({
 		id:"propertiesFormId",
 		container:"propertiesForm",
@@ -233,30 +225,30 @@ QM_LabUI.prototype.createLinkPropertyForm = function() {
 			]},
 		]
 	});
-	
-	webix.UIManager.addHotKey("Enter", function() { 
+
+	webix.UIManager.addHotKey("Enter", function() {
 		if (selected[0]) {
 			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
 			updateCollabGraph();
 		}
 	}, $$("text"));
-	
-	webix.UIManager.addHotKey("Enter", function() { 
+
+	webix.UIManager.addHotKey("Enter", function() {
 		if (selected[0]) {
 			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
 			updateCollabGraph();
 		}
 	}, $$("textsize"));
-	
-	
-	$$("textcolor").attachEvent("onChange", function(id){		
+
+
+	$$("textcolor").attachEvent("onChange", function(id){
         if(selected[0]){
 			selected[0].setTextColour(id);
 			updateCollabGraph();
 		}
 	});
 
-	$$("color").attachEvent("onChange", function(id){		
+	$$("color").attachEvent("onChange", function(id){
         if(selected[0]){
 			selected[0].setColour(id);
 			updateCollabGraph();
@@ -274,8 +266,6 @@ QM_LabUI.prototype.createConnectionPropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
 	width -= preventOverhangOffset;
-	
-	
 
 	webix.ui({
 		id:"propertiesFormId",
@@ -284,79 +274,53 @@ QM_LabUI.prototype.createConnectionPropertyForm = function() {
 		rows: [
 			{ view:"label", label:"Properties", css:"sidebarTitle" },
 			{margin: 5, cols:[
-				{ view:"text", label:"Text", name:"text", id:"text" },
-				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
-				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
-				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
-			]},
-			{margin: 5, cols: [
 				{ view:"button", label:"Positive", name:"positive", id:"positive" },
 				{ view:"button", label:"Negative", name:"negative", id:"negative" },
 				{ view:"button", label:"Ambiguous", name:"ambiguous", id:"ambiguous" },
 				{ view:"button", label:"No Type", name:"none", id:"none" },
-			]}
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
+			]},
 		]
 	});
-	
-	webix.UIManager.addHotKey("Enter", function() { 
-		if (selected[0]) {
-			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
-			updateCollabGraph();
-		}
-	}, $$("text"));
-	
-	webix.UIManager.addHotKey("Enter", function() { 
-		if (selected[0]) {
-			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
-			updateCollabGraph();
-		}
-	}, $$("textsize"));
-	
-	
-	$$("textcolor").attachEvent("onChange", function(id){		
-        if(selected[0]){
-			selected[0].setTextColour(id);
-			updateCollabGraph();
-		}
-	});
 
-	$$("color").attachEvent("onChange", function(id){		
+
+	$$("color").attachEvent("onChange", function(id){
         if(selected[0]){
 			selected[0].setColour(id);
 			updateCollabGraph();
 		}
 	});
-	
-	$$("positive").attachEvent("onItemClick", function(id){		
+
+	$$("positive").attachEvent("onItemClick", function(id){
         if(selected[0]){
 			selected[0].setPositiveTransition();
 			updateCollabGraph();
 		}
 	});
-	
-	$$("negative").attachEvent("onItemClick", function(id){		
+
+	$$("negative").attachEvent("onItemClick", function(id){
         if(selected[0]){
 			selected[0].setNegativeTransition();
 			updateCollabGraph();
 		}
 	});
-	
-	$$("ambiguous").attachEvent("onItemClick", function(id){		
+
+	$$("ambiguous").attachEvent("onItemClick", function(id){
         if(selected[0]){
 			selected[0].setAmbiguousTransition();
 			updateCollabGraph();
 		}
 	});
-	
-	$$("none").attachEvent("onItemClick", function(id){		
+
+	$$("none").attachEvent("onItemClick", function(id){
         if(selected[0]){
 			selected[0].setNoTransition();
 			updateCollabGraph();
 		}
 	});
-	
-	
-	
+
+
+
 }
 
 
@@ -377,66 +341,112 @@ QM_LabUI.prototype.createDefaultPropertyForm = function() {
 				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
 				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" }
 			]},
-			{margin: 5, cols: [
-				{ view:"text", label:"Width", name:"width", id:"width" },
-				{ view:"text", label:"Height", name:"height", id:"height" },
-				{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
-			]}
 		]
 	});
-	
-	webix.UIManager.addHotKey("Enter", function() { 
+
+	webix.UIManager.addHotKey("Enter", function() {
 		if (selected[0]) {
 			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
 			updateCollabGraph();
 		}
 	}, $$("text"));
-	
-	webix.UIManager.addHotKey("Enter", function() { 
+
+	webix.UIManager.addHotKey("Enter", function() {
 		if (selected[0]) {
 			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
 			updateCollabGraph();
 		}
 	}, $$("textsize"));
-	
-	
-	$$("textcolor").attachEvent("onChange", function(id){		
+
+
+	$$("textcolor").attachEvent("onChange", function(id){
         if(selected[0]){
 			selected[0].setTextColour(id);
 			updateCollabGraph();
 		}
 	});
-	
-	webix.UIManager.addHotKey("Enter", function() { 
-		if (selected[0]) {
-			selected[0].setWidth(document.querySelector('div[view_id="width"] input').value);
-			updateCollabGraph();
-		}
-	}, $$("width"));
-	
-	webix.UIManager.addHotKey("Enter", function() { 
-		if (selected[0]) {
-			selected[0].setHeight(document.querySelector('div[view_id="height"] input').value);
-			updateCollabGraph();
-		}
-	}, $$("height"));
-	
-	
-	$$("color").attachEvent("onChange", function(id){		
+
+
+	$$("color").attachEvent("onChange", function(id){
         if(selected[0]){
 			selected[0].setColour(id);
 			updateCollabGraph();
 		}
 	});
-	
-	webix.UIManager.addHotKey("Enter", function() { 
+
+
+
+}
+
+
+
+
+
+QM_LabUI.prototype.createImagePropertyForm = function() {
+	var width = $(window).height();
+	var preventOverhangOffset = 75;
+	width -= preventOverhangOffset;
+
+	webix.ui({
+		id:"propertiesFormId",
+		container:"propertiesForm",
+		view: "form",
+		rows: [
+			{ view:"label", label:"Properties", css:"sidebarTitle" },
+			{margin: 5, cols:[
+				{ view:"text", label:"Text", name:"text", id:"text" },
+				{ view:"text", label:"Text Size", name:"textsize", id:"textsize" },
+				{ view:"colorpicker", label:"Text Color", name:"textcolor", value:"", id:"textcolor" },
+				{ view:"colorpicker", label:"Color", name:"color", value:"", id:"color" },
+				{ view:"text", label:"Img URL", name:"imgURL", id:"url"}
+			]},
+		]
+	});
+
+	webix.UIManager.addHotKey("Enter", function() {
+		if (selected[0]) {
+			selected[0].setLabel(document.querySelector('div[view_id="text"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("text"));
+
+	webix.UIManager.addHotKey("Enter", function() {
+		if (selected[0]) {
+			selected[0].setTextSize(document.querySelector('div[view_id="textsize"] input').value);
+			updateCollabGraph();
+		}
+	}, $$("textsize"));
+
+
+	$$("textcolor").attachEvent("onChange", function(id){
+        if(selected[0]){
+			selected[0].setTextColour(id);
+			updateCollabGraph();
+		}
+	});
+
+
+	$$("color").attachEvent("onChange", function(id){
+        if(selected[0]){
+			selected[0].setColour(id);
+			updateCollabGraph();
+		}
+	});
+
+	webix.UIManager.addHotKey("Enter", function() {
 		if (selected[0]) {
 			selected[0].setImage(document.querySelector('div[view_id="url"] input').value);
 			updateCollabGraph();
 		}
 	}, $$("url"));
-	
+
 }
+
+
+
+
+
+
 
 
 /**

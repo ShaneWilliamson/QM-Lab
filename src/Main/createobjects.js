@@ -257,6 +257,32 @@ function createTerminalState(pos) {
 }
 
 
+/*
+Creates a terminal state at the given location
+
+pre: "pos" is a valid coordinate that contains "x" and "y" fields
+post: A collaborative terminal state has been created with its top-left corner positioned at point "pos"
+	  The collaborative graph has been updated
+*/
+function createFinalState(pos) {
+	var newFinalState = new joint.shapes.QMLab.FinalState({
+		position: { x: pos.x, y: pos.y },
+		size: { width: 10000, height: 10000 },
+		attrs: {
+			circle: { fill: "red", r: 5000 },
+			text: { text: 'Final State', 'ref-y': 20, ref: 'circle'},
+			path: { 'd': 'M -2000 0 C -2000 -2000 -2000 -2000 0 -2000 C 2000 -2000 2000 -2000 2000 0 C 2000 2000 2000 2000 0 2000 C -2000 2000 -2000 2000 -2000 0 z', 'stroke-width': 2000 },
+		}
+	});
+	newFinalState.setSize(20, 20);
+	setUpNewCell(newFinalState, "Final State", "#ff0000", "#000000");
+
+	console.log("Terminal State added");
+	return newFinalState;
+}
+
+
+
 
 
 /*
@@ -356,6 +382,7 @@ function createFlow(pos) {
 	newFlow.set('router', { name: 'orthogonal' });	
 	newFlow.attr({
         '.connection': { 'stroke-width': 4 },
+		'.connection2': { 'stroke-width': 3, stroke: 'white' },
 		'.marker-target': { stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z' },
     });
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
@@ -381,6 +408,7 @@ function createTransition(pos) {
 	newTransition.initialzeSourceAndTarget(localPos, false, false);
 	newTransition.set('connector', { name: 'normal' });	
 	newTransition.attr({
+		'.connection2': { 'stroke-width': 0 },
 		'.marker-target': { stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z' },
     });
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one
@@ -406,6 +434,7 @@ function createConnection(pos) {
 	newConnection.initialzeSourceAndTarget(localPos, false, false);
 	newConnection.set('connector', { name: 'smooth' });	
 	newConnection.attr({
+		'.connection2': { 'stroke-width': 0 },
 		'.marker-target': { stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z' },
     });
 	//calls the function in linkJoining that will attach the new link to an element if is was created on one

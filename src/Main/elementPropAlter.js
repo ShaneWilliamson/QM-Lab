@@ -3,11 +3,6 @@
 * in the graph
 */
 
-//the id of the currently selected element, starts off unselected
-var selectId = null;
-//The object that we currently have selected
-var selectElement = null;
-
 
 /**
  * Fills the text boxes in the property pane with the given values based on whether an object is selected or not
@@ -36,7 +31,10 @@ function updateProperties() {
 		width = selectedObj.getXSize();
 		height = selectedObj.getYSize();
 		colour = selectedObj.getColour();
-		if (selectedObj.attributes.type === "QMLab.ImageNode" || selectedObj.attributes.type === "QMLab.Agent") {
+		if (selectedObj.attributes.type === "QMLab.ImageNode" ) {
+			url = selectedObj.getImageURL();
+		}
+		if(selectedObj.attributes.type === "QMLab.Agent" ){
 			url = selectedObj.getImage();
 		}
 	}
@@ -57,7 +55,7 @@ function setPropertyDisplayValues(text, textsize, textcolour, width, height, col
 	setPropertyInputBoxValueIfExists('height', height);
 	setPropertyInputBoxValueIfExists('url', url);
 	setPropertyColourPickerValueIfExists('textcolor', textcolour);
-	setPropertyColourPickerValueIfExists('color', textcolour);
+	setPropertyColourPickerValueIfExists('color', colour);
 }
 
 

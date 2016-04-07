@@ -22,3 +22,42 @@ function compareArray(a1, a2) {
 		return false;
 	}
 }
+
+function smartRect(startX, startY, endX, endY) {
+	var rect = {};
+
+	if (endX >= startX) {
+		rect["x"] = startX;	
+	} else {
+		rect["x"] = endX;
+	}
+	rect["width"] = Math.abs(endX - startX);
+	
+	
+	if (endY >= startY) {
+		rect["y"] = startY;
+	} else {
+		rect["y"] = endY;
+	}
+	rect["height"] = Math.abs(endY - startY);
+	
+	return rect;
+}
+
+
+function getHighlightedItems() {
+	var svg = $("svg")[0];
+	var children = svg.getElementsByTagName("*");
+	var highlightedItems = [];
+
+	for (var i = 0; i < children.length; i++) {
+		var child = children[i];
+		var isHighlighted = child.classList.contains("highlighted");
+
+		if (isHighlighted) {
+			highlightedItems.push(child);
+		}
+	}
+
+	return highlightedItems;
+}

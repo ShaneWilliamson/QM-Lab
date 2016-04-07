@@ -93,7 +93,8 @@
 
 #paperView {
 	display: block;
-	
+	position: absolute;
+	overflow: hidden;
 }
 
 #createDoc{
@@ -154,6 +155,31 @@ svg {
 	visibility: hidden;
 }
 
+.html-element{
+	position: absolute;
+	pointer-events: none;
+	box-sizing: border-box;
+	z-index: 2;
+	transform-origin: 0px 0px 0px;
+}
+.html-element div.top{
+	pointer-events: auto;
+	position: absolute;
+}
+.html-element div.bottom{
+	pointer-events: auto;
+	position: absolute;
+}
+.html-element div.left{
+	pointer-events: auto;
+	position: absolute;
+}
+
+.html-element div.right{
+	pointer-events: auto;
+	position: absolute;
+}
+
 @media print{
 	.nonPrintable{
 		display: none;
@@ -166,5 +192,22 @@ svg {
 	#printView{
 		display: block;
 	}
+	
 
+	.html-element{
+		display: none;
+	}
+	.html-element div.top{
+		display: none;
+	}
+	.html-element div.bottom{
+		display: none;
+	}
+	.html-element div.left{
+		display: none;
+	}
+
+	.html-element div.right{
+		display: none;
+	}
 }
