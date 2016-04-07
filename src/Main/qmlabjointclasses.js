@@ -1217,30 +1217,30 @@ function dragResize(event){
  */
 function setInitialHTML(view){
 	var bbox = view.model.getBBox();
-	var newX = bbox.x*paperScale + paper.options.origin.x;
-	var newY = bbox.y*paperScale + paper.options.origin.y;
+	var newX = bbox.x*paperScale + paper.options.origin.x-5;
+	var newY = bbox.y*paperScale + paper.options.origin.y-5;
 			
 	view.$box.css({ 
-		width: bbox.width*paperScale, 
-		height: bbox.height*paperScale,
+		width: bbox.width*paperScale +5, 
+		height: bbox.height*paperScale+5,
 		transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
 	});
 	view.$box.find('.bottom').css({
 		width: bbox.width,
-		height: '2px',
+		height: '20px',
 		top: bbox.height - 2
 	});
 	view.$box.find('.top').css({
 		width: bbox.width,
-		height: '2px'
+		height: '20px'
 	});
 	view.$box.find('.left').css({
-		width: '2px',
+		width: '20px',
 		height: bbox.height
 	});
 	view.$box.find('.right').css({
-		width: '2px',
-		height: bbox.height,
+		width: '20px',
+		height: bbox.height+20,
 		left: bbox.width
 	});
 	//If the element is off of the paper change display to none so it does not create scroll bars in the window
@@ -1275,20 +1275,20 @@ function setInitialHTMLText(view){
 	});
 	view.$box.find('.bottom').css({
 		width: bbox.width,
-		height: '2px',
+		height: '20px',
 		top: bbox.height - 2
 	});
 	view.$box.find('.top').css({
 		width: bbox.width,
-		height: '2px'
+		height: '20px'
 	});
 	view.$box.find('.left').css({
-		width: '2px',
+		width: '20px',
 		height: bbox.height
 	});
 	view.$box.find('.right').css({
-		width: '2px',
-		height: bbox.height,
+		width: '20px',
+		height: bbox.height+20,
 		left: bbox.width
 	});
 	if(newX > paper.options.width || newY > paper.options.height){
