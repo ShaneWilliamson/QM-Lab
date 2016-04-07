@@ -312,11 +312,12 @@ function paperEmptySelectionPressed(e) {
 		console.log("Panning of the paper has been initiated");
 	
 	// otherwise start rectangle selection
-	} else {
-		console.log("Box selection has been initiated");
-		boxSelectionX = curMousePos.x;
-		boxSelectionY = curMousePos.y;
-	}
+	} 
+	// else {
+	// 	console.log("Box selection has been initiated");
+	// 	boxSelectionX = curMousePos.x;
+	// 	boxSelectionY = curMousePos.y;
+	// }
 	
 	deselectAllCells();
 }
@@ -535,10 +536,11 @@ function handleMouseMove(e) {
 		console.log("A box select is currently being dragged");
 		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
 
-	} else if ((highlightedCount > 1) && e.buttons) {
-		updateMousePos(e);
-		moveSelectedItems();
-	}
+	} 
+	// else if ((highlightedCount > 1) && e.buttons) {
+	// 	updateMousePos(e);
+	// 	moveSelectedItems();
+	// }
 }
 
 function moveSelectedItems() {
