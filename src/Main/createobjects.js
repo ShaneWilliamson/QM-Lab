@@ -270,13 +270,13 @@ function createFinalState(pos) {
 		attrs: {
 			circle: { fill: "red", r: 5000 },
 			text: { text: 'Final State', 'ref-y': 20, ref: 'circle'},
-			path: { 'd': 'M -2000 0 C -2000 -2000 -2000 -2000 0 -2000 C 2000 -2000 2000 -2000 2000 0 C 2000 2000 2000 2000 0 2000 C -2000 2000 -2000 2000 -2000 0 z', 'stroke-width': 2000 },
+			path: { 'd': 'M -2000 0 C -2000 -2000 -2000 -2000 0 -2000 C 2000 -2000 2000 -2000 2000 0 C 2000 2000 2000 2000 0 2000 C -2000 2000 -2000 2000 -2000 0 z' },
 		}
 	});
 	newFinalState.setSize(20, 20);
 	setUpNewCell(newFinalState, "Final State", "#ff0000", "#000000");
 
-	console.log("Terminal State added");
+	console.log("Final State added");
 	return newFinalState;
 }
 
