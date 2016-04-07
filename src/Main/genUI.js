@@ -403,10 +403,11 @@ QM_LabUI.prototype.createDefaultPropertyForm = function() {
 
 }
 
-
-
-
-
+/**
+ * Create and image property form on the UI
+ * @todo  Add in preconditions/postconditions/history/invariants
+ * @memberOf gen_ui
+ */
 QM_LabUI.prototype.createImagePropertyForm = function() {
 	var width = $(window).height();
 	var preventOverhangOffset = 75;
