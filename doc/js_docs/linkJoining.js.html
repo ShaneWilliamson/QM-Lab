@@ -39,6 +39,7 @@ var isFlow;
 var isCurved;
 var isStraight;
 var hasMoved;
+var flowEndings;
 
 const LINK_OFFSET_X = 15;
 const LINK_OFFSET_Y = 15;
@@ -60,7 +61,7 @@ const LINK_OFFSET_Y = 15;
  * @memberOf link_joining
  */
 function targetFollow(newLink, linkType, pos){
-	if(pos = curMousePos)
+	if(pos == curMousePos)
 	{
 		var objectAtPoint = graph.findModelsFromPoint(curMousePos);
 
@@ -132,7 +133,6 @@ function targetFollow(newLink, linkType, pos){
 function addVertex(e){
 	if(hasMoved)
 	{
-		console.log("everything");
 		updateMousePos(e);
 		var vertArray = lastLink.get('vertices');
 		var newArray;
@@ -144,7 +144,6 @@ function addVertex(e){
 		{
 			newArray =vertArray.concat([{ x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y  }]);
 		}
-		console.log(newArray);
 		lastLink.set('vertices', newArray );
 		lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
 		console.log("log a click on addVertex");
@@ -164,7 +163,52 @@ function addVertex(e){
  */
 function mouseTracker(e){
 	updateMousePos(e);
-	lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+	var vertArray = lastLink.get('vertices');
+		var newArray;
+		if(typeof vertArray === 'undefined')
+		{
+			
+			if( typeof lastLink.get('source').id === 'undefined' )
+			{
+				if( lastLink.get('source').x &lt; curMousePos.x)
+				{
+					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+				else
+				{
+					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+			}
+			else
+			{
+				var temp = lastLink.getSourceElement();
+				var sourceid = temp.id;
+
+				var actualSource = graph.getCell(sourceid);
+
+				if(actualSource.position.x &lt; curMousePos)
+				{
+					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+				else
+				{
+					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+			}
+		}
+		else
+		{
+			var popArray = vertArray[vertArray.length -1];
+
+			if(popArray.x &lt; curMousePos.x)
+				{
+					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+				else
+				{
+					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });
+				}
+		}
 	hasMoved=true;
 }
 
@@ -218,6 +262,18 @@ function linkTargeter(e){
 	//console.log(newArray);
 	lastLink.set('vertices', newArray );
 
+	if(isFlow){
+		console.log("making new flow");
+		var newFlow = createFlow({x:1, y:1});
+		//note this line doesn't really do anything, but it necesary because without it the lines under 
+		//it will not function as intended 
+		newFlow.set('source', {x:0 , y:0});
+		newFlow.set('target',{id: lastLink.getTargetElement().id});
+		newFlow.set('source', { id: lastLink.getSourceElement().id});
+		newFlow.set('vertices', newArray );
+		newFlow.setLabel(" ");
+		lastLink.remove();
+	}
 	paper.$el.off("mousemove", mouseTracker);
 	paper.$el.off('dblclick', linkTargeter);
 	paper.$el.off('click', addVertex);
@@ -242,9 +298,16 @@ function linkTargeter(e){
  function flowCloudPrep(){
  	// http://i.imgur.com/1TRqx2p.png this is a crappy cloud I drew
 
- 	pos = ({x:curMousePos.x -25 , y:curMousePos.y -25  })
+ 	pos = ({x:curMousePos.x -25 , y:curMousePos.y -25  });
  	var cloud = createImage(pos, "http://i.imgur.com/1TRqx2p.png", " ", 50,50);
-
+ 	//setting global variable link head to be the vector for the current link end
+ 	flowEndings = lastLink.attr('.marker-target/d');
+ 	console.log(flowEndings);
+ 	//setting the arrowhead of the flow to be a cloud
+ 	lastLink.attr('.marker-target/d', d="M 35.00,22.00 44.09,20.16 45.48,22.65 47.94,30.00 48.76,32.42 49.93,34.34 49.32,37.00 48.96,38.58 47.65,40.49 46.91,42.00 45.25,45.39 44.82,49.33 39.96,48.32 37.59,47.82 35.51,46.15 33.00,46.09 27.33,46.24 26.08,52.13 16.00,46.09 7.17,52.49 -4.12,40.95 7.00,35.00 5.71,33.40 4.36,31.87 3.46,30.00 -0.92,20.89 8.42,19.06 15.00,19.00 18.02,9.55 32.07,12.09 35.00,22.00 Z");
+ 	//console.log("setting fill");
+ 	lastLink.attr('.marker-target/fill', 'white');
+ 	//console.log("fill set");
  	return cloud;
  }
 </code></pre>
@@ -257,13 +320,13 @@ function linkTargeter(e){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul><h3>Global</h3><ul><li><a href="global.html#dropEdge">dropEdge</a></li><li><a href="global.html#setInitialHTML">setInitialHTML</a></li><li><a href="global.html#setInitialHTMLBranch">setInitialHTMLBranch</a></li><li><a href="global.html#setInitialHTMLText">setInitialHTMLText</a></li><li><a href="global.html#startResizingTop">startResizingTop</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 06 2016 00:10:23 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 06 2016 22:53:53 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

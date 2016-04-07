@@ -31,7 +31,6 @@
 ////////////////////////
 /**
  * Sets up the diagram's graph, paper, and controllers.
- * @todo finish adding contracts
  * @class initialize_diagram
  */
 
@@ -49,34 +48,92 @@ function initializeGraph() {
 	colGraph.graph = JSON.stringify(graph);
 }
 
-/*
-Initializes the graph used for printing to whatever is in the current editable graph.
-The print graph is not directly linked to the collaborative graph and is only updated at the
-time of printing so that the graph can not be changed as you are printing it.
-pre: graph exists.
-post: printGraph contains the contents of graph.
-*/
+/**
+ * Initializes the graph used for printing to whatever is in the current
+ *   editable graph. The print graph is not directly linked to the collaborative
+ *   graph and is only updated at the time of printing so that the graph can not
+ *   be changed as you are printing it.
+ * @preconditions graph exists.
+ * @postconditions printGraph contains the contents of graph.
+ * @memberOf initialize_diagram
+ */
 function initializePrintGraph(){
 	printGraph = new joint.dia.Graph;
 	console.log("Print graph created.");
 	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
 }
 
-/*
-Updates the print graph with the contents of graph.
-pre: printGraph and graph exist.
-post: printGraph has the same contents of graph.
-*/
+/**
+ * Updates the print graph with the contents of graph.
+ * @preconditions printGraph and graph exist.
+ * @postconditions printGraph has the same contents of graph.
+ * @memberOf initialize_diagram
+ */
 function updatePrintGraph(){
 	printGraph.fromJSON(JSON.parse(JSON.stringify(graph)));
 }
-
-
-
-function stopPanning() {
-	movingViewPort = false;
-}
 	
+/**
+ * Removes all of the selection boxes from the screen
+ * @preconditions The program has been initialized and a document opened
+ * @postconditions All selection boxes are removed from the screen
+ * @memberOf initialize_diagram
+ */
+function removeAllSelectionBoxes() {
+	var svg = $.find("svg")[0];
+	
+	// remove all of the current selection boxes from the screen
+	var selectionBoxes = $(".selectionBox");
+	for (var i = 0; i &lt; selectionBoxes.length; i++) {
+		selectionBox = selectionBoxes[i];
+		svg.removeChild(selectionBox);
+	}
+}
+
+/**
+ * Draws a selection box across certain coordinates
+ * @param  {int} startX starting x position of the box
+ * @param  {int} startY starting y position of the box
+ * @param  {int} endX   ending x position of the box
+ * @param  {int} endY   ending y position of the box
+ * @preconditions The document is initialized
+ * @postconditions A box is draw from startX and startY to endX and endY
+ * @memberOf initialize_diagram
+ */
+function drawSelectionBox(startX, startY, endX, endY) {
+	// delete all previous selection boxes
+	$(".selectionBox").remove();
+
+	// get the main canvas
+	var svg = $.find("svg")[0];
+	
+	var box = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+	box.setAttribute("class", "selectionBox");
+
+	// translate coordinates to match the paper position
+	startX += paperOffsetX;
+	endX += paperOffsetX;
+	startY += paperOffsetY;
+	endY += paperOffsetY;
+
+	// scale to the current paper size
+	startX *= paperScale;
+	startY *= paperScale;
+	endX *= paperScale;
+	endY *= paperScale;
+
+	// smart rect deals with negative widths/heights automagically
+	var rect = smartRect(startX, startY, endX, endY);
+
+	box.setAttribute("x", rect.x);
+	box.setAttribute("y", rect.y);
+	box.setAttribute("width", rect.width);
+	box.setAttribute("height", rect.height);
+
+	box.style.fill = "#55cecc";
+	box.setAttribute("fill-opacity", "0.4");
+	svg.appendChild(box);
+}
 
 /**
  * This initialzes the local "paper" object from joint.js to be able to display
@@ -96,41 +153,70 @@ function initializePaper() {
 		perpendicularLinks: true,
 		gridSize: 1
 	});
+
 	paperScale = 1;
+	paperOffsetX = 0;
+	paperOffsetY = 0;
 
 	paper.on('blank:pointerdown', paperEmptySelectionPressed);
 	paper.$el.on('wheel', paperZoom);
 	paper.$el.on('mouseup', paperOnMouseUp);
-	addEvent(window, 'mouseup', stopPanning);
+	addEvent(window, 'mouseup', stopDraggingAction);
 	addEvent(window, 'resize', resizePaper);
 	resizePaper();
-	
 	
 	// First, unembed the cell that has just been grabbed by the user.
 	paper.on('cell:pointerdown', bringParentlessCellToFront);
 	paper.on('cell:pointerdown', deParentCell);
 	
-	
 	paper.on('cell:pointerup', parentCell);	
 	paper.on('cell:pointerup', selectClickedCell);
 	paper.on('blank:pointerclick', deselectCell);
 	
+	paper.on('cell:pointerup', dropEdge);
 	graph.on('change', function(cell) { 
 		if (isCollabRecordingAllowed()) {
 			selected[0] = cell;
 			updateProperties();
 		}
 		
-	})
+	});
+
+	// initialize the variables used to hold the starting drag location
+	boxSelectionX = null;
+	boxSelectionY = null;
+	initializeView();
+
 }
 
+
 /**
- * This initialzes the local "paper" object that is used for printing purposes from joint.js to be able to display
- *   the diagram.
- * @preconditions The printPraph must exist. The HTML container "printView"
- *   must exist.
- * @postconditions The html container div "printView" will hold a hidden view of the
- *   diagram, representing the back-end model.
+ * Initializes all the views used for drag resizing.
+ * @preconditions The classes each view is for must already be defined.
+ * @postconditions The views are initialized
+ * @memberOf initialize_diagram
+ */
+function initializeView(){
+	initializeStockView();
+	initializeImageNodeView();
+	initializeTextView();
+	initializeAgentView();
+	initializeStateView();
+	initializeTerminalStateView();
+	initializeBranchView();
+	initializeVariableView();
+	initializeParameterView();
+}
+
+
+
+/**
+ * This initialzes the local "paper" object that is used for printing purposes
+ *   from joint.js to be able to display the diagram.
+ * @preconditions The printPraph must exist. The HTML container "printView" must
+ *   exist.
+ * @postconditions The html container div "printView" will hold a hidden view of
+ *   the diagram, representing the back-end model.
  * @memberOf initialize_diagram
  */
 function initializePrintPaper() {
@@ -159,7 +245,6 @@ function initializePrintPaper() {
  */
 function paperZoom(e) {
 	
-	
 	var oldPaperScale = paperScale;
 	
 	//For cross browser use, grab the direction the mouse wheel has turned
@@ -187,40 +272,55 @@ function paperZoom(e) {
 }	
 		
 
-/*
-pre: the paper must exist
-post: the user will no longer be able to interact with the paper
-*/
+/**
+ * Removes paper interation
+ * @preconditions the paper must exist
+ * @postconditions the user will no longer be able to interact with the paper
+ * @memberOf initialize_diagram
+ */
 function removePaperInteraction() {
 	selected = {};
 	paper.$el.addClass("nonInteractive");
 }
 
-/*
-This restores the user's ability to interact with the paper.
-
-pre: the paper must exist
-post: the user will once more be able to interact with the paper
-*/
+/**
+ * This restores the user's ability to interact with the paper.
+ * @preconditions the paper must exist
+ * @postconditions the user will once more be able to interact with the paper
+ * @memberOf initialize_diagram
+ */
 function restorePaperInteraction() {
 	paper.$el.removeClass("nonInteractive");
 }
 
+/**
+ * Resizes the paper based on the window size
+ * @param  {undefined} e placeholder for joint.js
+ * @preconditions the document is initialized, has a paperView element, window
+ *   is initalized.
+ * @postconditions the paper is resized
+ * @memberOf initialize_diagram
+ */
 function resizePaper(e) {
 	var paperDiv = document.getElementById('paperView');
 	var heightOfPaper = window.innerHeight - 250;
 	if (heightOfPaper &lt; 450) {
 		heightOfPaper = 450;
 	}
-	paper.setDimensions(paperDiv.clientWidth - 20, heightOfPaper);
+	paper.setDimensions(window.innerWidth - 275, heightOfPaper);
+	
 }
 
-/* 
-Resizes the printing paper so that it fits a sheet of paper and scales the content
-so that it all fits inside the paper.
-pre: The printPaper must exist.
-post: The printPaper will be the size of a sheet of paper.
-*/
+
+/**
+ * Resizes the printing paper so that it fits a sheet of paper and scales the
+ *   content so that it all fits inside the paper.
+ * @param  {undefined} e placeholder for joint.js
+ * @preconditions the paper is initialized
+ * @postconditions the print paper is resized to 1000x1250
+ * @todo  Remove magic numbers
+ * @memberOf initialize_diagram
+ */
 function resizePrintPaper(e){
 	//The values 1000 and 1250 make the paper fit the print page nicely
 	var width = 1000;
@@ -229,16 +329,17 @@ function resizePrintPaper(e){
 	printPaper.scaleContentToFit();
 }
 
-/*
-Shrinks the paper so that it no longer takes up space.
-This is done after printing is complete.
-This is required because the paper has a visibility of hidden,
-not a display of none. The paper can not have a display of none because
-there is an issue where the size of objects is changes when the paper goes from
-no display to block display.
-pre: The printPaper must exist.
-post: the printPaper will be the smallest possible size.
-*/
+/**
+ * Shrinks the paper so that it no longer takes up space. This is done after
+ *   printing is complete. This is required because the paper has a visibility
+ *   of hidden, not a display of none. The paper can not have a display of none
+ *   because there is an issue where the size of objects is changes when the
+ *   paper goes from no display to block display.
+ * @param  {undefined} e placeholder for joint.js
+ * @preconditions The printPaper must exist.
+ * @postconditions the printPaper will be the smallest possible size.
+ * @memberOf initialize_diagram
+ */
 function shrinkPrintPaper(e){
 	//Values are 1 and 1 because using 0 and 0 does not work
 	var width = 1;
@@ -255,16 +356,30 @@ function shrinkPrintPaper(e){
  * Later, our plans are to divide the functionality of this function into "pan
  *   when the user is also pressing a pan button" and "start multi selection"
  * @preconditions The user's mouse is over the paper in an empty part of the
- *   paper. The event actually happened. 
+ *   paper. The event actually happened.
  * @postconditions The user's mouse position has been recorded, and the
  *   "panning" functionality is activated.
  * @param  {event} e the click event which triggered the function call
  * @memberOf initialize_diagram
  */
 function paperEmptySelectionPressed(e) {
-	updateMousePos(e)
-	movingViewPort = true;
+	console.log("The mouse was clicked in an empty paper location");
+	updateMousePos(e);
+	
+	// if the alt key is down, then initiate panning
+		movingViewPort = true;
+		console.log("Panning of the paper has been initiated");
+	
+	// otherwise start rectangle selection
+	// else {
+	// 	console.log("Box selection has been initiated");
+	// 	boxSelectionX = curMousePos.x;
+	// 	boxSelectionY = curMousePos.y;
+	// }
+	
+	deselectAllCells();
 }
+
 
 /**
  * When the user lets go of the mouse over the paper, call this function. Based
@@ -285,14 +400,15 @@ function paperEmptySelectionPressed(e) {
 function paperOnMouseUp(e) {
 	updateMousePos(e)
 
+	// TODO refactor into a switch???
 	if (genUI.lastClickedValue == "Stock") {
 		createStock(curMousePos);
 
 	} else if (genUI.lastClickedValue == "State") {
 		createState(curMousePos);
 		
-	} else if (genUI.lastClickedValue == "Terminal State") {
-		createTerminalState(curMousePos);
+	} else if (genUI.lastClickedValue == "Final State") {
+		createFinalState(curMousePos);
 		
 	} else if (genUI.lastClickedValue == "Branch") {
 		createBranch(curMousePos);
@@ -330,24 +446,47 @@ function paperOnMouseUp(e) {
 	genUI.deselectUIElements();
 	genUI.lastClickedValue = "EDIT"; // reset the cursor back to editing
 	movingViewPort = false;
+	deselectAllCells();
 }
 
-
+/**
+ * Selects a cell that has been clicked
+ * @param  {view} cellView a view onto the cell
+ * @param  {undefined} evt      placeholder for joint.js
+ * @preconditions cellView has an initialized model, the document is created,
+ *   the paper has been created
+ * @postconditions a clicked cell is selected
+ * @memberOf initialize_diagram
+ */
 function selectClickedCell(cellView, evt) {
 	
 	bringChildrenOfParentToFront(cellView.model);
 	selected[0] = cellView.model;
-	selected[0].setSelected(true);
+
 	updateProperties();
+
+	// select the cell
+	var cell = selected[0];
+	var view = cell.findView(paper);
+	view.highlight();
+
+
 }
 
-
+/**
+ * Deselected a cell
+ * @preconditions A cell is currently selected
+ * @postconditions A cell is no longer selected
+ * @memberOf initialize_diagram
+ */
 function deselectCell() {
-	if (selected[0]) {
-		selected[0].setSelected(false);
-		selected = {};
-		updateProperties();
-	}
+
+   if (selected.length > 0) {
+       selected[0].setSelected(false); 
+   }
+   
+   selected = {};
+   updateProperties();
 }
 
 
@@ -369,9 +508,6 @@ function deselectCell() {
 function handleKeyInput(e) {
 	if (e.keyCode == 46) {
 		deleteSelectedCell(e);
-	}
-	else {
-		//console.log("A key was pushed");
 	}
 }
 
@@ -397,6 +533,67 @@ function deleteSelectedCell(e) {
 }
 
 /**
+ * If something is being dragged, stop dragging it
+ * @preconditions The document is initialized
+ * @postconditions Nothing is dragged is the mouse moves
+ * @memberOf initialize_diagram
+ */
+function stopDraggingAction() {
+	console.log("A drag has stopped");
+	// if we were panning, stop the panning
+	if (movingViewPort) {
+		movingViewPort = false;
+		console.log("Panning has stopped");
+
+	// otherwise we need to end a box selection
+	} else if (boxSelectionX != null) {
+		//deselect all of the previously selected cells
+		deselectAllCells();
+
+		var curX = curMousePos.x;
+		var curY  = curMousePos.y
+
+		var rect = smartRect(boxSelectionX, boxSelectionY, curX, curY);
+
+		var enclosed = paper.findViewsInArea(rect);
+		for (var i = 0; i &lt; enclosed.length; i++) {
+			enclosed[i].highlight();
+		}
+
+		// clear the property box
+		$$("propertiesFormId").reconstruct();
+
+		// remove all drawn selection boxes
+		$(".selectionBox").remove();
+
+		// reset the box selection start values
+		boxSelectionX = null;
+		boxSelectionY = null;
+		console.log("Box selection has stopped");
+	}
+}
+
+/**
+ * Takes whatever cells are selected and deselects them
+ * @preconditions the graph is initialized, the cellView exists
+ * @postconditions nothing is selected
+ * @invariant 0 or more cells are selected at any time
+ * @history the number of cells goes to 0 regardless of what it was at before
+ * @memberOf initialize_diagram
+ */
+function deselectAllCells() {
+	var cells = graph.getCells();
+	for (var i = 0; i &lt; cells.length; i++) {
+		// currently cells refers to the data object of each cell
+		// we need to find the view associated with the data
+		var cellView = cells[i].findView(paper);
+		cellView.unhighlight();
+	}
+
+	selected = [];
+}
+
+/**
  * When the mouse moves, handle the logic of figuring out what further methods
  *   need to be dispatched.
  *
@@ -412,11 +609,53 @@ function deleteSelectedCell(e) {
  * @memberOf initialize_diagram
  */
 function handleMouseMove(e) {
+	var highlightedCount = getHighlightedItems().length;
+
 	if (movingViewPort) {
 		moveViewPort(e);
-	}
+
+	// if we are currently dragging a selection box, we need to update it
+	} else if (boxSelectionX != null) {
+		updateMousePos(e);
+		console.log("A box select is currently being dragged");
+		drawSelectionBox(boxSelectionX, boxSelectionY, curMousePos.x, curMousePos.y);
+
+	} 
+	// else if ((highlightedCount > 1) &amp;&amp; e.buttons) {
+	// 	updateMousePos(e);
+	// 	moveSelectedItems();
+	// }
 }
 
+/**
+ * Takes the selected items and moves them with the mouse
+ * @preconditions the graph is initalized
+ * @postconditions items move linearly with the mouse
+ * @memberOf initialize_diagram
+ */
+function moveSelectedItems() {
+	var deltaX = curMousePos.x - oldMousePos.x;
+	var deltaY = curMousePos.y - oldMousePos.y;
+
+	var highlightedItems = getHighlightedItems();
+	var cells = graph.getCells();
+
+	for (var i = 0; i &lt; highlightedItems.length; i++) {
+		var highlightedItem = highlightedItems[i];
+		var htmlId = highlightedItem.getAttribute("model-id");
+
+		for (var j = 0; j &lt; cells.length; j++) {
+			var cell = cells[j];
+			var modelId = cell.attributes.id;
+
+			if (modelId == htmlId) {
+				cell.translate(deltaX, deltaY);
+			}
+		}
+	}
+
+	selected[0].translate(-deltaX, -deltaY);
+}
 
 /**
  * This function checks where the mouse currently is, and where it used to be in
@@ -433,7 +672,14 @@ function handleMouseMove(e) {
 function moveViewPort(e) {
 	updateMousePos(e);
 	var origin = paper.options.origin;
-	paper.setOrigin(((curMousePos.x - oldMousePos.x) * paperScale) + origin.x, ((curMousePos.y - oldMousePos.y) * paperScale) + origin.y);
+	var deltaX = curMousePos.x - oldMousePos.x;
+	var deltaY = curMousePos.y - oldMousePos.y;
+	paper.setOrigin((deltaX * paperScale) + origin.x, (deltaY * paperScale) + origin.y);
+
+	// save the paper translation
+	paperOffsetX += deltaX;
+	paperOffsetY += deltaY;
+
 	updateMousePos(e);
 }
 
@@ -466,13 +712,13 @@ function updateMousePos(e) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul><h3>Global</h3><ul><li><a href="global.html#dropEdge">dropEdge</a></li><li><a href="global.html#setInitialHTML">setInitialHTML</a></li><li><a href="global.html#setInitialHTMLBranch">setInitialHTMLBranch</a></li><li><a href="global.html#setInitialHTMLText">setInitialHTMLText</a></li><li><a href="global.html#startResizingTop">startResizingTop</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 06 2016 00:10:23 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 06 2016 22:53:53 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
