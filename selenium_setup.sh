@@ -50,8 +50,3 @@ sudo sh -e /etc/init.d/xvfb start
 
 echo "Starting Google Chrome ..."
 sudo google-chrome --remote-debugging-port=9222 &
-
-# Finally, starting up Selenium server
-#
-echo "\r\nStarting up Selenium server ...\r\n"
-java -jar selenium-server-standalone-2.53.0.jar -Dwebdriver.chrome.driver=src/maven/src/test/resources/selenium_standalone_binaries/linux/googlechrome/64bit/chromedriver &

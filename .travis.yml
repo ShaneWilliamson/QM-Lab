@@ -33,4 +33,5 @@ before_script:
 script:
   - grunt syntax --verbose --force
   - grunt test --verbose --force
+  - nohup java -jar selenium-server-standalone-2.53.0.jar -Dwebdriver.chrome.driver=src/maven/src/test/resources/selenium_standalone_binaries/linux/googlechrome/64bit/chromedriver &
   - mvn test -f ./src/Maven/pom.xml
