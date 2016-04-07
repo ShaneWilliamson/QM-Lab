@@ -194,6 +194,7 @@
 
 
 
+
 	/*
 	Setter for whether or not a node appears to be selected
 	When this value is set to true the node has a blue outline around it
@@ -261,6 +262,7 @@
 		this.prop(property, value);
 		this.attr(property, value);
 	};
+
 
 
 
@@ -393,6 +395,7 @@
 		var newFlow = new joint.shapes.QMLab.Flow();
 		var localPos = $.extend(true, {}, pos);
 		console.log("We're in the flow place!");
+
 		newFlow.initialzeSourceAndTarget(localPos, source, target);
 
 		//If a label was passed in, set the link's text to that
@@ -552,10 +555,10 @@
 		var colour = this.getTextColour();
 		this.set('labels', [
 			{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }
+
 		]);
 		this.attr('text/text-size', textsize);
 	};
-
 
 	/*
 	Setter for localLink label text.
@@ -567,6 +570,7 @@
 	joint.dia.Link.prototype.getTextSize = function(textsize) {
 		return this.attr('text/text-size');
 	};
+
 
 
 
@@ -656,6 +660,7 @@
 				}
 	};
 
+
 	
 	//This is a placeholder
 	joint.dia.Link.prototype.setSelected = function(value) {
@@ -715,6 +720,7 @@
 			this.setEndNodeFromPoint(localPos);
 		}
 	};
+
 
 
 
@@ -1069,6 +1075,7 @@
 		return this.attr("image/xlink:href");
 
 	};
+
 
 	
 	
@@ -1798,3 +1805,4 @@
 			}
 		});
 	}
+
