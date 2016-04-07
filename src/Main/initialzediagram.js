@@ -326,12 +326,10 @@ function paperEmptySelectionPressed(e) {
 	updateMousePos(e);
 	
 	// if the alt key is down, then initiate panning
-	if (e.altKey) {
 		movingViewPort = true;
 		console.log("Panning of the paper has been initiated");
 	
 	// otherwise start rectangle selection
-	} 
 	// else {
 	// 	console.log("Box selection has been initiated");
 	// 	boxSelectionX = curMousePos.x;

@@ -190,12 +190,8 @@ QM_LabUI.prototype.genPropertiesForm = function() {
 			}
 		}
 		else {
-			this.createDefaultPropertyForm();
+			this.createEmptyPropertyForm();
 		}
-	}
-	else {
-		this.createEmptyPropertyForm();
-	}
 }
 
 /**
