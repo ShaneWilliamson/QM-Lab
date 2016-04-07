@@ -63,6 +63,7 @@ public class Tests{
 	public void Test() throws Exception {
 		wait = new WebDriverWait(driver, 30);
 		System.out.println(driver.toString());
+		WebElement element;
 		
 		// Get the web page and go to it.
 		//Thread.sleep(1000);		// Wait for browser to open.
@@ -73,54 +74,34 @@ public class Tests{
 		String winHandleBefore = driver.getWindowHandle();
 
 		// Perform the click operation that opens new window.
-		WebElement element = driver.findElement(By.id("auth_button"));
-		wait.until(ExpectedConditions.visibilityOf(element));
-
-		element.click();
+		click("auth_button");
 
 		// Switch to new window opened.
 		for(String winHandle : driver.getWindowHandles()){
 			driver.switchTo().window(winHandle);
 		}
-
-		// Enter email and password, then click sign in.
+		
+		// Sign into Google.
 		// Email and password prompts may be on separate forms.
-		try {
-			element = driver.findElement(By.id("Email"));
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.clear();
-			element.sendKeys("cmpt371testingemail");
-			element = driver.findElement(By.id("Passwd"));
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.clear();
-			element.sendKeys("DarthVader!");
-			element = driver.findElement(By.id("signIn"));
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.click();
-		} catch (NoSuchElementException ignored) {
-			element = driver.findElement(By.id("next"));
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.click();
-			element = driver.findElement(By.id("Passwd"));
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.clear();
-			element.sendKeys("DarthVader!");
-			element = driver.findElement(By.id("signIn"));
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.click();
+		if (isElementPresent(By.id("Passwd"))){
+			// Email and password are on the same form.
+			enterString("Email", "cmpt371testingemail"); // Enter 'cmpt371testingemail' into email field.
+			enterString("Passwd", "DarthVader!");
+			click("signIn");
+		}else{
+			// Email and password are on separate forms.
+			enterString("Email", "cmpt371testingemail");
+			click("next");
+			enterString("Passwd", "DarthVader!");
+			click("signIn");
 		}
-
+		
 		// Go back to the previous window.
 		driver.switchTo().window(winHandleBefore);
 
 		// Enter filename.
-		element = driver.findElement(By.id("docName"));
-		wait.until(ExpectedConditions.visibilityOf(element));
-		element.clear();
-		element.sendKeys("Test File");
-		element = driver.findElement(By.id("docSubmit"));
-		wait.until(ExpectedConditions.visibilityOf(element));
-		element.click();
+		enterString("docName", "Test File");
+		click("docSubmit");
 
 		// Assert that the URL has changed and moved to the new page.
 		ExpectedCondition<Boolean> e = new ExpectedCondition<Boolean>() {
@@ -137,16 +118,19 @@ public class Tests{
 
 		// Create new items.
 		// Count number of elements to check that an item was actually created.
-		for (int i = 1; i <= 9; i++) {
-			elementPath = "//div[@id='objectSelectTabbar']/div/div/div[2]/div/div/div[" + i + "]";
+		for (int i = 1; i <= 10; i++) {
+			// Get the i'th element in the list of nodes.
+			elementPath = "//div[contains(@class, 'webix_list')]/div/div[" + i + "]";
 			elementName = driver.findElement(By.xpath(elementPath)).getText();
 
+			// Create item by selecting it then clicking on the paperView.
 			driver.findElement(By.xpath(elementPath)).click();
 			driver.findElement(By.id("paperView")).click();
 			try {
 				// When an element is created, there are 2 elements with the classname 'element'.
 				assertTrue(driver.findElements(By.className("element")).size() == numElements + 2);
 			} catch (Error e2) {
+				// Element was not created.
 				verificationErrors.append(elementName + " was not created.\n");
 			}
 			numElements = driver.findElements(By.className("element")).size();
@@ -179,11 +163,13 @@ public class Tests{
 		// Check that file was created, then delete it.
 		Actions action = new Actions(driver);
 
+		// Go to Google Drive.
 		driver.get("http://drive.google.com");
+		
+		// Check that file was created.
 		element = driver.findElement(By.xpath("//span[contains(text(), 'Test File')]"));
 		wait.until(ExpectedConditions.elementToBeClickable(element));
-
-		assertTrue(isElementPresent(By.xpath("//*[contains(text(), 'Test File')]")));
+		assertTrue(isElementPresent(By.xpath("//span[contains(text(), 'Test File')]")));
 
 		// Right click, then navigate to 'Remove' option.
 		//	('Remove' is the 9th option in the context menu)
@@ -198,6 +184,7 @@ public class Tests{
 		verificationErrors.append("Test completed.\n");
 	}
 
+	// Check if element exists.
 	private boolean isElementPresent(By by) {
 		try {
 			driver.findElement(by);
@@ -205,6 +192,25 @@ public class Tests{
 		} catch (NoSuchElementException e) {
 			return false;
 		}
+	}
+	
+	// Click the button with id 'id'.
+	private void click(String id){
+		WebElement element;
+		
+		element = driver.findElement(By.id(id));
+		wait.until(ExpectedConditions.visibilityOf(element));
+		element.click();
+	}
+	
+	// Enter 'value' into field with id 'id'.
+	private void enterString(String id, String value){
+		WebElement element;
+		
+		element = driver.findElement(By.id(id));
+		wait.until(ExpectedConditions.visibilityOf(element));
+		element.clear();
+		element.sendKeys(value);
 	}
 
 	@After
