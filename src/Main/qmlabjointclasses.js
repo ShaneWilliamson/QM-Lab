@@ -7,17 +7,21 @@
 * @class qm_lab_joint_classes
 */
 
-/*
-This is the constructor of the localNode class.
-
-From a technical standpoint, this function simply wraps a joint.js cell. However, it allows us
-to easily add and modify it without breaking anything else.
-
-pre: "pos" is a valid point with an "x" and "y" field
-post: Returns a local node at the position "pos"
-      If a label parameter has been passed in, text on the node will default to that
-	  Otherwise, text on the node will default to "Node"
-*/
+/**
+ * This is the constructor of the localNode class.
+ *
+ * From a technical standpoint, this function simply wraps a joint.js cell.
+ *   However, it allows us to easily add and modify it without breaking anything
+ *   else.
+ * @preconditions "pos" is a valid point with an "x" and "y" field
+ * @postconditions Returns a local node at the position "pos", if a label
+ *   parameter has been passed in, text on the node will default to that,
+ *   otherwise, text on the node will default to "Node"
+ * @param  {coordinate} pos   "pos" is a valid point with an "x" and "y" field
+ * @param  {string} label        default label of the node
+ * @return {node}    a new node at position pos, with label label
+ * @memberOf qm_lab_joint_classes
+ */
 function localNode (pos, label) {
 	newNode = new joint.shapes.QMLab.Stock({
 		position: { x: pos.x, y: pos.y },
@@ -28,73 +32,67 @@ function localNode (pos, label) {
 	return newNode;
 }
 
-
-/*
-Getter for localNode x position. Will return the x coordinate of the node.
-
-pre: The localNode exists
-post: No change
-return: The x position of the localNode
-*/
+/**
+ * Getter for localNode x position. Will return the x coordinate of the node.
+ * @preconditions The localNode exists
+ * @postconditions No change
+ * @return {int} The x position of the localNode
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getXPos = function() {
 	return this.attributes.position.x;
 };
 
-
-/*
-Getter for localNode y position. Will return the y coordinate of the node.
-
-pre: The localNode exists
-post: No change
-return: The y position of the localNode
-*/
+/**
+ * Getter for localNode y position. Will return the y coordinate of the node.
+ * @preconditions The localNode exists
+ * @return {int} The y position of the localNode
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getYPos = function() {
 	return this.attributes.position.y;
 };
 
-/*
-Setter for localNode position.
-
-pre: The localNode exists
-     x and y are valid ints
-post: The localCell's position has been updated to {x, y}
-*/
+/**
+ * Setter for localNode position.
+ * @preconditions The localNode exists, x and y are valid ints.
+ * @postconditions The localCell's position has been updated to {x, y}
+ * @param {int} x setter for x
+ * @param {int} y setter for y
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setPos = function(x, y) {
 	this.attributes.position = {x: x, y: y};
 };
 
-
-/*
-Getter for localNode width attribute. Will return the x size of the node.
-
-pre: The localNode exists
-post: No change
-return: The x size (width) of the localNode
-*/
+/**
+ * Getter for localNode width attribute. Will return the x size of the node.
+ * @preconditions The localNode exists
+ * @return {int} x
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getXSize = function() {
 	return this.attributes.size.width;
 };
 
-
-/*
-Getter for localNode height attribute. Will return the y size of the node.
-
-pre: The localNode exists
-post: No change
-return: The y size (height) of the localNode
-*/
+/**
+ * Getter for localNode height attribute. Will return the y size of the node.
+ * @preconditions The localNode exists
+ * @return {int} y
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getYSize = function() {
 	return this.attributes.size.height;
 };
 
-
-/*
-Setter for localNode size.
-
-pre: The localNode exists
-     width and height are valid ints
-post: The localCell's size has been updated to {width, height}
-*/
+/**
+ * Setter for localNode size.
+ * @preconditions The localNode exists, width and height are valid ints.
+ * @postconditions The localCell's size has been updated to {width, height}
+ * @param {int} width  width the node is being set to
+ * @param {int} height height the node is being set to
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
 	//this.setAttr('rect/width', width);
 	//this.setAttr('rect/height', height);
@@ -121,64 +119,62 @@ joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
 };
 
 
-/*
-Setter for localNode height.
-
-pre: The localNode exists
-     height is a valid int
-post: The localCell's size has been updated to {curWidth, height}
-*/
+/**
+ * Setter for localNode height.
+ * @preconditions The localNode exists, height is a valid int.
+ * @postconditions The localCell's size has been updated to {curWidth, height}.
+ * @param {int} height setter
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setHeight = function(height) {
 	if (height > 0) {
 		this.setSize(this.getXSize(), height);
 	}
 };
 
-/*
-Setter for localNode width.
-
-pre: The localNode exists
-     width is a valid int
-post: The localCell's size has been updated to {width, curHeight}
-*/
+/**
+ * Setter for localNode width.
+ * @preconditions The localNode exists, width is a valid int.
+ * @postconditions The localCell's size has been updated to {width, curHeight}
+ * @param {int} width setter
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setWidth = function(width) {
 	if (width > 0) {
 		this.setSize(width, this.getYSize());
 	}
 };
 
-/*
-Getter for localNode z-order attribute. Will return the
-order in which it is drawn on the screen.
-
-pre: The localNode exists
-post: No change
-return: The z-order of the localNode
-*/
+/**
+ * Getter for localNode z-order attribute. Will return the order in which it is
+ *   drawn on the screen.
+ * @preconditions The localNode exists
+ * @return {int} The z-order of the localNode
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getZOrder = function() {
 	return this.attributes.z;
 };
 
-/*
-Setter for localNode z-order. Changes what order it is drawn on the screen
-
-pre: The localNode exists
-     z is a valid int
-post: The localCell's z-order has been updated to z
-*/
+/**
+ * Setter for localNode z-order. Changes what order it is drawn on the screen
+ * @preconditions The localNode exists, z is a valid int
+ * @param {int} z setter
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setZOrder = function(z) {
 	if (!isNaN(z)) {
 		this.set('z', z);
 	}
 };
 
-/*
-Getter for localNode label attribute. Will return the text associated with this node.
-
-pre: The localNode exists
-post: No change
-return: The label text of the localNode
-*/
+/**
+ * Getter for localNode label attribute. Will return the text associated with
+ *   this node.
+ * @preconditions The localNode exists
+ * @return {int} getter
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getLabel = function() {
 	var retval = this.attributes.text.text;
 	if (!retval) {
@@ -190,30 +186,28 @@ joint.shapes.basic.Rect.prototype.getLabel = function() {
 	}
 };
 
-/*
-Getter for localNode z-order attribute. Will return order in which it is drawn on the screen.
-
-pre: The localNode exists
-post: No change
-return: The z-order of the localNode
-*/
+/**
+ * Setter for localNode label attribute. Will set the text associated with
+ *   this node.
+ * @preconditions The localNode exists
+ * @param {int} text setter
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setLabel = function(text) {
 	this.setAttr('text/text', text);
 };
 
-
-
-
-/*
-Setter for whether or not a node appears to be selected
-When this value is set to true the node has a blue outline around it
-When this value is set to false, the blue outline is removed
-
-pre: The localNode exists
-	isSelected isn't null
-	isSelected is a boolean
-post: the colour of the localNode is set to blue or transparent blue
-*/
+/**
+ * Setter for whether or not a node appears to be selected, When this value is
+ *   set to true the node has a blue outline around it, When this value is set
+ *   to false, the blue outline is removed
+ * @param {Boolean} isSelected is the set selected
+ * @preconditions The localNode exists, isSelected isn't null, isSelected is a
+ *   boolean
+ * @postconditions the colour of the localNode is set to blue or transparent
+ *   blue
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setSelected = function(isSelected) {
 	if (isSelected) {
 		// set colour to blue
@@ -228,32 +222,58 @@ joint.shapes.basic.Rect.prototype.setSelected = function(isSelected) {
 	this.setAttr('circle/stroke', colour);
 };
 
-
+/**
+ * Setter for the node colour
+ * @preconditions The localNode exists
+ * @postconditions The color of the node is set.
+ * @param {color} colour a hex color code
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setColour = function(colour) {
 
 	this.setAttr('rect/fill', colour);
 	this.setAttr('path/fill', colour);
 };
 
+/**
+ * Getter for the colour of the node.
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getColour = function(colour) {
 	return this.attributes.rect.fill;
 };
 
-
+/**
+ * Setter for the text colour of the node.
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
 	this.setAttr('text/fill', colour);
 };
 
+/**
+ * Getter for the text colour of the node.
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
 	return this.attributes.text.fill;
 };
 
+/**
+ * Setter for the text size of the node.
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setTextSize = function(size) {
 	if(!isNaN(size)) {
 		this.setAttr('text/font-size', size);
 	}
 };
 
+/**
+ * Getter for the text size of the node.
+ * @returns {int} string size
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getTextSize = function() {
 	return this.attr('text/font-size');
 };
