@@ -1237,30 +1237,30 @@ function dragResize(event){
  */
 function setInitialHTML(view){
 	var bbox = view.model.getBBox();
-	var newX = bbox.x*paperScale + paper.options.origin.x;
-	var newY = bbox.y*paperScale + paper.options.origin.y;
+	var newX = bbox.x*paperScale + paper.options.origin.x-5;
+	var newY = bbox.y*paperScale + paper.options.origin.y-5;
 			
 	view.$box.css({ 
-		width: bbox.width*paperScale, 
-		height: bbox.height*paperScale,
+		width: bbox.width*paperScale +5, 
+		height: bbox.height*paperScale+5,
 		transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
 	});
 	view.$box.find('.bottom').css({
 		width: bbox.width,
-		height: '2px',
+		height: '20px',
 		top: bbox.height - 2
 	});
 	view.$box.find('.top').css({
 		width: bbox.width,
-		height: '2px'
+		height: '20px'
 	});
 	view.$box.find('.left').css({
-		width: '2px',
+		width: '20px',
 		height: bbox.height
 	});
 	view.$box.find('.right').css({
-		width: '2px',
-		height: bbox.height,
+		width: '20px',
+		height: bbox.height+20,
 		left: bbox.width
 	});
 	//If the element is off of the paper change display to none so it does not create scroll bars in the window
@@ -1275,48 +1275,7 @@ function setInitialHTML(view){
 	}
 }
 
-/**
- * Specialized version of setInitialHTML for Branches which offsets the bounding box by half the total width
- * because the default x position is in the centre of the branch.
- */
-function setInitialHTMLBranch(view){
-	var bbox = view.model.getBBox();
-	var newX = bbox.x*paperScale + paper.options.origin.x - bbox.width*paperScale/2;
-	var newY = bbox.y*paperScale + paper.options.origin.y;
-			
-	view.$box.css({ 
-		width: bbox.width*paperScale, 
-		height: bbox.height*paperScale,
-		transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
-	});
-	view.$box.find('.bottom').css({
-		width: bbox.width,
-		height: '2px',
-		top: bbox.height - 2
-	});
-	view.$box.find('.top').css({
-		width: bbox.width,
-		height: '2px'
-	});
-	view.$box.find('.left').css({
-		width: '2px',
-		height: bbox.height
-	});
-	view.$box.find('.right').css({
-		width: '2px',
-		height: bbox.height,
-		left: bbox.width
-	});
-	if(newX > paper.options.width || newY > paper.options.height){
-		view.$box.css({
-			display: 'none'
-		});
-	}else{
-		view.$box.css({
-			display: 'block'
-		});
-	}
-}
+
 /**
  * Specialized version of setInitialHTML for TextBoxes which offsets the bounding box based on the 
  * distance between the point on the text box and the main box.
@@ -1336,20 +1295,20 @@ function setInitialHTMLText(view){
 	});
 	view.$box.find('.bottom').css({
 		width: bbox.width,
-		height: '2px',
+		height: '20px',
 		top: bbox.height - 2
 	});
 	view.$box.find('.top').css({
 		width: bbox.width,
-		height: '2px'
+		height: '20px'
 	});
 	view.$box.find('.left').css({
-		width: '2px',
+		width: '20px',
 		height: bbox.height
 	});
 	view.$box.find('.right').css({
-		width: '2px',
-		height: bbox.height,
+		width: '20px',
+		height: bbox.height+20,
 		left: bbox.width
 	});
 	if(newX > paper.options.width || newY > paper.options.height){
@@ -1378,24 +1337,16 @@ function setInitialHTMLText(view){
 function setSelectedHTML(view){
 	if(view.model == selected[0]){
 		view.$box.find('.bottom').css({
-			cursor: 'ns-resize',
-			border: '2px solid #2980B9',
-			background: '#2980B9'
+			cursor: 'ns-resize'
 		});
 		view.$box.find('.top').css({
-			cursor: 'ns-resize',
-			border: '2px solid #2980B9',
-			background: '#2980B9'
+			cursor: 'ns-resize'
 		});
 		view.$box.find('.left').css({
-			cursor: 'ew-resize',
-			border: '2px solid #2980B9',
-			background: '#2980B9'
+			cursor: 'ew-resize'
 		});
 		view.$box.find('.right').css({
-			cursor: 'ew-resize',
-			border: '2px solid #2980B9',
-			background: '#2980B9'
+			cursor: 'ew-resize'
 		});
 		view.$box.find('.top').on('mousedown', startResizingTop);
 		view.$box.find('.left').on('mousedown', startResizingLeft);
@@ -1429,47 +1380,7 @@ function setSelectedHTML(view){
 	}
 }
 
-function setSelectedHTMLNoResize(view){
-	if(view.model == selected[0]){
-		view.$box.find('.bottom').css({
-			border: '2px solid #2980B9',
-			background: '#2980B9'
-		});
-		view.$box.find('.top').css({
-			border: '2px solid #2980B9',
-			background: '#2980B9'
-		});
-		view.$box.find('.left').css({
-			border: '2px solid #2980B9',
-			background: '#2980B9'
-		});
-		view.$box.find('.right').css({
-			border: '2px solid #2980B9',
-			background: '#2980B9'
-		});
-	}else{
-		view.$box.find('.bottom').css({
-			cursor: 'default',
-			border: 'none',
-			background: 'none'
-		});
-		view.$box.find('.top').css({
-			cursor: 'default',
-			border: 'none',
-			background: 'none'
-		});
-		view.$box.find('.left').css({
-			cursor: 'default',
-			border: 'none',
-			background: 'none'
-		});
-		view.$box.find('.right').css({
-			cursor: 'default',
-			border: 'none',
-			background: 'none'
-		});
-	}
-}
+
 
 function initializeStockView(){
 	joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
@@ -1673,164 +1584,4 @@ function initializeStateView(){
 	});
 }
 
-function initializeTerminalStateView(){
-	joint.shapes.QMLab.TerminalStateView = joint.dia.ElementView.extend({
-		template: [
-			'<div class="html-element">',
-			'<div class="top"></div>',
-			'<div class="bottom"></div>',
-			'<div class="left"></div>',
-			'<div class="right"></div>',
-			'</div>'
-		].join(''),
-	
-		initialize: function() {
-			_.bindAll(this, 'updateBox');
-			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-			this.$box = $(_.template(this.template)());
-			//When zooming or moving mouse on page, make sure html is updated
-			paper.$el.on('wheel', this.updateBox);
-			paper.$el.on('mousemove', this.updateBox);
-			//Update box position whenever underlying joint is updated
-			this.model.on('change', this.updateBox, this);
-			//Remove box when model is removed
-			this.model.on('remove', this.removeBox, this);
-			this.updateBox();
-		},
-		render: function(){
-			joint.dia.ElementView.prototype.render.apply(this, arguments);
-			this.paper.$el.prepend(this.$box);
-			this.updateBox();
-			return this;
-		},
-		updateBox: function(){
-			setInitialHTML(this);
-			setSelectedHTML(this);
-		},
-		removeBox: function(evt){
-			this.$box.remove();
-		}
-	});
-}
 
-function initializeBranchView(){
-	joint.shapes.QMLab.BranchView = joint.dia.ElementView.extend({
-		template: [
-			'<div class="html-element">',
-			'<div class="top"></div>',
-			'<div class="bottom"></div>',
-			'<div class="left"></div>',
-			'<div class="right"></div>',
-			'</div>'
-		].join(''),
-	
-		initialize: function() {
-			_.bindAll(this, 'updateBox');
-			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-			this.$box = $(_.template(this.template)());
-			//When zooming or moving mouse on page, make sure html is updated
-			paper.$el.on('wheel', this.updateBox);
-			paper.$el.on('mousemove', this.updateBox);
-			//Update box position whenever underlying joint is updated
-			this.model.on('change', this.updateBox, this);
-			//Remove box when model is removed
-			this.model.on('remove', this.removeBox, this);
-			this.updateBox();
-		},
-		render: function(){
-			joint.dia.ElementView.prototype.render.apply(this, arguments);
-			this.paper.$el.prepend(this.$box);
-			this.updateBox();
-			return this;
-		},
-		updateBox: function(){
-			setInitialHTMLBranch(this);
-			setSelectedHTMLNoResize(this);
-		},
-		removeBox: function(evt){
-			this.$box.remove();
-		}
-	});
-}
-
-
-
-function initializeVariableView(){
-	joint.shapes.QMLab.VariableView = joint.dia.ElementView.extend({
-		template: [
-			'<div class="html-element">',
-			'<div class="top"></div>',
-			'<div class="bottom"></div>',
-			'<div class="left"></div>',
-			'<div class="right"></div>',
-			'</div>'
-		].join(''),
-	
-		initialize: function() {
-			_.bindAll(this, 'updateBox');
-			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-			this.$box = $(_.template(this.template)());
-			//When zooming or moving mouse on page, make sure html is updated
-			paper.$el.on('wheel', this.updateBox);
-			paper.$el.on('mousemove', this.updateBox);
-			//Update box position whenever underlying joint is updated
-			this.model.on('change', this.updateBox, this);
-			//Remove box when model is removed
-			this.model.on('remove', this.removeBox, this);
-			this.updateBox();
-		},
-		render: function(){
-			joint.dia.ElementView.prototype.render.apply(this, arguments);
-			this.paper.$el.prepend(this.$box);
-			this.updateBox();
-			return this;
-		},
-		updateBox: function(){
-			setInitialHTML(this);
-			setSelectedHTMLNoResize(this);
-		},
-		removeBox: function(evt){
-			this.$box.remove();
-		}
-	});
-}
-
-function initializeParameterView(){
-	joint.shapes.QMLab.ParameterView = joint.dia.ElementView.extend({
-		template: [
-			'<div class="html-element">',
-			'<div class="top"></div>',
-			'<div class="bottom"></div>',
-			'<div class="left"></div>',
-			'<div class="right"></div>',
-			'</div>'
-		].join(''),
-	
-		initialize: function() {
-			_.bindAll(this, 'updateBox');
-			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-			this.$box = $(_.template(this.template)());
-			//When zooming or moving mouse on page, make sure html is updated
-			paper.$el.on('wheel', this.updateBox);
-			paper.$el.on('mousemove', this.updateBox);
-			//Update box position whenever underlying joint is updated
-			this.model.on('change', this.updateBox, this);
-			//Remove box when model is removed
-			this.model.on('remove', this.removeBox, this);
-			this.updateBox();
-		},
-		render: function(){
-			joint.dia.ElementView.prototype.render.apply(this, arguments);
-			this.paper.$el.prepend(this.$box);
-			this.updateBox();
-			return this;
-		},
-		updateBox: function(){
-			setInitialHTML(this);
-			setSelectedHTMLNoResize(this);
-		},
-		removeBox: function(evt){
-			this.$box.remove();
-		}
-	});
-}

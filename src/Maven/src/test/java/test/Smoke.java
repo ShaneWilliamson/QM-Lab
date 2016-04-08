@@ -217,9 +217,14 @@ public class Smoke{
 	public void tearDown() throws Exception {
 		// Close when done. We will move this to a newer spot with more tests
 		driver.quit();
+		
 		String verificationErrorString = verificationErrors.toString();
 		if (!"".equals(verificationErrorString)) {
 			System.out.println(verificationErrorString);
 		}
+	}
+	
+	public synchronized void stop() {
+	    //stop the test here
 	}
 }

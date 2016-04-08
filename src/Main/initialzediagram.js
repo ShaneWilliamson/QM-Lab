@@ -174,10 +174,6 @@ function initializeView(){
 	initializeTextView();
 	initializeAgentView();
 	initializeStateView();
-	initializeTerminalStateView();
-	initializeBranchView();
-	initializeVariableView();
-	initializeParameterView();
 }
 
 
