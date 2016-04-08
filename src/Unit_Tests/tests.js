@@ -1,13 +1,14 @@
-window.gapi.load('auth:client,drive-realtime,drive-share', start);
+window.gapi.load('auth:client,drive-realtime,drive-share', beginTests);
 
-
-function start() {
+function beginTests() {
+  console.log("Hello!");
   var doc = gapi.drive.realtime.newInMemoryDocument();
   var model = doc.getModel();
   registerCollaborativeObjectTypes();
   onFileInitialize(model);
   onFileLoaded(doc);
 }
+
 QUnit.config.collapse = false;
 
 QUnit.test("Test Stock Creation", function( assert ) {
@@ -292,15 +293,54 @@ QUnit.test("Test initializeGraph()", function(assert){
 
 });
 
+QUnit.test("Test create createTransition(pos)", function(assert){
+  var pos = {x: 4, y:5};
+  var localPos = $.extend(true, {}, pos);
+  var newTransition = new joint.shapes.QMLab.Transition();
+  newTransition.initialzeSourceAndTarget(localPos, false, false);
 
-QUnit.test("Test initializeGraph() and updatePrintGraph", function(assert){
-  var spy = sinon.spy(printGraph, "fromJSON");
-  initializePrintGraph();
-  assert.ok(spy);
-  updatePrintGraph();
-  assert.ok(spy);
-  spy.restore();
+
+  assert.deepEqual(createTransition(pos).attributes.position, newTransition.attributes.position );
 });
+
+QUnit.test("Test createConnection(pos)", function(assert){
+  var pos = {x: 5, y: 4};
+  var newConnection = new joint.shapes.QMLab.Connection();
+	var localPos = $.extend(true, {}, pos);
+  newConnection.initialzeSourceAndTarget(localPos, false, false);
+  assert.deepEqual(createConnection(pos).attributes.position, newConnection.attributes.position);
+});
+
+QUnit.test("Test createIntervention(pos)", function(assert){
+  var pos = {x: 6, y: 5};
+  var newIntervetion = new joint.shapes.QMLab.Intervention({
+		position: {x: pos.x, y: pos.y},
+		size: { width: 10000, height: 10000 },
+		attrs: {
+			text: { text: 'Intervention', 'ref-y': 30, ref: 'circle' },
+			circle: { fill: 'red', stroke: 'black', r: 5000 },
+			path: { 'd': 'M 4000 -5500 L -4000 200 -1000 200 -4000 5500 4000 -100 1500 -100 z' },
+		},
+	});
+  assert.deepEqual(createIntervention(pos).attributes.position, newIntervetion.attributes.position, "Testing if positions are equal");
+});
+
+QUnit.test("Test createFinalState(pos)", function(assert){
+  var pos = {x: 5, y: 6};
+  var newFinalState = new joint.shapes.QMLab.FinalState({
+		position: { x: pos.x, y: pos.y },
+		size: { width: 10000, height: 10000 },
+		attrs: {
+			circle: { fill: "red", r: 5000 },
+			text: { text: 'Final State', 'ref-y': 20, ref: 'circle'},
+			path: { 'd': 'M -2000 0 C -2000 -2000 -2000 -2000 0 -2000 C 2000 -2000 2000 -2000 2000 0 C 2000 2000 2000 2000 0 2000 C -2000 2000 -2000 2000 -2000 0 z' },
+		}
+	});
+	newFinalState.setSize(20, 20);
+  assert.deepEqual(createFinalState(pos).attributes.position, newFinalState.attributes.position, "Testing if positions are equal");
+
+});
+
 
 QUnit.test("Test compareArray())", function(assert){
   var a1 = [];
@@ -314,6 +354,7 @@ QUnit.test("Test compareArray())", function(assert){
 
 
 });
+
 // TODO: This test properly.
 QUnit.test("Test initializePaper()", function(assert){
   initializePrintPaper();
