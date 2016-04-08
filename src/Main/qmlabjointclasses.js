@@ -253,6 +253,7 @@ joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
 
 /**
  * Getter for the text colour of the node.
+ * @returns {colour} colou of the node
  * @memberOf qm_lab_joint_classes
  */
 joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
@@ -278,15 +279,28 @@ joint.shapes.basic.Rect.prototype.getTextSize = function() {
 	return this.attr('text/font-size');
 };
 
-
+/**
+ * @todo Function stub
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setImage = function() {
 
 };
 
+/**
+ * @todo Function stub, returns blank
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.getImage = function() {
 	return "";
 };
 
+/**
+ * Sets the attribute of the local node.
+ * @param {string} property property to be changed on the node
+ * @param {object} value    value the property is being changed to
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.basic.Rect.prototype.setAttr = function(property, value) {
 	this.prop(property, value);
 	this.attr(property, value);
@@ -322,33 +336,24 @@ joint.shapes.basic.Circle.prototype.getXPos = joint.shapes.basic.Rect.prototype.
 joint.shapes.basic.Circle.prototype.getYPos = joint.shapes.basic.Rect.prototype.getYPos;
 
 
-
-/*
-This is the constructor of the localLink class.
-
-From a technical standpoint, this function simply wraps a joint.js link. However, it allows us
-to easily add and modify it without breaking anything else.
-
-pre: "pos" is a valid point with an "x" and "y" field
-     If any other parameters are passed, it will set the appropriate field in the link
-	    label : if passed, must be a valid stringify
-		source : if passed, must be a valid cell in the graph
-		target : if passed, must be a valid cell in the graph
-		connector : if passed, must be one of three valid connector types:
-		            "normal" - this sets the link to only be made of straight lines
-					"rouned" - like the above, this sets the lines to straight.
-					           However, this causes the angles to "round" themselves
-				    "smooth" - This causes the link to have no straight edges, and instead
-					           gradually curve its way between vertices
-
-post: Returns a local link with source at the position "pos"
-      If any other parameters are not undefined or false, it will set the appropriate field
-	    label : sets the text to display halfway along the link
-        source: sets the node that this link comes out from.
-        target: sets the node that this link goes to.
-        connector: sets the connector of the style of the link
-
-*/
+/**
+ * This is the constructor of the localLink class.
+ *
+ * From a technical standpoint, this function simply wraps a joint.js link.
+ *   However, it allows us to easily add and modify it without breaking anything
+ *   else.
+ * @preconditions "pos" is a valid point with an "x" and "y" field If any other
+ *   parameters are passed, it will set the appropriate field in the link label
+ *   : if passed, must be a valid stringify source : if passed, must be a valid
+ *   cell in the graph target : if passed, must be a valid cell in the graph
+ *   connector : if passed, must be one of three valid connector types: "normal"
+ *   - this sets the link to only be made of straight lines "rouned" - like the
+ *   above, this sets the lines to straight. However, this causes the angles to
+ *   "round" themselves "smooth" - This causes the link to have no straight
+ *   edges, and instead. gradually curve its way between vertices
+ *   @todo  Fix this contract
+ *   @memberOf qm_lab_joint_classes
+ */
 function localLink (pos, label, source, target, connector) {
 	var newLink = new joint.shapes.QMLab.localLink();
 	var localPos = $.extend(true, {}, pos);
@@ -390,12 +395,8 @@ function localLink (pos, label, source, target, connector) {
 }
 
 
-
-
-
-
-/*
-This is the constructor of the localFlow class.
+/**
+ * This is the constructor of the localFlow class.
 
 From a technical standpoint, this function simply wraps a joint.js link. However, it allows us
 to easily add and modify it without breaking anything else.
@@ -418,8 +419,9 @@ post: Returns a local link with source at the position "pos"
         source: sets the node that this link comes out from.
         target: sets the node that this link goes to.
         connector: sets the connector of the style of the link
-
-*/
+ * @todo  Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function localFlow (pos, label, source, target, connector) {
 	var newFlow = new joint.shapes.QMLab.Flow();
 	var localPos = $.extend(true, {}, pos);
@@ -444,10 +446,8 @@ function localFlow (pos, label, source, target, connector) {
 }
 
 
-
-
-/*
-Getter for localLink start node. Will return what the link is currently
+/**
+ * Getter for localLink start node. Will return what the link is currently
 attached to at the "source" end of the link.
 
 If the link is attached to a cell, the returned value will be that cell's "id".
@@ -459,20 +459,25 @@ will return undefined
 pre: The localLink exists
 post: No change
 return: The source of the localLink
-*/
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getStartNode = function() {
 	return this.attributes.source;
 };
 
-/*
-Setter for localLink start node. Since this sets by using the cell's "id",
+
+/**
+ * Setter for localLink start node. Since this sets by using the cell's "id",
 the passed cell needs to be a valid cell.
 
 
 pre: The localLink exists
      souce : the cell exists and is in the graph
 post: The source of the node has been set to the passed in source
-*/
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setStartNodeFromCell = function(source) {
 	if (source){
 		if (graph.getCell(source.id)) {
@@ -489,15 +494,18 @@ joint.dia.Link.prototype.setStartNodeFromCell = function(source) {
 	}
 };
 
-/*
-Setter for localLink source node. Since this sets by using a point in the graph,
+/**
+ * Setter for localLink source node. Since this sets by using a point in the
+ *   graph,
 source be a point with valid "x" and "y" fields.
-
-
-pre: The localLink exists
-     souce : a valid point with "x" and "y" fields
+ *
+ * pre: The localLink exists
+ souce : a valid point with "x" and "y"
+ *   fields
 post: The source of the node has been set to the passed in source
-*/
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setStartNodeFromPoint = function(source) {
 	if (source){
 		this.set('source', { x: source.x, y: source.y });
@@ -509,58 +517,72 @@ joint.dia.Link.prototype.setStartNodeFromPoint = function(source) {
 
 };
 
-/*
-Getter for localLink end node. Will return what the link is currently
+/**
+ * Getter for localLink end node. Will return what the link is
+ *   currently
 attached to at the "target" end of the link.
-
-If the link is attached to a cell, the returned value will be that cell's "id".
+ *
+ * If the link is attached to a cell, the returned value will be that cell's
+ *   "id".
 Otherwise, it will return a point that has fields "x" and "y"
-
-If, for some reason this link has been created without a target attribute,
+ *
+ * If, for some reason this link has been created without a target
+ *   attribute,
 will return undefined
-
-pre: The localLink exists
+ *
+ * pre: The localLink exists
 post: No change
 return: The target of the localLink
-*/
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getEndNode = function() {
 	return this.attributes.target;
 };
 
-/*
-Setter for localLink end node. Since this sets by using the cell's "id",
-the passed cell needs to be a valid cell.
-
-
-pre: The localLink exists
-     target : the cell exists and is in the graph
-post: The target of the node has been set to the passed in target
-*/
+/**
+ * Setter for localLink end node. Since this sets by using the cell's "id",
+the
+ *   passed cell needs to be a valid cell.
+ *
+ * pre: The localLink exists
+ target : the cell exists and is in the graph
+post:
+ *   The target of the node has been set to the passed in target
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
 	this.set('target', target.id);
 };
 
-/*
-Setter for localLink target node. Since this sets by using a point in the graph,
+/**
+ * Setter for localLink target node. Since this sets by using a point in the
+ *   graph,
 source be a point with valid "x" and "y" fields.
-
-
-pre: The localLink exists
-     souce : a valid point with "x" and "y" fields
+ *
+ * pre: The localLink exists
+ souce : a valid point with "x" and "y"
+ *   fields
 post: The source of the node has been set to the passed in source
-*/
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setEndNodeFromPoint = function(target) {
 	this.set('target', { x: target.x, y: target.y });
 };
 
 
-/*
-Setter for localLink label text.
-
-pre: The localLink exists
-     text : a valid string of some kind
-post: The label text of the node has been set to the passed in text
-*/
+/**
+ * Setter for localLink label text.
+ *
+ * pre: The localLink exists
+ text : a valid string of some kind
+post: The label
+ *   text of the node has been set to the passed in text
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setLabel = function(text) {
 	this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
 
@@ -572,13 +594,16 @@ joint.dia.Link.prototype.setLabel = function(text) {
 	}
 };
 
-/*
-Setter for localLink label text.
-
-pre: The localLink exists
-     text : a valid string of some kind
-post: The label text of the node has been set to the passed in text
-*/
+/**
+ * Setter for localLink label text.
+ *
+ * pre: The localLink exists
+ text : a valid string of some kind
+post: The label
+ *   text of the node has been set to the passed in text
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setTextSize = function(textsize) {
 	var text = this.getLabel();
 	var colour = this.getTextColour();
@@ -589,13 +614,16 @@ joint.dia.Link.prototype.setTextSize = function(textsize) {
 	this.attr('text/text-size', textsize);
 };
 
-/*
-Setter for localLink label text.
-
-pre: The localLink exists
-     text : a valid string of some kind
-post: The label text of the node has been set to the passed in text
-*/
+/**
+ * Setter for localLink label text.
+ *
+ * pre: The localLink exists
+ text : a valid string of some kind
+post: The label
+ *   text of the node has been set to the passed in text
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getTextSize = function(textsize) {
 	return this.attr('text/text-size');
 };
@@ -603,8 +631,8 @@ joint.dia.Link.prototype.getTextSize = function(textsize) {
 
 
 
-/*
-Getter for localLink label text. Will return what the link currently
+/**
+ * Getter for localLink label text. Will return what the link currently
 has written and displayed partway along itself. If nothing is currently
 set, returns an empty string. ""
 
@@ -615,7 +643,9 @@ searching.
 pre: The localLink exists
 post: No change
 return: The label text of the localLink
-*/
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getLabel = function(text) {
 	if (this.attributes.labels) {
 		if (this.attributes.labels[0]) {
@@ -627,6 +657,11 @@ joint.dia.Link.prototype.getLabel = function(text) {
 	}
 };
 
+/**
+ * 
+ * @todo Finish this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setColour = function(colour) {
 	this.prop('colour', colour);
 	this.attr( {
@@ -637,7 +672,11 @@ joint.dia.Link.prototype.setColour = function(colour) {
 };
 
 
-
+/**
+ * 
+ * @todo Finish this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getColour = function(colour) {
 	return this.attributes.colour;
 };
