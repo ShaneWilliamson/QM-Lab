@@ -265,6 +265,7 @@ joint.shapes.basic.Rect.prototype.setColour = function(colour) {
 
 /**
  * Getter for the colour of the node.
+ * @returns {colour} colour of the node
  * @memberOf qm_lab_joint_classes
  */
 joint.shapes.basic.Rect.prototype.getColour = function(colour) {
@@ -281,7 +282,7 @@ joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
 
 /**
  * Getter for the text colour of the node.
- * @returns {colour} colou of the node
+ * @returns {colour} colour of the node
  * @memberOf qm_lab_joint_classes
  */
 joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
@@ -316,7 +317,7 @@ joint.shapes.basic.Rect.prototype.setImage = function() {
 };
 
 /**
- * @todo Function stub, returns blank
+ * @todo Function stub
  * @memberOf qm_lab_joint_classes
  */
 joint.shapes.basic.Rect.prototype.getImage = function() {
@@ -370,17 +371,26 @@ joint.shapes.basic.Circle.prototype.getYPos = joint.shapes.basic.Rect.prototype.
  * From a technical standpoint, this function simply wraps a joint.js link.
  *   However, it allows us to easily add and modify it without breaking anything
  *   else.
- * @preconditions "pos" is a valid point with an "x" and "y" field If any other
- *   parameters are passed, it will set the appropriate field in the link label
- *   : if passed, must be a valid stringify source : if passed, must be a valid
- *   cell in the graph target : if passed, must be a valid cell in the graph
- *   connector : if passed, must be one of three valid connector types: "normal"
- *   - this sets the link to only be made of straight lines "rouned" - like the
- *   above, this sets the lines to straight. However, this causes the angles to
- *   "round" themselves "smooth" - This causes the link to have no straight
- *   edges, and instead. gradually curve its way between vertices
- *   @todo  Fix this contract
- *   @memberOf qm_lab_joint_classes
+ * @preconditions "pos" is a valid point with an "x" and "y" field. If any other
+ *   parameters are passed, it will set the appropriate field in the link.
+ *
+ * Label: if passed, must be a valid stringify.
+ *
+ * Source : if passed, must be a valid cell in the graph.
+ *
+ * Target: if passed, must be a valid cell in the graph
+ *
+ * Connector : if passed, must be one of three valid connector types:
+ *
+ * "normal" - this sets the link to only be made of straight lines
+ *
+ * "rouned" - like the above, this sets the lines to straight. However, this
+ *   causes the angles to "round" themselves
+ *
+ * "smooth" - This causes the link to have no straight edges, and instead.
+ *   gradually curve its way between vertices
+ * @todo  Fix this contract
+ * @memberOf qm_lab_joint_classes
  */
 function localLink (pos, label, source, target, connector) {
 	var newLink = new joint.shapes.QMLab.localLink();
@@ -428,8 +438,7 @@ function localLink (pos, label, source, target, connector) {
 
 From a technical standpoint, this function simply wraps a joint.js link. However, it allows us
 to easily add and modify it without breaking anything else.
-
-pre: "pos" is a valid point with an "x" and "y" field
+ * @preconditions "pos" is a valid point with an "x" and "y" field
      If any other parameters are passed, it will set the appropriate field in the link
 	    label : if passed, must be a valid stringify
 		source : if passed, must be a valid cell in the graph
@@ -440,8 +449,7 @@ pre: "pos" is a valid point with an "x" and "y" field
 					           However, this causes the angles to "round" themselves
 				    "smooth" - This causes the link to have no straight edges, and instead
 					           gradually curve its way between vertices
-
-post: Returns a local link with source at the position "pos"
+ * @postconditions post: Returns a local link with source at the position "pos"
       If any other parameters are not undefined or false, it will set the appropriate field
 	    label : sets the text to display halfway along the link
         source: sets the node that this link comes out from.
@@ -479,15 +487,14 @@ function localFlow (pos, label, source, target, connector) {
 attached to at the "source" end of the link.
 
 If the link is attached to a cell, the returned value will be that cell's "id".
-Otherwise, it will return a point that has fields "x" and "y"
+Otherwise, it will return a point that has fields "x" and "y".
 
 If, for some reason this link has been created without a source attribute,
-will return undefined
+will return undefined.
 
-pre: The localLink exists
-post: No change
-return: The source of the localLink
- * @todo Format this header
+ * @preconditions The localLink exists
+ * @postconditions No change
+ * @returns {localLink} The source of the localLink
  * @memberOf qm_lab_joint_classes
  */
 joint.dia.Link.prototype.getStartNode = function() {
@@ -499,11 +506,9 @@ joint.dia.Link.prototype.getStartNode = function() {
  * Setter for localLink start node. Since this sets by using the cell's "id",
 the passed cell needs to be a valid cell.
 
-
-pre: The localLink exists
+ * @preconditions The localLink exists.
      souce : the cell exists and is in the graph
-post: The source of the node has been set to the passed in source
- * @todo Format this header
+ * @postconditions The source of the node has been set to the passed in source.
  * @memberOf qm_lab_joint_classes
  */
 joint.dia.Link.prototype.setStartNodeFromCell = function(source) {
@@ -524,14 +529,11 @@ joint.dia.Link.prototype.setStartNodeFromCell = function(source) {
 
 /**
  * Setter for localLink source node. Since this sets by using a point in the
- *   graph,
-source be a point with valid "x" and "y" fields.
- *
- * pre: The localLink exists
- souce : a valid point with "x" and "y"
- *   fields
-post: The source of the node has been set to the passed in source
- * @todo Format this header
+ *   graph, source be a point with valid "x" and "y" fields.
+ * @param {coordinate} source the starting point with 'x' and 'y' fields 
+ * @preconditions The localLink exists
+ 	souce : a valid point with "x" and "y" fields
+ * @postconditions The source of the node has been set to the passed in source
  * @memberOf qm_lab_joint_classes
  */
 joint.dia.Link.prototype.setStartNodeFromPoint = function(source) {
@@ -546,22 +548,17 @@ joint.dia.Link.prototype.setStartNodeFromPoint = function(source) {
 };
 
 /**
- * Getter for localLink end node. Will return what the link is
- *   currently
-attached to at the "target" end of the link.
+ * Getter for localLink end node. Will return what the link is currently
+ *   attached to at the "target" end of the link.
  *
  * If the link is attached to a cell, the returned value will be that cell's
- *   "id".
-Otherwise, it will return a point that has fields "x" and "y"
+ *   "id". Otherwise, it will return a point that has fields "x" and "y"
  *
- * If, for some reason this link has been created without a target
- *   attribute,
-will return undefined
- *
- * pre: The localLink exists
-post: No change
-return: The target of the localLink
- * @todo Format this header
+ * If, for some reason this link has been created without a target attribute,
+ *   will return undefined
+ * @preconditions The localLink exists.
+ * @postconditions No change.
+ * @returns {node}
  * @memberOf qm_lab_joint_classes
  */
 joint.dia.Link.prototype.getEndNode = function() {
@@ -569,15 +566,12 @@ joint.dia.Link.prototype.getEndNode = function() {
 };
 
 /**
- * Setter for localLink end node. Since this sets by using the cell's "id",
-the
+ * Setter for localLink end node. Since this sets by using the cell's "id", the
  *   passed cell needs to be a valid cell.
  *
- * pre: The localLink exists
- target : the cell exists and is in the graph
-post:
- *   The target of the node has been set to the passed in target
- * @todo Format this header
+ * @preconditions The localLink exists.
+ *  target : the cell exists and is in the graph
+ *  post: The target of the node has been set to the passed in target
  * @memberOf qm_lab_joint_classes
  */
 joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
@@ -586,14 +580,10 @@ joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
 
 /**
  * Setter for localLink target node. Since this sets by using a point in the
- *   graph,
-source be a point with valid "x" and "y" fields.
- *
- * pre: The localLink exists
- souce : a valid point with "x" and "y"
- *   fields
-post: The source of the node has been set to the passed in source
- * @todo Format this header
+ *   graph, source be a point with valid "x" and "y" fields.
+ * @param {coordinate} target a valid point with "x" and "y" fields
+ * @preconditions The localLink exists
+ * @postconditions The source of the node has been set to the passed in source
  * @memberOf qm_lab_joint_classes
  */
 joint.dia.Link.prototype.setEndNodeFromPoint = function(target) {
@@ -709,14 +699,22 @@ joint.dia.Link.prototype.getColour = function(colour) {
 	return this.attributes.colour;
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setTextColour = function(colour) {
 	var text = this.getLabel();
 	var textsize = this.getTextSize();
 	this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
 	this.attr('text/text-colour', colour);
 };
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getTextColour = function() {
 	var retVal = this.attr('text/text-colour');
 	if (retVal) {
@@ -728,25 +726,45 @@ joint.dia.Link.prototype.getTextColour = function() {
 
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getXSize = function() {
 	return "";
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.getYSize = function() {
 	return "";
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setWidth = function() {
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setHeight = function() {
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.attemptToParent = function() {
 	if (this.getSourceElement() != null &amp;&amp;
 		    this.getTargetElement() != null) {
@@ -758,39 +776,62 @@ joint.dia.Link.prototype.attemptToParent = function() {
 
 
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setSelected = function(value) {
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setPositiveTransition = function() {
 	this.attr({
 		'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z M 0 20 L 0 30 M -5 25 L 5 25 M 0 -20' },
 	});
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setNegativeTransition = function() {
 	this.attr({
 		'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z M -5 25 L 5 25 M 0 -15' },
 	});
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setAmbiguousTransition = function() {
 	this.attr({
 		'.marker-target': { d: 'M 18 0 L 8 5 L 18 10 z M 0 20 C 5 10 20 25 5 25 L 5 28 3 28 3 23  C 15 25 0 15 2 21 M 3 30 C 4 29 4 29 5 30 C 4 31 4 31 3 30M 0 -20 ' },
 	});
 };
-
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.setNoTransition = function() {
 	this.attr({
 		'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' },
 	});
 };
 
-//This is a placeholder
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.dia.Link.prototype.initialzeSourceAndTarget = function(localPos, source, target) {
 	//If a source was passed, set the link's source that
 	if (source) {
@@ -833,6 +874,11 @@ allowing us to easily customize it.	By default, sets the Link to behave exactly
 link a default joint.js basic Link.
 
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.localLink = joint.dia.Link.extend({
 	defaults: joint.util.deepSupplement({
 
@@ -847,6 +893,11 @@ allowing us to easily customize it.	By default, sets the Link to behave exactly
 link a default joint.js basic Link.
 
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Flow = joint.shapes.QMLab.localLink.extend({
 	defaults: joint.util.deepSupplement({
 
@@ -866,6 +917,11 @@ allowing us to easily customize it.	By default, sets the Link to behave exactly
 link a default joint.js basic Link.
 
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Transition = joint.shapes.QMLab.localLink.extend({
 	defaults: joint.util.deepSupplement({
 
@@ -882,6 +938,11 @@ like a default joint.js basic Link.
 
 '.connection2' is the white line drawn over the black line to give the visual effect of 2 lines.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Connection = joint.shapes.QMLab.localLink.extend({
 	
 	defaults: joint.util.deepSupplement({
@@ -901,6 +962,11 @@ allowing us to easily customize it.
 By default, sets the Node to look a certain way. Override the visual in the constructor,
 or call the setter methods if another visual is desired.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Node = joint.shapes.basic.Rect.extend( {
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
@@ -925,6 +991,11 @@ allowing us to easily customize it.
 By default, sets the Stock to look a certain way. Override the visual in the constructor,
 or call the setter methods if another visual is desired.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Stock = joint.shapes.basic.Rect.extend( {
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;text/>&lt;/g>',
 
@@ -947,6 +1018,11 @@ allowing us to easily customize it.
 By default, sets the State to look a certain way. Override the visual in the constructor,
 or call the setter methods if another visual is desired.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.State = joint.shapes.basic.Rect.extend( {
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
@@ -970,6 +1046,11 @@ allowing us to easily customize it.
 By default, sets the Terminal State to look a certain way. Override the visual in the constructor,
 or call the setter methods if another visual is desired.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.TerminalState = joint.shapes.basic.Rect.extend( {
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
@@ -991,6 +1072,11 @@ joint.shapes.QMLab.TerminalState = joint.shapes.basic.Rect.extend( {
 This is the shape definition of the "Final State" type. It extends joint.js' Circle shape,
 allowing us to easily customize it.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.FinalState = joint.shapes.basic.Circle.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1011,6 +1097,11 @@ allowing us to easily customize it.
 By default, sets the Branch to look a certain way. Override the visual in the constructor,
 or call the setter methods if another visual is desired.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Branch = joint.shapes.basic.Rect.extend( {
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
 
@@ -1042,6 +1133,11 @@ allowing us to easily customize it.
 By default, sets the ImageNode is set to hold a placeholder image, with text that states "Your Image Here".
 Override the visuals through either the constructor or the setter methods if another visual is desired.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.ImageNode = joint.shapes.basic.Rect.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;image/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1060,6 +1156,11 @@ joint.shapes.QMLab.ImageNode = joint.shapes.basic.Rect.extend({
 This is the shape definition of the "Variable" type. It extends joint.js' Circle shape,
 allowing us to easily customize it.
 */
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Variable = joint.shapes.basic.Circle.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1076,6 +1177,10 @@ joint.shapes.QMLab.Variable = joint.shapes.basic.Circle.extend({
 This is the shape definition of the "Parameter" type. It extends joint.js' Circle shape,
 allowing us to easily customize it.
 */
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Parameter = joint.shapes.basic.Circle.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1096,6 +1201,10 @@ allowing us to easily customize it.
 By default, sets the Agent is set to hold a placeholder image, with text that states "Agent".
 Override the visuals through either the constructor or the setter methods if another visual is desired.
 */
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Agent = joint.shapes.basic.Rect.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;image/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1115,6 +1224,10 @@ allowing us to easily customize it.
 By default, text area to look like a speach bubble.
 Override the visuals through either the constructor or the setter methods if another visual is desired.
 */
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Text = joint.shapes.basic.Rect.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1139,6 +1252,10 @@ joint.shapes.QMLab.Text = joint.shapes.basic.Rect.extend({
 This is the shape definition of the "Intervention" type. It extends joint.js' Circle shape,
 allowing us to easily customize it.
 */
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Intervention = joint.shapes.basic.Circle.extend({
 
 	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
@@ -1150,23 +1267,38 @@ joint.shapes.QMLab.Intervention = joint.shapes.basic.Circle.extend({
 	}, joint.shapes.basic.Circle.prototype.defaults)
 });
 
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.ImageNode.prototype.setImage = function(url) {
 	this.setAttr('image/xlink:href', url);
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
 	return this.attr('image/xlink:href');
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
 	this.setAttr('image/xlink:href', url);
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.Agent.prototype.getImage = function() {
 	return this.attr('image/xlink:href');
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
 	return this.attr("image/xlink:href");
 
@@ -1197,6 +1329,7 @@ joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
 
 /**
  * Resets the selectedEdge variable once an edge is let go of.
+ * @memberOf qm_lab_joint_classes
  */
 function dropEdge(cellView, evt, x, y){
 	if(selected[0]){
@@ -1205,6 +1338,7 @@ function dropEdge(cellView, evt, x, y){
 }
 /**
  * Sets the selected edge to top and calls startResizing to add event listeners to the paper.
+ * @memberOf qm_lab_joint_classes
  */
 function startResizingTop(evt){
 	//makes sure selected is actually set
@@ -1214,6 +1348,10 @@ function startResizingTop(evt){
 		console.log("Got top edge");
 	}
 }
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function startResizingBottom(evt){
 	//makes sure selected is actually set
 	if(undefined!=selected[0]){
@@ -1222,6 +1360,10 @@ function startResizingBottom(evt){
 		console.log("Got bottom edge");
 	}
 }
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function startResizingLeft(evt){
 	//makes sure selected is actually set
 	if(undefined!=selected[0]){
@@ -1230,6 +1372,10 @@ function startResizingLeft(evt){
 		console.log("Got left edge");
 	}
 }
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function startResizingRight(evt){
 	//makes sure selected is actually set
 	if(undefined!=selected[0]){
@@ -1238,17 +1384,29 @@ function startResizingRight(evt){
 		console.log("Got right edge");
 	}
 }
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function startResizing(event){
 	document.getElementById("paperView").addEventListener("mousemove", dragResize);
 	document.getElementById("paperView").addEventListener("mouseup", stopResizing);
 	console.log("resizing started");
 }
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function stopResizing(event){
 	console.log("resizing stopped");
 	document.getElementById("paperView").removeEventListener("mousemove", dragResize);
 	document.getElementById("paperView").removeEventListener("mouseup", stopResizing);
 	dropEdge();
 }
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function dragResize(event){
 	if(selected[0]){
 		var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
@@ -1300,7 +1458,7 @@ function dragResize(event){
 
 /**
  * Sets the initial HTML style, location and size of drag resizing handles in the views.
- * 
+ * @memberOf qm_lab_joint_classes
  */
 function setInitialHTML(view){
 	var bbox = view.model.getBBox();
@@ -1346,6 +1504,7 @@ function setInitialHTML(view){
 /**
  * Specialized version of setInitialHTML for TextBoxes which offsets the bounding box based on the 
  * distance between the point on the text box and the main box.
+ * @memberOf qm_lab_joint_classes
  */
 function setInitialHTMLText(view){
 	//Offset to compensate for the point of the text box
@@ -1448,7 +1607,10 @@ function setSelectedHTML(view){
 }
 
 
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function initializeStockView(){
 	joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
 		template: [
@@ -1490,7 +1652,10 @@ function initializeStockView(){
 }
 
 
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function initializeImageNodeView(){
 	joint.shapes.QMLab.ImageNodeView = joint.dia.ElementView.extend({
 		template: [
@@ -1530,7 +1695,10 @@ function initializeImageNodeView(){
 		}
 	});
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function initializeTextView(){
 	joint.shapes.QMLab.TextView = joint.dia.ElementView.extend({
 		template: [
@@ -1570,7 +1738,10 @@ function initializeTextView(){
 		}
 	});
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function initializeAgentView(){
 	joint.shapes.QMLab.AgentView = joint.dia.ElementView.extend({
 		template: [
@@ -1610,7 +1781,10 @@ function initializeAgentView(){
 		}
 	});
 }
-
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
 function initializeStateView(){
 	joint.shapes.QMLab.StateView = joint.dia.ElementView.extend({
 		template: [
@@ -1662,13 +1836,13 @@ function initializeStateView(){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul><h3>Global</h3><ul><li><a href="global.html#dropEdge">dropEdge</a></li><li><a href="global.html#setInitialHTML">setInitialHTML</a></li><li><a href="global.html#setInitialHTMLText">setInitialHTMLText</a></li><li><a href="global.html#startResizingTop">startResizingTop</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 07 2016 20:07:10 GMT-0600 (Canada Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 07 2016 23:12:21 GMT-0600 (Canada Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
