@@ -9,22 +9,31 @@ function beginTests() {
   onFileLoaded(doc);
 }
 
+Function.prototype.bind = Function.prototype.bind || function (thisp) {
+  var fn = this;
+  return function () {
+    return fn.apply(thisp, arguments);
+  };
+};
+
 QUnit.config.collapse = false;
 
 QUnit.test("Test Stock Creation", function( assert ) {
   var pos = {x: 3, y: 2};
   var newStock = new localNode(pos, "Stock");
-  assert.notDeepEqual(newStock, null);
-  assert.deepEqual(createStock(pos).attributes.position, newStock.attributes.position);
-  assert.deepEqual(newStock.getXPos(), newStock.attributes.position.x);
-  assert.deepEqual(newStock.getYPos(), newStock.attributes.position.y);
+  assert.notDeepEqual(newStock, null, "Ensures that the stock is not null");
+  assert.deepEqual(createStock(pos).attributes.position, newStock.attributes.position, "Positions are created as expected");
+  assert.deepEqual(newStock.getXPos(), newStock.attributes.position.x, "X coordinate is created as expected");
+  assert.deepEqual(newStock.getYPos(), newStock.attributes.position.y, "Y coordinate is created as expected");
 
   //Test now if we change the position will it change the attributes properly.
-  newStock.setPos(4,3);
-  assert.equal(newStock.getXPos(), 4);
-  assert.equal(newStock.getYPos(), 3);
+  var newX = 4;
+  var newY = 3;
+  newStock.setPos(newX, newY);
+  assert.equal(newStock.getXPos(), newX, "getXPos works as expected");
+  assert.equal(newStock.getYPos(), newY, "getYPos works as expected");
 
-  assert.equal(newStock.getImage(),"");
+  assert.equal(newStock.getImage(),"", "Image should return blank.");
 
 
 
@@ -60,15 +69,17 @@ QUnit.test("Test Image Creation and qmlabjointclasses tests", function( assert )
   assert.equal(newImage.getYSize(), sizeY);
 
   // Change size and confirm it changed properly
-  newImage.setHeight(20);
-  assert.equal(newImage.getYSize(), 20);
+  var newHeight = 20;
+  var newWidth = 30;
+  newImage.setHeight(newHeight);
+  assert.equal(newImage.getYSize(), newHeight), "getYSize is working as intended";
 
-  newImage.setWidth(30);
-  assert.equal(newImage.getXSize(), 30);
+  newImage.setWidth(newWidth);
+  assert.equal(newImage.getXSize(), newWidth, "getXSize is working as intended");
 
-  assert.equal(newImage.getLabel(), "A nice meme");
+  assert.equal(newImage.getLabel(), "A nice meme", "getLabel is working as intended.");
   newImage.setLabel(null);
-  assert.equal(newImage.getLabel(), "");
+  assert.equal(newImage.getLabel(), "", "Label should be blank");
 
   // Set the fill color and see if it changed it
   newImage.setColour("#ffffff");
@@ -79,16 +90,19 @@ QUnit.test("Test Image Creation and qmlabjointclasses tests", function( assert )
   assert.equal(newImage.getTextColour(), "#000000", "Changing text colour worked.");
 
   // Add a z order and see if it Changes
-  newImage.setZOrder(2);
-  assert.equal(newImage.getZOrder(), 2);
+  var newZOrder = 2;
+  newImage.setZOrder(newZOrder);
+  assert.equal(newImage.getZOrder(), newZOrder);
 
   // Gets the url
-  assert.equal(newImage.getImageURL(), "http://i.imgur.com/48dEoHh.jpg");
-  assert.equal(newImage.getImage(), "http://i.imgur.com/48dEoHh.jpg");
+  var imageURL = "http://i.imgur.com/48dEoHh.jpg";
+  assert.equal(newImage.getImageURL(), imageURL, "getImageURL returns proper url");
+  assert.equal(newImage.getImage(), imageURL, "getImage returns proper URL");
 
   // Change text size
-  newImage.setTextSize(10);
-  assert.equal(newImage.getTextSize(), 10);
+  var newTextSize = 10;
+  newImage.setTextSize(newTextSize);
+  assert.equal(newImage.getTextSize(), newTextSize, "getTextSize returns proper size");
 
 });
 
@@ -97,10 +111,10 @@ QUnit.test("Test Variable Creation", function( assert ) {
   var newVariable = new joint.shapes.QMLab.Variable({
     position: {x: pos.x, y: pos.y}
   });
-  assert.notDeepEqual(newVariable);
-  assert.deepEqual(createVariable(pos).attributes.position, newVariable.attributes.position);
-  assert.deepEqual(createVariable(pos).attributes.position.x, newVariable.attributes.position.x);
-  assert.deepEqual(createVariable(pos).attributes.position.y, newVariable.attributes.position.y);
+  assert.notDeepEqual(newVariable, null, "Assures the variable is not null");
+  assert.deepEqual(createVariable(pos).attributes.position, newVariable.attributes.position, "Positions are equal");
+  assert.equal(createVariable(pos).attributes.position.x, newVariable.attributes.position.x, "Checks if x is equal");
+  assert.equal(createVariable(pos).attributes.position.y, newVariable.attributes.position.y, "Checks if y is equal");
 
 
 });
@@ -111,14 +125,14 @@ QUnit.test("Test Parameter Creation", function( assert ) {
   var newParameter = new joint.shapes.QMLab.Parameter({
     position: {x: pos.x, y: pos.y}
   });
-  assert.notDeepEqual(newParameter, null);
-  assert.deepEqual(createParameter(pos).attributes.position, newParameter.attributes.position);
+  assert.notDeepEqual(newParameter, null), "Checks if parameter is not null";
+  assert.deepEqual(createParameter(pos).attributes.position, newParameter.attributes.position, "Checks if positions are equal");
 });
 
 QUnit.test("Test Flow Creation", function( assert ) {
   var pos = {x: 4, y: 3};
   var newFlow = new localFlow(pos, false, false, false, false);
-  assert.deepEqual(createFlow(pos).attributes.position, newFlow.attributes.position);
+  assert.deepEqual(createFlow(pos).attributes.position, newFlow.attributes.position, "Checks if positions are equal");
 
   var pos1 = {x: 0, y: 3};
   var pos2 = {x: 4, y: 4};
@@ -127,7 +141,7 @@ QUnit.test("Test Flow Creation", function( assert ) {
   var newStock1 = createStock(pos1);
   var newStock2 = createStock(pos2);
   var flow = localFlow (pos3, "Hello World", newStock1, newStock2, "Normal");
-  assert.equal(flow.getEndNode(), newStock2.id);
+  assert.equal(flow.getEndNode(), newStock2.id, "Checks if end node is the newStock2");
 
 });
 
@@ -140,7 +154,7 @@ QUnit.test("addCollabEventToAllCells() Test", function( assert ) {
 QUnit.test("addGlobalEventListeners() Test", function( assert ) {
   var eventListen = sinon.stub(document, "addEventListener",function (){return true;});
   addGlobalEventListeners()
-  assert.ok(eventListen);
+  assert.ok(eventListen, "addEventListener got called.");
   eventListen.restore();
 });
 
@@ -178,19 +192,19 @@ QUnit.test("Test Link Creation", function( assert ) {
   var newRLink = new localLink(pos, false, false, false, rConnector);
   var newSLink = new localLink(pos, false, false, false, sConnector);
 
-  assert.deepEqual(createLink(pos, nConnector).attributes.source, newNLink.attributes.source);
-  assert.deepEqual(createLink(pos, nConnector).attributes.target, newNLink.attributes.target);
-  assert.deepEqual(createLink(pos, nConnector).attributes.connector, newNLink.attributes.connector);
+  assert.deepEqual(createLink(pos, nConnector).attributes.source, newNLink.attributes.source, "Checks if sources are the same");
+  assert.deepEqual(createLink(pos, nConnector).attributes.target, newNLink.attributes.target, "Checks if targets are the same");
+  assert.deepEqual(createLink(pos, nConnector).attributes.connector, newNLink.attributes.connector, "Checks if connectors are the same");
 
 
-  assert.deepEqual(createLink(pos, rConnector).attributes.source, newRLink.attributes.source);
-  assert.deepEqual(createLink(pos, rConnector).attributes.target, newRLink.attributes.target);
-  assert.deepEqual(createLink(pos, rConnector).attributes.connector, newRLink.attributes.connector);
+  assert.deepEqual(createLink(pos, rConnector).attributes.source, newRLink.attributes.source, "Checks if sources are the same");
+  assert.deepEqual(createLink(pos, rConnector).attributes.target, newRLink.attributes.target, "Checks if targets are the same");
+  assert.deepEqual(createLink(pos, rConnector).attributes.connector, newRLink.attributes.connector, "Checks if connectors are the same");
 
 
-  assert.deepEqual(createLink(pos, sConnector).attributes.source, newSLink.attributes.source);
-  assert.deepEqual(createLink(pos, sConnector).attributes.target, newSLink.attributes.target);
-  assert.deepEqual(createLink(pos, sConnector).attributes.connector, newSLink.attributes.connector);
+  assert.deepEqual(createLink(pos, sConnector).attributes.source, newSLink.attributes.source, "Checks if sources are the same");
+  assert.deepEqual(createLink(pos, sConnector).attributes.target, newSLink.attributes.target, "Checks if targets are the same");
+  assert.deepEqual(createLink(pos, sConnector).attributes.connector, newSLink.attributes.connector, "Checks if connectors are the same");
 
   var pos1 = {x: 0, y: 3};
   var pos2 = {x: 4, y: 4};
@@ -199,19 +213,19 @@ QUnit.test("Test Link Creation", function( assert ) {
   var newStock2 = createStock(pos2);
 
   newNLink.setStartNodeFromCell(newStock1);
-  assert.deepEqual(newNLink.getStartNode(), newStock1.id);
+  assert.deepEqual(newNLink.getStartNode(), newStock1.id, "Ensure that the start node is the proper node attached.");
 
   // change the id of the stock so the id is null but stock exists
   var id = $.extend(true, {}, newStock1.id);
   newStock1.id = null;
   var spy = sinon.spy(console, "log");
   newNLink.setStartNodeFromCell(newStock1);
-  assert.ok(spy);
+  assert.ok(spy, "Method got called.");
   newStock1.id = id;
 
   // Change the id of the stock so the stock is null
   newNLink.setStartNodeFromCell(null);
-  assert.ok(spy);
+  assert.ok(spy, "Method got called.");
   spy.restore();
 
   // Create a link that has all variables
@@ -228,8 +242,8 @@ QUnit.test("createBranch(pos) test", function (assert){
   		position: { x: pos.x, y: pos.y },
 	});
   setUpNewCell(newState);
-  assert.notEqual(newState,null);
-  assert.deepEqual(createState(pos).attributes.pos, newState.attributes.pos );
+  assert.notEqual(newState,null, "Checks if state is not null");
+  assert.deepEqual(createState(pos).attributes.pos, newState.attributes.pos, "Checks if positions are the same");
 
 });
 
@@ -239,8 +253,8 @@ QUnit.test("createText(pos) test", function (assert){
   		position: { x: pos.x, y: pos.y },
 	});
   setUpNewCell(newText);
-  assert.notEqual(newText,null);
-  assert.deepEqual(createText(pos).attributes.pos, newText.attributes.pos );
+  assert.notEqual(newText,null, "Checks if text is not null.");
+  assert.deepEqual(createText(pos).attributes.pos, newText.attributes.pos, "Checks if positions are the same." );
 
 });
 
@@ -250,8 +264,8 @@ QUnit.test("createTerminalState(pos) test", function (assert){
   		position: { x: pos.x, y: pos.y },
 	});
   setUpNewCell(newTerminalState);
-  assert.notEqual(newTerminalState,null);
-  assert.deepEqual(createTerminalState(pos).attributes.pos, newTerminalState.attributes.pos );
+  assert.notEqual(newTerminalState,null, "Checks if terminal state is not null");
+  assert.deepEqual(createTerminalState(pos).attributes.pos, newTerminalState.attributes.pos, "Checks if positions are the same" );
 
 });
 
@@ -261,8 +275,8 @@ QUnit.test("createBranch(pos) test", function (assert){
   		position: { x: pos.x, y: pos.y },
 	});
   setUpNewCell(newBranch);
-  assert.notEqual(newBranch,null);
-  assert.deepEqual(createBranch(pos).attributes.pos, newBranch.attributes.pos );
+  assert.notEqual(newBranch,null, "Checks if the branch is not null.");
+  assert.deepEqual(createBranch(pos).attributes.pos, newBranch.attributes.pos, "Checks if the positions are the same." );
 
 });
 
@@ -277,10 +291,17 @@ QUnit.test("createAgent(pos) test", function (assert){
 			'image': { 'xlink:href': 'http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png', width: 10000, height: 10000 },
 		}
 	});
-  assert.notEqual(newAgent,null);
-  assert.deepEqual(createAgent(pos).attributes.pos, newAgent.attributes.pos );
+  assert.notEqual(newAgent,null, "Checks if the agent is not null.");
+  assert.deepEqual(createAgent(pos).attributes.pos, newAgent.attributes.pos, "Checks if the positions are the sames");
   newAgent.setImage("http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png");
-  assert.equal(newAgent.getImage(),"http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png");
+  assert.equal(newAgent.getImage(),"http://www.clker.com/cliparts/U/m/W/6/l/L/stick-man-hi.png", "Checks if the url is correct.");
+
+});
+
+QUnit.test("Test initialize views in qmlabjointclasses", function(assert){
+  var spy = sinon.spy(initializeStateView);
+  initializeView();
+  assert.ok(spy, "initializeStateView ran.");
 
 });
 
@@ -288,7 +309,7 @@ QUnit.test("createAgent(pos) test", function (assert){
 QUnit.test("Test initializeGraph()", function(assert){
   var spy = sinon.spy(JSON, "stringify");
   initializeGraph();
-  assert.ok(spy);
+  assert.ok(spy, "stringify ran without errors.");
   spy.restore();
 
 });
@@ -300,7 +321,7 @@ QUnit.test("Test create createTransition(pos)", function(assert){
   newTransition.initialzeSourceAndTarget(localPos, false, false);
 
 
-  assert.deepEqual(createTransition(pos).attributes.position, newTransition.attributes.position );
+  assert.deepEqual(createTransition(pos).attributes.position, newTransition.attributes.position, "Positions are equal to each other." );
 });
 
 QUnit.test("Test createConnection(pos)", function(assert){
@@ -308,7 +329,7 @@ QUnit.test("Test createConnection(pos)", function(assert){
   var newConnection = new joint.shapes.QMLab.Connection();
 	var localPos = $.extend(true, {}, pos);
   newConnection.initialzeSourceAndTarget(localPos, false, false);
-  assert.deepEqual(createConnection(pos).attributes.position, newConnection.attributes.position);
+  assert.deepEqual(createConnection(pos).attributes.position, newConnection.attributes.position, "Positions are equal to each other.");
 });
 
 QUnit.test("Test createIntervention(pos)", function(assert){
@@ -344,20 +365,13 @@ QUnit.test("Test createFinalState(pos)", function(assert){
 
 QUnit.test("Test compareArray())", function(assert){
   var a1 = [];
-  var a2 = []
+  var a2 = [];
   var a3 = [1];
   var a4 = [0];
 
-  assert.equal(compareArray(a1,a2), true);
-  assert.equal(compareArray(a3,a4), false);
-  assert.equal(compareArray(a1,a4), false);
+  assert.equal(compareArray(a1,a2), true, "The arrays are the same so they should be true.");
+  assert.equal(compareArray(a3,a4), false, "The arrays are different in elements so they should be false.");
+  assert.equal(compareArray(a1,a4), false, "The arrays are different in size so they should be false.");
 
-
-});
-
-// TODO: This test properly.
-QUnit.test("Test initializePaper()", function(assert){
-  initializePrintPaper();
-  assert.ok(true);
 
 });

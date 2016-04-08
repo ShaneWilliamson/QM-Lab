@@ -96,7 +96,7 @@ function loadShareDialog() {
         s = new gapi.drive.share.ShareClient();
         s.setOAuthToken(access_token);
     	s.setItemIds([fileId]);
-    }	
+    }
 
 	gapi.load('drive-share', init);
 }
@@ -141,8 +141,8 @@ function loadQM_Document(){
 			document.getElementById('createDoc').style.display = "block";
 			var submit = document.getElementById('docSubmit');
 			submit.addEventListener('click', createQM_Document);
-		} 	
-		
+		}
+
 	}
 }
 
