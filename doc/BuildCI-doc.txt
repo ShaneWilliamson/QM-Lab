@@ -1,0 +1,11 @@
+Build and Continuous Integration Documentation
+
+Build and CI Members: Shane Williamson (Build Master), Connor Nettleton-Gooding
+
+Throughout the incremental deliverables the build team's experience has been great. TravisCI proved to be a challenge to overcome, but that challenge mostly lied with our first experience with headless testing.
+
+Once we overcame that challenge using java's headless jdk and PhantomJS we were effevtively able to eliminate the greatest challenge present.
+
+the only other challenges that we had were helping the testing team implement their tests to be automated.
+
+
