@@ -21,16 +21,16 @@
  */
 function deParentCell(cellView, evt, x, y) {
 	var cell = cellView.model;
-	
+
 	if (cell.get('parent')) {
 		if (cell.isLink()) {
-			cell.attemptToParent()
+			cell.attemptToParent();
 		}
 		else {
 			graph.getCell(cell.get('parent')).unembed(cell);
 		}
 	}
-	
+
 }
 
 /**
@@ -50,14 +50,14 @@ function parentCell(cellView, evt, x, y) {
 
 		if (cellViewsBelow.length) {
 			// Note that the findViewsFromPoint() returns the view for the `cell` itself.
-			var cellViewBelow = _.find(cellViewsBelow, function(c) { return c.model.id !== cell.id });
-		
+			var cellViewBelow = _.find(cellViewsBelow, function(c) { return c.model.id !== cell.id; });
+
 			// Prevent recursive embedding.
 			if (cellViewBelow && isNotRecursiveEmbed(cell, cellViewBelow)) {
 				if (cellViewBelow.model.attributes.type === "QMLab.Agent") {
 					cell.toFront();
 					cellViewBelow.model.embed(cell);
-					
+
 					//Embed links if both link targets are in the same parent
 					var links = graph.getConnectedLinks(cell);
 					for (var i = 0; i < links.length; i++) {
@@ -67,7 +67,7 @@ function parentCell(cellView, evt, x, y) {
 							}
 						}
 					}
-					
+
 					bringChildrenOfParentToFront(cell);
 				}
 			}
@@ -128,7 +128,7 @@ function bringParentlessCellToFront(cellView, evt, x, y) {
  * @memberOf cell_parent_logic
  */
 function bringChildrenOfParentToFront(cell) {
-	var children = cell.getEmbeddedCells()
+	var children = cell.getEmbeddedCells();
 	if (children) {
 		for (var i = 0; i < children.length; i++) {
 			children[i].toFront();

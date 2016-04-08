@@ -35,6 +35,7 @@ module.exports = function(grunt) {
       	'--local-to-remote-url-access':true,
       	'--ssl-protocol':'any',
         '--cookies-file':'cookies.txt',
+        force: true,
         coverage: {
           disposeCollector: true,
           src: [
