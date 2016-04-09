@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Main/elementPropAlter.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">Main/elementPropAlter.js</span></h1>
+    <h2>
+        Statements: <span class="metric">10% <small>(4 / 40)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">0% <small>(0 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">10% <small>(4 / 40)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">Main/</a> &#187; elementPropAlter.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+* These functions are meant to grab the details of and alter values of elements
+* in the graph
+*/
+&nbsp;
+&nbsp;
+/**
+ * Fills the text boxes in the property pane with the given values based on whether an object is selected or not
+ * @preconditions If an object is selected, all proper fields have values and functions are declared
+ * @postconditions The properties will be displayed to reflect whether an object is selected
+ */
+<span class="fstat-no" title="function not covered" >function updateProperties() {</span>
+<span class="cstat-no" title="statement not covered" >	genUI.genPropertiesForm();</span>
+	
+<span class="cstat-no" title="statement not covered" >	var selectedObj = selected[0];</span>
+<span class="cstat-no" title="statement not covered" >	var formName = "propertiesFormId";</span>
+	
+<span class="cstat-no" title="statement not covered" >	var text = "";</span>
+<span class="cstat-no" title="statement not covered" >	var textsize = "";</span>
+<span class="cstat-no" title="statement not covered" >	var textcolour = "";</span>
+<span class="cstat-no" title="statement not covered" >	var width = "";</span>
+<span class="cstat-no" title="statement not covered" >	var height = "";</span>
+<span class="cstat-no" title="statement not covered" >	var colour = "";</span>
+<span class="cstat-no" title="statement not covered" >	var url = "";</span>
+	
+	
+<span class="cstat-no" title="statement not covered" >	if (selectedObj) {</span>
+<span class="cstat-no" title="statement not covered" >		text = selectedObj.getLabel();</span>
+<span class="cstat-no" title="statement not covered" >		textsize = selectedObj.getTextSize();</span>
+<span class="cstat-no" title="statement not covered" >		textcolour = selectedObj.getTextColour();</span>
+<span class="cstat-no" title="statement not covered" >		width = selectedObj.getXSize();</span>
+<span class="cstat-no" title="statement not covered" >		height = selectedObj.getYSize();</span>
+<span class="cstat-no" title="statement not covered" >		colour = selectedObj.getColour();</span>
+<span class="cstat-no" title="statement not covered" >		if (selectedObj.attributes.type === "QMLab.ImageNode" ) {</span>
+<span class="cstat-no" title="statement not covered" >			url = selectedObj.getImageURL();</span>
+		}
+<span class="cstat-no" title="statement not covered" >		if(selectedObj.attributes.type === "QMLab.Agent" ){</span>
+<span class="cstat-no" title="statement not covered" >			url = selectedObj.getImage();</span>
+		}
+	}
+	
+<span class="cstat-no" title="statement not covered" >	setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url)</span>
+}
+&nbsp;
+/**
+ * Fills the text boxes in the property pane with the given values
+ * @preconditions All textboxes and divs called exist in the DOM 
+ * @postconditions The properties will be displayed to reflect the values passed in.
+ */
+<span class="fstat-no" title="function not covered" >function setPropertyDisplayValues(text, textsize, textcolour, width, height, colour, url) {</span>
+	
+<span class="cstat-no" title="statement not covered" >	setPropertyInputBoxValueIfExists('text', text);</span>
+<span class="cstat-no" title="statement not covered" >	setPropertyInputBoxValueIfExists('textsize', textsize);</span>
+<span class="cstat-no" title="statement not covered" >	setPropertyInputBoxValueIfExists('width', width);</span>
+<span class="cstat-no" title="statement not covered" >	setPropertyInputBoxValueIfExists('height', height);</span>
+<span class="cstat-no" title="statement not covered" >	setPropertyInputBoxValueIfExists('url', url);</span>
+<span class="cstat-no" title="statement not covered" >	setPropertyColourPickerValueIfExists('textcolor', textcolour);</span>
+<span class="cstat-no" title="statement not covered" >	setPropertyColourPickerValueIfExists('color', colour);</span>
+}
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >function setPropertyInputBoxValueIfExists(name, value) {</span>
+<span class="cstat-no" title="statement not covered" >	var inputBox = document.querySelector('div[view_id="' + name + '"] input');</span>
+<span class="cstat-no" title="statement not covered" >	if (inputBox){</span>
+<span class="cstat-no" title="statement not covered" >		inputBox.value = value;</span>
+	}
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function setPropertyColourPickerValueIfExists(name, value) {</span>
+<span class="cstat-no" title="statement not covered" >	var div = document.querySelector('div[view_id="' + name + '"] div.webix_input_icon');</span>
+<span class="cstat-no" title="statement not covered" >	if (div){</span>
+<span class="cstat-no" title="statement not covered" >		document.querySelector('div[view_id="' + name + '"] div.webix_input_icon').style.background = value;</span>
+<span class="cstat-no" title="statement not covered" >		document.querySelector('div[view_id="' + name + '"] div.webix_inp_static').innerHTML = value;</span>
+	}
+&nbsp;
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 05 2016 15:27:23 GMT-0600 (CST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

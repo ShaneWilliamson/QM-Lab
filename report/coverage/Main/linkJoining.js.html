@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Main/linkJoining.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">Main/linkJoining.js</span></h1>
+    <h2>
+        Statements: <span class="metric">13.08% <small>(14 / 107)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">2.78% <small>(1 / 36)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">20% <small>(1 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">13.08% <small>(14 / 107)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">Main/</a> &#187; linkJoining.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+var lastLink;
+var isFlow;
+var isCurved;
+var isStraight;
+var hasMoved;
+var flowEndings;
+&nbsp;
+const LINK_OFFSET_X = 15;
+const LINK_OFFSET_Y = 15;
+&nbsp;
+/**
+ * If there is an element under the mouse when this function is called the given link will have that slement set to be it's "source" element, the "target" side of the link will then follow the mouse and be set to the element or position under the mouse on the next mouse down event
+ * @param  {newLink} is a valid link
+ * @preconditions newLink is a valid link and has not been called in the setUpNewCell function, this will not work if called after setUpNewCell
+ * @preconditions linkType is a string that describes the string that is passed in, either straight, curved, or flow
+ * @postconditions If the new link was created over an element, that element will become the source of the link and mouse listeners for on mouse down on will be added to the paper calling linkTargeter, and an on mouse move event listener will be added to the paper dic which will call mouseTracker
+ * @memberOf linkJoining
+ */
+function targetFollow(newLink, linkType, pos){
+	<span class="missing-if-branch" title="if path not taken" >I</span>if(pos == curMousePos)
+	{
+<span class="cstat-no" title="statement not covered" >		var objectAtPoint = graph.findModelsFromPoint(curMousePos);</span>
+&nbsp;
+		//find the type of links we are using and set the variables 
+<span class="cstat-no" title="statement not covered" >		if (linkType.localeCompare("flow") == 0)</span>
+		{
+<span class="cstat-no" title="statement not covered" >			isFlow = true;</span>
+<span class="cstat-no" title="statement not covered" >			isCurved = false;</span>
+<span class="cstat-no" title="statement not covered" >			isStraight = false;</span>
+		}
+		else <span class="cstat-no" title="statement not covered" >if (linkType.localeCompare("connection") == 0)</span>
+		{
+<span class="cstat-no" title="statement not covered" >			isFlow = false;</span>
+<span class="cstat-no" title="statement not covered" >			isCurved = true;</span>
+<span class="cstat-no" title="statement not covered" >			isStraight = false;</span>
+		}
+&nbsp;
+		else <span class="cstat-no" title="statement not covered" >if (linkType.localeCompare("transition") == 0)</span>
+		{
+<span class="cstat-no" title="statement not covered" >			isFlow = false;</span>
+<span class="cstat-no" title="statement not covered" >			isCurved = false;</span>
+<span class="cstat-no" title="statement not covered" >			isStraight = true;</span>
+		}
+&nbsp;
+		else 
+		{
+<span class="cstat-no" title="statement not covered" >			console.log("the wrong linke was passed in")</span>
+		}
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		lastLink = newLink;</span>
+<span class="cstat-no" title="statement not covered" >		if(typeof objectAtPoint[0] !== 'undefined')</span>
+		{
+			//console.log(newLink);
+			//console.log("test");
+			//console.log(objectAtPoint[0]);
+<span class="cstat-no" title="statement not covered" >			lastLink.set('source', {id: objectAtPoint[0].id});</span>
+			//console.log(lastLink);
+		}
+		else
+		{
+<span class="cstat-no" title="statement not covered" >			if(isFlow)</span>
+			{
+<span class="cstat-no" title="statement not covered" >				var cloud = flowCloudPrep();</span>
+<span class="cstat-no" title="statement not covered" >				lastLink.set('source', {id: cloud.id});</span>
+&nbsp;
+			}
+			else
+			{
+<span class="cstat-no" title="statement not covered" >			lastLink.set('target', {x:curMousePos.x  , y:curMousePos.y  });</span>
+			}
+		}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		var paperDiv = document.getElementById("paperView");</span>
+<span class="cstat-no" title="statement not covered" >		paper.$el.on("mousemove", mouseTracker);</span>
+<span class="cstat-no" title="statement not covered" >		paper.$el.on('click', addVertex);</span>
+<span class="cstat-no" title="statement not covered" >		paper.$el.on('dblclick', linkTargeter);</span>
+	}
+}
+&nbsp;
+/**
+ * Adds a vertex to the current link
+ * @param  {e} is the event that called addVertex
+ * @preconditions global variable lastLink is a valid link
+ * @postconditions adds a new vertex to lastLink at the current location of the mouse cursor
+ * @memberOf linkJoining
+ */
+<span class="fstat-no" title="function not covered" >function addVertex(e){</span>
+<span class="cstat-no" title="statement not covered" >	if(hasMoved)</span>
+	{
+<span class="cstat-no" title="statement not covered" >		updateMousePos(e);</span>
+<span class="cstat-no" title="statement not covered" >		var vertArray = lastLink.get('vertices');</span>
+<span class="cstat-no" title="statement not covered" >		var newArray;</span>
+<span class="cstat-no" title="statement not covered" >		if(typeof vertArray === 'undefined')</span>
+		{
+<span class="cstat-no" title="statement not covered" >			newArray = [{ x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y   }];</span>
+		}
+		else
+		{
+<span class="cstat-no" title="statement not covered" >			newArray =vertArray.concat([{ x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y  }]);</span>
+		}
+<span class="cstat-no" title="statement not covered" >		lastLink.set('vertices', newArray );</span>
+<span class="cstat-no" title="statement not covered" >		lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+<span class="cstat-no" title="statement not covered" >		console.log("log a click on addVertex");</span>
+<span class="cstat-no" title="statement not covered" >		hasMoved = false;</span>
+	}
+}
+&nbsp;
+/**
+ * Sets the target of the global variable lastLink to be the current position of the mouse cursor with a small offset so the user can not click on the link
+ * @param  {e} is the event that called mouseTracker 
+ * @preconditions global variable lastLink is a valid link
+ * @postconditions The new target of the global variable lastLink will be set to the current position of the mouse cursor with a small offset so the user can not click on it
+ * @memberOf linkJoining
+ */
+<span class="fstat-no" title="function not covered" >function mouseTracker(e){</span>
+<span class="cstat-no" title="statement not covered" >	updateMousePos(e);</span>
+<span class="cstat-no" title="statement not covered" >	var vertArray = lastLink.get('vertices');</span>
+<span class="cstat-no" title="statement not covered" >		var newArray;</span>
+<span class="cstat-no" title="statement not covered" >		if(typeof vertArray === 'undefined')</span>
+		{
+			
+<span class="cstat-no" title="statement not covered" >			if( typeof lastLink.get('source').id === 'undefined' )</span>
+			{
+<span class="cstat-no" title="statement not covered" >				if( lastLink.get('source').x &lt; curMousePos.x)</span>
+				{
+<span class="cstat-no" title="statement not covered" >					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+				}
+				else
+				{
+<span class="cstat-no" title="statement not covered" >					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+				}
+			}
+			else
+			{
+<span class="cstat-no" title="statement not covered" >				var temp = lastLink.getSourceElement();</span>
+<span class="cstat-no" title="statement not covered" >				var sourceid = temp.id;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >				var actualSource = graph.getCell(sourceid);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >				if(actualSource.position.x &lt; curMousePos)</span>
+				{
+<span class="cstat-no" title="statement not covered" >					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+				}
+				else
+				{
+<span class="cstat-no" title="statement not covered" >					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+				}
+			}
+		}
+		else
+		{
+<span class="cstat-no" title="statement not covered" >			var popArray = vertArray[vertArray.length -1];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >			if(popArray.x &lt; curMousePos.x)</span>
+				{
+<span class="cstat-no" title="statement not covered" >					lastLink.set('target', { x:curMousePos.x -LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+				}
+				else
+				{
+<span class="cstat-no" title="statement not covered" >					lastLink.set('target', { x:curMousePos.x +LINK_OFFSET_X , y:curMousePos.y -LINK_OFFSET_Y });</span>
+				}
+		}
+<span class="cstat-no" title="statement not covered" >	hasMoved=true;</span>
+}
+&nbsp;
+/**
+ * Sets the target of the global variable lastLink to be either the current location of the mouse cursor, or the element that is currently under the mouse cursor if there is an element there
+ * @param  {e} is the event that called linkTargeter
+ * @preconditions global variable lastLink is a valid link
+ * @postconditions The new target of the global variable lastLink will be set to be either the current location of the mouse cursor, or the element that is currently under the mouse cursor if there is an element there. lastLink will then be set to null and the event listeners for linkTargeter and mouseTracker will be removed
+ * @memberOf linkJoining
+ */
+<span class="fstat-no" title="function not covered" >function linkTargeter(e){</span>
+<span class="cstat-no" title="statement not covered" >	updateMousePos(e);</span>
+<span class="cstat-no" title="statement not covered" >	console.log(curMousePos);</span>
+	
+	
+<span class="cstat-no" title="statement not covered" >	var objectAtPoint = graph.findModelsFromPoint(curMousePos);</span>
+<span class="cstat-no" title="statement not covered" >	if(typeof objectAtPoint[0] !== 'undefined')</span>
+	{
+<span class="cstat-no" title="statement not covered" >		lastLink.set('target', {id: objectAtPoint[0].id});</span>
+	}
+	else
+	{
+<span class="cstat-no" title="statement not covered" >		if(isFlow)</span>
+		{
+<span class="cstat-no" title="statement not covered" >			var cloud = flowCloudPrep();</span>
+<span class="cstat-no" title="statement not covered" >			lastLink.set('target', {id: cloud.id});</span>
+		}
+		else
+		{
+<span class="cstat-no" title="statement not covered" >			lastLink.set('target', {x:curMousePos.x  , y:curMousePos.y  });</span>
+		}
+	}
+	
+<span class="cstat-no" title="statement not covered" >	var vertArray = lastLink.get('vertices');</span>
+<span class="cstat-no" title="statement not covered" >	var newArray;</span>
+<span class="cstat-no" title="statement not covered" >	if(typeof vertArray === 'undefined' || vertArray[0] === 'undefined')</span>
+	{
+<span class="cstat-no" title="statement not covered" >		newArray = [];</span>
+	}
+	else
+	{
+		//console.log(vertArray);
+<span class="cstat-no" title="statement not covered" >		newArray =vertArray.slice(0, vertArray.length-1);</span>
+	}
+	//console.log(newArray);
+<span class="cstat-no" title="statement not covered" >	lastLink.set('vertices', newArray );</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	if(isFlow){</span>
+<span class="cstat-no" title="statement not covered" >		console.log("making new flow");</span>
+<span class="cstat-no" title="statement not covered" >		var newFlow = createFlow({x:1, y:1});</span>
+		//note this line doesn't really do anything, but it necesary because without it the lines under 
+		//it will not function as intended 
+<span class="cstat-no" title="statement not covered" >		newFlow.set('source', {x:0 , y:0});</span>
+<span class="cstat-no" title="statement not covered" >		newFlow.set('target',{id: lastLink.getTargetElement().id});</span>
+<span class="cstat-no" title="statement not covered" >		newFlow.set('source', { id: lastLink.getSourceElement().id});</span>
+<span class="cstat-no" title="statement not covered" >		newFlow.set('vertices', newArray );</span>
+<span class="cstat-no" title="statement not covered" >		newFlow.setLabel(" ");</span>
+<span class="cstat-no" title="statement not covered" >		lastLink.remove();</span>
+	}
+<span class="cstat-no" title="statement not covered" >	paper.$el.off("mousemove", mouseTracker);</span>
+<span class="cstat-no" title="statement not covered" >	paper.$el.off('dblclick', linkTargeter);</span>
+<span class="cstat-no" title="statement not covered" >	paper.$el.off('click', addVertex);</span>
+<span class="cstat-no" title="statement not covered" >	lastLink = null; </span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	isFlow = false;</span>
+<span class="cstat-no" title="statement not covered" >	isCurved = false;</span>
+<span class="cstat-no" title="statement not covered" >	isStraight = false;</span>
+&nbsp;
+}
+&nbsp;
+/**
+ * Will create a cloud at the current mouse position, This should be called during the time a flow link is being created
+ * @preconditions the mouse position is a valid spot on the paper
+ * @postconditions a cloud is made at the current location of the mouse, this should be made only at the ends or starts of flows. Also sets the global variable isFlow to true
+ * @return returns the new cloud image
+ * @memberOf linkJoining
+ */
+<span class="fstat-no" title="function not covered" > function flowCloudPrep(){</span>
+ 	// http://i.imgur.com/1TRqx2p.png this is a crappy cloud I drew
+&nbsp;
+<span class="cstat-no" title="statement not covered" > 	pos = ({x:curMousePos.x -25 , y:curMousePos.y -25  });</span>
+<span class="cstat-no" title="statement not covered" > 	var cloud = createImage(pos, "http://i.imgur.com/1TRqx2p.png", " ", 50,50);</span>
+ 	//setting global variable link head to be the vector for the current link end
+<span class="cstat-no" title="statement not covered" > 	flowEndings = lastLink.attr('.marker-target/d');</span>
+<span class="cstat-no" title="statement not covered" > 	console.log(flowEndings);</span>
+ 	//setting the arrowhead of the flow to be a cloud
+<span class="cstat-no" title="statement not covered" > 	lastLink.attr('.marker-target/d', d="M 35.00,22.00 44.09,20.16 45.48,22.65 47.94,30.00 48.76,32.42 49.93,34.34 49.32,37.00 48.96,38.58 47.65,40.49 46.91,42.00 45.25,45.39 44.82,49.33 39.96,48.32 37.59,47.82 35.51,46.15 33.00,46.09 27.33,46.24 26.08,52.13 16.00,46.09 7.17,52.49 -4.12,40.95 7.00,35.00 5.71,33.40 4.36,31.87 3.46,30.00 -0.92,20.89 8.42,19.06 15.00,19.00 18.02,9.55 32.07,12.09 35.00,22.00 Z");</span>
+ 	//console.log("setting fill");
+<span class="cstat-no" title="statement not covered" > 	lastLink.attr('.marker-target/fill', 'white');</span>
+ 	//console.log("fill set");
+<span class="cstat-no" title="statement not covered" > 	return cloud;</span>
+ }</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 05 2016 15:27:23 GMT-0600 (CST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

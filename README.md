@@ -9,6 +9,119 @@ Please see the [wiki](https://github.com/ShaneWilliamson/QM-Lab/wiki) for an in-
 
 The wiki pages are pretty barren at the moment, so if you have something to add please do so!
 
+ID5 
+=====
+
+This was a more difficult ID for us in general. I felt that we were struggling quite a bit with other classes, which slowed us down quite a bit. 
+	that being said, we pressed forward, and now we're at the end of it, and if you feel the project was a success, so do we. 
+	
+Testing report: The testing team worked on unit tests that gave additional coverage to the program. Manual tests were performed and if any bugs 
+	were found they would be sent to the GitHub issue tracker. In addition to sending bugs to the GitHub issue tracker there was a test report 
+	that would track the overall status of the application’s functionality. The test cases, test scenario, and test matrix were improved and added 
+	to, as they were a lot easier to use. For an example, before you had to identify what type of test scenario your test scenario was (unit test, 
+	system test, etc.) but that wasn’t practical so now no type is required when adding a test scenario. Finally we added the Selenium Grid into our 
+	automation. Selenium Grid runs both Firefox and Chrome simultaneously. Selenium works really well with automation and future builds as it looks 
+	for key identifiers for elements (uses mostly xpath to find elements that contain words). If time permitting we would like to change all the 
+	find elements to xpaths instead of using ids. As well our Selenium tests try two methods to log into Google (as there are two layouts to log in) 
+	and if the first method fails the second method will work. 
+	
+Matt report regarding drag select: 
+	Drawing box
+		- had to thoroughly search joint documentation trying to find a way to create a simple box. 
+			- couldn’t find anything. 
+			- took a while to figure this out
+		- had to draw directly to canvas. 
+			- tried to draw to the normal raster canvas, 
+			- didn’t work. 
+			- finally figured out I could request the svg canvas instead
+			- Had to insert an html element directly into the dorm. 
+				- didn’t know how to do that, had to figure it out piece by piece. 
+				- insert into right canvas
+		- yay drag selection box drawing is working or is it. 
+			- boxes are only being drawn properly when dragged from top left to bottom right. 
+			- but why?
+			- turns out after some painstaking debugging that s_vg elements must have a positive width and height and always 
+					have to be drawn from top left to bottom right.
+			- So what if the user drags from bottom right to top left? 
+				- answer = nothing. 
+				- solution was relatively simple, but figuring out what the real issue was the hard part
+				- solution = conversion function to convert a_r_bi_t_ary two points into s_vg friendly rect 
+					(width,height, starting point) 
+			- Yay drag selection box is working ... still nope
+				- doesn’t work when the canvas is zoomed in/out 
+				- but why? 
+				- box selection coords are relative to screen since they are mouse coords
+				- however the e Intjre s_vg canvas is actually being zoomed and the box is being drawn relative to the canvas itself
+				- solution = track the relative zoom of the canvas and scale the box coords appropriately.  
+			- yay drag selection box is working ... still nope
+				- when the canvas is panned the box is drawn at wonky coords. 
+				- luckily this is issue is pretty similar to the zooming thing, so it is easily solved
+			- THE BOX NOW DRAWS SUCCESSFULLY WHEN DRAGGED!!! YAY 
+		- Better Selection 
+			- while things were selectable, existing object strokes were overwritten
+			- So I redid selection found a highlight() method that looked promising 
+			- figured out after some trial and error that I could get all of the objects within an area in the GRAPH. 
+			- couldn’t set the objects as highlighted though.  
+			- After some headbangjng I figured out that it was because the graph only holds some attributes for objects 
+					(width, height, text, etc...), but highlighting and styling information is held in the “Paper”
+			- Solution = query the paper for the view corresponding to the graph data item and set the view as highlighted. 
+		- Moving multiple selected items
+			- Should be easy right? 
+			- detect a drag, then apply a translation to all highlighted elements by the proper (scaled and relative) amount
+			- To detect the drag though we have to register an event handler with the paper
+		- So we do just that, and the code to get a list of highlighted items, then find the corresponding items in the graph and translate them
+		- Now the item that we are dragging the group around with is being moved twice as much as the other items in the group
+		- Okay so the paper’s internal event handler is probably attempting to move the item around since we are dragging on it
+		- Essentially the object is being dragged _s_i_m_ul_ate_no_u_s_ly by two event handlers
+		- After scouring the joint is documentation for a way to disable the default event handler, there isn’t anything
+		- Can’t really tell which graph element is actually being dragged either
+		- So I attempt to undo our second drag with yet another drag handler, which would perform a negative translation, In effect undoing our other drag handler
+		- Now our dragged item is moving properly, but the other items in the group are doing weird stuff. Jumping around and “jittering”
+		- Maybe we can interrupt the initial event handler and consume the event, preventing the double dragging.
+		- However the paper’s event handlers are always registered before, and thus have higher priority than ours
+		- Around this point the two Michaels from the implementation team spend an hour or two with me trying to figure this out as a team
+		- Nobody can really figure out anything else to try
+		- FeelsBadMan.jpg
+		- Try to pry into the jojnth spaghetti code to find out where the internal event handlers are/try to block them
+		- Can’t
+		- And this is where the tale ends
+
+		
+	I apologize for the wall of text, but we really needed to drive home that he put a lot of effort into this, and 
+		it just didn't work out. 
+		
+Other ontes include that we had a Code Freeze, which was originally for the prior thursday, then pushed to friday due to things not quite
+	being ready, then pushed to Saturday after we got the extension. 
+	
+Saturday we had a bug party. It turned out to be a lot more bugfixing than bug finding, however, Corey and I were able to locate 
+	a number of bugs, and provide direction to the implementation and testing team that were there. I went through all the 
+	issues in the tracker and triaged them. There was Corey, Michael Ruffel, Matt, Shane, Connor and Angela there. 
+
+Tuesday during the lab session, we had the final reviews. I had found that Benjin, Angela and Mitchell had not yet had their reviews. 
+	since most of the group was there, we split into 2 smaller reviews and conducted multiple reviews simultaneously, while we 
+	populated each group with relevant members. 
+		
+I personally for this deliverable and a bit of the last, ended up spending a lot more energy micro managing the implementation team. 
+	Michael Ruffel was contributing to the code meaningfully, but not being a strong leader, and nobody else seemed interested, so
+	I ended up leading them much more closely than the other teams in which cases, I typically only really spoke with the team leads. 
+		
+The exception to the last point was when Corey brought to my attention that he was not sure what contributions Mitchell had made 
+	that ID and asked me to speak to him about it, so I did. I found out that Mitchell had simply gotten busy with the other assignments and
+	lost track of the deliverable on this one, and he assured me that he would get that work done as soon as possible then continue on to ID5. 
+	A follow up a short while later told me that he had been working on the material assigned by Corey. 
+	
+Where to go from here: 
+	- I think that I would actually move away from joint.js for links. While it proved useful for the project, moving further, it might end 
+		up being too restrictive. It became very difficult to get certain desired behaviors from the links; particularly the Flows. 
+		While we were successful in getting the pipe appearance, it did require modification of joint.js itself, which makes updates
+		of joint.js risky. It also was limiting in the style and nature of the labels or marks we could add. Adding the 'valve' on
+		the flow was actually only really possible through text. We were limited to having text labels appear as either large blob 
+		labels, or be whitespace, and either way, intersecting the line itself; not being above or below it. 
+	Additionally, I find that working with joint.js links to be generally troublesome in that they have useablitlity issues, with which 
+		you are familiar. 
+	
+	There is an existing set of updated issues in the tracker which you can see, and is up to date as per my knowledge. 
+	
 ID4
 =====
 We have a Documents manager (Angela), whom I have asked to make documents homogenized between github and google docs as much as possible; ie. same documents, 

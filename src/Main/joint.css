@@ -114,6 +114,12 @@ very thin.
    stroke-linejoin: round;
 }
 
+/* The 2nd possible line to be drawn. Used as a line overlay to give the effect of having 2 lines underneath. */
+.connection2 {
+  fill: none;
+  stroke-linejoin: round;
+}
+
 .marker-source, .marker-target {
 /* Cannot be in CSS otherwise it could not be overruled by attributes.
    fill: black;
@@ -199,7 +205,9 @@ Vertex markers are `<circle>` elements that appear at connection vertex position
 /* Cell highlighting - e.g a cell underneath the dragged link get highlighted.
    See joint.dia.cell.js highlight(); */
 .highlighted {
-    opacity: 0.7;
+    #opacity: 0.7;
+	outline: red;
+	stroke-width: 3;
 }
 
 /* For some reason, CSS `outline` property

@@ -50,8 +50,3 @@ sudo sh -e /etc/init.d/xvfb start
 
 echo "Starting Google Chrome ..."
 sudo google-chrome --remote-debugging-port=9222 &
-
-# Finally, starting up Selenium server
-#
-echo "\r\nStarting up Selenium server ...\r\n"
-DISPLAY=:1 xvfb-run java -jar ~/selenium/selenium-server-standalone-2.52.0.jar &

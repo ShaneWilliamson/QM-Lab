@@ -13,6 +13,7 @@ var clientId = '107414709467-qu9f2182pb7i3r7607cugihbiuua0e5v.apps.googleusercon
  * Google Realtime API check to ensure the application has been properly set up.
  *   Alerts the user if something has gone horribly wrong and no functionality
  *   related to real-time collaboration will function.
+ * @ignore
  */
 if (!/^([0-9])$/.test(clientId[0])) {
 	alert('Invalid Client ID - did you forget to insert your application Client ID?');
@@ -95,7 +96,7 @@ function loadShareDialog() {
         s = new gapi.drive.share.ShareClient();
         s.setOAuthToken(access_token);
     	s.setItemIds([fileId]);
-    }	
+    }
 
 	gapi.load('drive-share', init);
 }
@@ -140,8 +141,8 @@ function loadQM_Document(){
 			document.getElementById('createDoc').style.display = "block";
 			var submit = document.getElementById('docSubmit');
 			submit.addEventListener('click', createQM_Document);
-		} 	
-		
+		}
+
 	}
 }
 

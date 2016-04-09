@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: qmlabjointclasses.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: qmlabjointclasses.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//////////////////////////
+// qm_lab_joint_classes //
+//////////////////////////
+/**
+* Different classes created for QM lab to be used by joint.js
+* @todo finish adding contracts
+* @class qm_lab_joint_classes
+*/
+
+/**
+ * This is the constructor of the localNode class.
+ *
+ * From a technical standpoint, this function simply wraps a joint.js cell.
+ *   However, it allows us to easily add and modify it without breaking anything
+ *   else.
+ * @preconditions "pos" is a valid point with an "x" and "y" field
+ * @postconditions Returns a local node at the position "pos", if a label
+ *   parameter has been passed in, text on the node will default to that,
+ *   otherwise, text on the node will default to "Node"
+ * @param  {coordinate} pos   "pos" is a valid point with an "x" and "y" field
+ * @param  {string} label        default label of the node
+ * @return {node}    a new node at position pos, with label label
+ * @memberOf qm_lab_joint_classes
+ */
+function localNode (pos, label) {
+	newNode = new joint.shapes.QMLab.Stock({
+		position: { x: pos.x, y: pos.y },
+	});
+	if (label) {
+		newNode.setLabel(label);
+	}
+	return newNode;
+}
+
+/**
+ * Getter for localNode x position. Will return the x coordinate of the node.
+ * @preconditions The localNode exists
+ * @postconditions No change
+ * @return {int} The x position of the localNode
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getXPos = function() {
+	return this.attributes.position.x;
+};
+
+/**
+ * Getter for localNode y position. Will return the y coordinate of the node.
+ * @preconditions The localNode exists
+ * @return {int} The y position of the localNode
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getYPos = function() {
+	return this.attributes.position.y;
+};
+
+/**
+ * Setter for localNode position.
+ * @preconditions The localNode exists, x and y are valid ints.
+ * @postconditions The localCell's position has been updated to {x, y}
+ * @param {int} x setter for x
+ * @param {int} y setter for y
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setPos = function(x, y) {
+	this.attributes.position = {x: x, y: y};
+};
+
+/**
+ * Getter for localNode width attribute. Will return the x size of the node.
+ * @preconditions The localNode exists
+ * @return {int} x
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getXSize = function() {
+	return this.attributes.size.width;
+};
+
+/**
+ * Getter for localNode height attribute. Will return the y size of the node.
+ * @preconditions The localNode exists
+ * @return {int} y
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getYSize = function() {
+	return this.attributes.size.height;
+};
+
+/**
+ * Setter for localNode size.
+ * @preconditions The localNode exists, width and height are valid ints.
+ * @postconditions The localCell's size has been updated to {width, height}
+ * @param {int} width  width the node is being set to
+ * @param {int} height height the node is being set to
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setSize = function(width, height) {
+	//this.setAttr('rect/width', width);
+	//this.setAttr('rect/height', height);
+	//this.setAttr('image/width', width);
+	//this.setAttr('image/height', height);
+
+	var r = (width > height) ? width : height;
+	//this.setAttr('circle/radius', radius);
+	
+	this.resize(width, height);
+
+	this.attr('text/ref-x', (width / 2));
+	if (this.attributes.type === "QMLab.Agent" || this.attributes.type === "QMLab.ImageNode" || 
+	    this.attributes.type === "QMLab.Variable" || this.attributes.type === "QMLab.Parameter" ||
+		this.attributes.type === "QMLab.Intervention" || this.attributes.type === "QMLab.FinalState")
+	{
+		this.attr('text/ref-y', (height + this.getTextSize));
+	}
+	else {
+		this.attr('text/ref-y', ((height / 2) - 10));
+	}
+
+
+};
+
+
+/**
+ * Setter for localNode height.
+ * @preconditions The localNode exists, height is a valid int.
+ * @postconditions The localCell's size has been updated to {curWidth, height}.
+ * @param {int} height setter
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setHeight = function(height) {
+	if (height > 0) {
+		this.setSize(this.getXSize(), height);
+	}
+};
+
+/**
+ * Setter for localNode width.
+ * @preconditions The localNode exists, width is a valid int.
+ * @postconditions The localCell's size has been updated to {width, curHeight}
+ * @param {int} width setter
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setWidth = function(width) {
+	if (width > 0) {
+		this.setSize(width, this.getYSize());
+	}
+};
+
+/**
+ * Getter for localNode z-order attribute. Will return the order in which it is
+ *   drawn on the screen.
+ * @preconditions The localNode exists
+ * @return {int} The z-order of the localNode
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getZOrder = function() {
+	return this.attributes.z;
+};
+
+/**
+ * Setter for localNode z-order. Changes what order it is drawn on the screen
+ * @preconditions The localNode exists, z is a valid int
+ * @param {int} z setter
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setZOrder = function(z) {
+	if (!isNaN(z)) {
+		this.set('z', z);
+	}
+};
+
+/**
+ * Getter for localNode label attribute. Will return the text associated with
+ *   this node.
+ * @preconditions The localNode exists
+ * @return {int} getter
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getLabel = function() {
+	var retval = this.attributes.text.text;
+	if (!retval) {
+		return "";
+
+	}
+	else {
+		return retval;
+	}
+};
+
+/**
+ * Setter for localNode label attribute. Will set the text associated with
+ *   this node.
+ * @preconditions The localNode exists
+ * @param {int} text setter
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setLabel = function(text) {
+	this.setAttr('text/text', text);
+};
+
+/**
+ * Setter for whether or not a node appears to be selected, When this value is
+ *   set to true the node has a blue outline around it, When this value is set
+ *   to false, the blue outline is removed
+ * @param {Boolean} isSelected is the set selected
+ * @preconditions The localNode exists, isSelected isn't null, isSelected is a
+ *   boolean
+ * @postconditions the colour of the localNode is set to blue or transparent
+ *   blue
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setSelected = function(isSelected) {
+	if (isSelected) {
+		// set colour to blue
+		colour = "#0000FF";
+	} else {
+		// set colour to black
+		colour = "#000000";
+	}
+
+	this.setAttr('rect/stroke', colour);
+	this.setAttr('path/stroke', colour);
+	this.setAttr('circle/stroke', colour);
+};
+
+/**
+ * Setter for the node colour
+ * @preconditions The localNode exists
+ * @postconditions The color of the node is set.
+ * @param {color} colour a hex color code
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setColour = function(colour) {
+
+	this.setAttr('rect/fill', colour);
+	this.setAttr('path/fill', colour);
+};
+
+/**
+ * Getter for the colour of the node.
+ * @returns {colour} colour of the node
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getColour = function(colour) {
+	return this.attributes.rect.fill;
+};
+
+/**
+ * Setter for the text colour of the node.
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setTextColour = function(colour) {
+	this.setAttr('text/fill', colour);
+};
+
+/**
+ * Getter for the text colour of the node.
+ * @returns {colour} colour of the node
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getTextColour = function(colour) {
+	return this.attributes.text.fill;
+};
+
+/**
+ * Setter for the text size of the node.
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setTextSize = function(size) {
+	if(!isNaN(size)) {
+		this.setAttr('text/font-size', size);
+	}
+};
+
+/**
+ * Getter for the text size of the node.
+ * @returns {int} string size
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getTextSize = function() {
+	return this.attr('text/font-size');
+};
+
+/**
+ * @todo Function stub
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setImage = function() {
+
+};
+
+/**
+ * @todo Function stub
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.getImage = function() {
+	return "";
+};
+
+/**
+ * Sets the attribute of the local node.
+ * @param {string} property property to be changed on the node
+ * @param {object} value    value the property is being changed to
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.basic.Rect.prototype.setAttr = function(property, value) {
+	this.prop(property, value);
+	this.attr(property, value);
+};
+
+
+
+
+
+joint.shapes.basic.Circle.prototype.setAttr = joint.shapes.basic.Rect.prototype.setAttr;
+joint.shapes.basic.Circle.prototype.setLabel = joint.shapes.basic.Rect.prototype.setLabel;
+joint.shapes.basic.Circle.prototype.setTextSize = joint.shapes.basic.Rect.prototype.setTextSize;
+joint.shapes.basic.Circle.prototype.setTextColour = joint.shapes.basic.Rect.prototype.setTextColour;
+joint.shapes.basic.Circle.prototype.setColour = function(colour) {
+	this.setAttr('rect/fill', colour);
+	this.setAttr('path/fill', 'black');
+	this.setAttr('circle/fill', colour);
+}
+joint.shapes.basic.Circle.prototype.setSelected = joint.shapes.basic.Rect.prototype.setSelected;
+joint.shapes.basic.Circle.prototype.setWidth = joint.shapes.basic.Rect.prototype.setWidth;
+joint.shapes.basic.Circle.prototype.setHeight = joint.shapes.basic.Rect.prototype.setHeight;
+joint.shapes.basic.Circle.prototype.setSize = joint.shapes.basic.Rect.prototype.setSize;
+joint.shapes.basic.Circle.prototype.setImage = joint.shapes.basic.Rect.prototype.setImage;
+
+joint.shapes.basic.Circle.prototype.getLabel = joint.shapes.basic.Rect.prototype.getLabel;
+joint.shapes.basic.Circle.prototype.getTextSize = joint.shapes.basic.Rect.prototype.getTextSize;
+joint.shapes.basic.Circle.prototype.getTextColour = joint.shapes.basic.Rect.prototype.getTextColour;
+joint.shapes.basic.Circle.prototype.getColour = joint.shapes.basic.Rect.prototype.getColour;
+joint.shapes.basic.Circle.prototype.getXSize = joint.shapes.basic.Rect.prototype.getXSize;
+joint.shapes.basic.Circle.prototype.getYSize = joint.shapes.basic.Rect.prototype.getYSize;
+joint.shapes.basic.Circle.prototype.getImage = joint.shapes.basic.Rect.prototype.getImage;
+joint.shapes.basic.Circle.prototype.getXPos = joint.shapes.basic.Rect.prototype.getXPos;
+joint.shapes.basic.Circle.prototype.getYPos = joint.shapes.basic.Rect.prototype.getYPos;
+
+
+/**
+ * This is the constructor of the localLink class.
+ *
+ * From a technical standpoint, this function simply wraps a joint.js link.
+ *   However, it allows us to easily add and modify it without breaking anything
+ *   else.
+ * @preconditions "pos" is a valid point with an "x" and "y" field. If any other
+ *   parameters are passed, it will set the appropriate field in the link.
+ *
+ * Label: if passed, must be a valid stringify.
+ *
+ * Source : if passed, must be a valid cell in the graph.
+ *
+ * Target: if passed, must be a valid cell in the graph
+ *
+ * Connector : if passed, must be one of three valid connector types:
+ *
+ * "normal" - this sets the link to only be made of straight lines
+ *
+ * "rouned" - like the above, this sets the lines to straight. However, this
+ *   causes the angles to "round" themselves
+ *
+ * "smooth" - This causes the link to have no straight edges, and instead.
+ *   gradually curve its way between vertices
+ * @todo  Fix this contract
+ * @memberOf qm_lab_joint_classes
+ */
+function localLink (pos, label, source, target, connector) {
+	var newLink = new joint.shapes.QMLab.localLink();
+	var localPos = $.extend(true, {}, pos);
+	//If a source was passed, set the link's source that
+	if (source) {
+		if (graph.getCell(source.id)) {
+			newLink.setStartNodeFromCell(source);
+		}
+	}
+	//Otherwise, use the passed in point
+	else {
+		newLink.set('source', { x: localPos.x, y: localPos.y });
+	}
+
+	//If a target was passed, set the link's target to that
+	if (target) {
+		if (graph.getCell(target.id)) {
+			newLink.setEndNodeFromCell(target);
+		}
+	}
+	//Otherwise, use the passed in point
+	else {
+		//For the moment, simply set the target to be a point to the right
+		localPos.x += 400;
+		newLink.setEndNodeFromPoint(localPos);
+	}
+
+	//If a label was passed in, set the link's text to that
+	if (label) {
+		newLink.setLabel(label);
+	}
+
+	//If a valid connector was passed in, set this link's connector to that
+	if (connector === "normal" || connector === "rounded" || connector === "smooth") {
+		newLink.set('connector', { name: connector });
+	}
+
+	return newLink;
+}
+
+
+/**
+ * This is the constructor of the localFlow class.
+
+From a technical standpoint, this function simply wraps a joint.js link. However, it allows us
+to easily add and modify it without breaking anything else.
+ * @preconditions "pos" is a valid point with an "x" and "y" field
+     If any other parameters are passed, it will set the appropriate field in the link
+	    label : if passed, must be a valid stringify
+		source : if passed, must be a valid cell in the graph
+		target : if passed, must be a valid cell in the graph
+		connector : if passed, must be one of three valid connector types:
+		            "normal" - this sets the link to only be made of straight lines
+					"rouned" - like the above, this sets the lines to straight.
+					           However, this causes the angles to "round" themselves
+				    "smooth" - This causes the link to have no straight edges, and instead
+					           gradually curve its way between vertices
+ * @postconditions post: Returns a local link with source at the position "pos"
+      If any other parameters are not undefined or false, it will set the appropriate field
+	    label : sets the text to display halfway along the link
+        source: sets the node that this link comes out from.
+        target: sets the node that this link goes to.
+        connector: sets the connector of the style of the link
+ * @todo  Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function localFlow (pos, label, source, target, connector) {
+	var newFlow = new joint.shapes.QMLab.Flow();
+	var localPos = $.extend(true, {}, pos);
+	console.log("We're in the flow place!");
+
+	newFlow.initialzeSourceAndTarget(localPos, source, target);
+
+	//If a label was passed in, set the link's text to that
+	if (label) {
+		newFlow.setLabel(label);
+	}
+
+	//If a valid connector was passed in, set this link's connector to that
+	if (connector === "normal" || connector === "rounded" || connector === "smooth") {
+		newFlow.set('connector', { name: connector });
+	}
+
+	newFlow.set('router', { name: 'orthogonal' });
+
+
+	return newFlow;
+}
+
+
+/**
+ * Getter for localLink start node. Will return what the link is currently
+attached to at the "source" end of the link.
+
+If the link is attached to a cell, the returned value will be that cell's "id".
+Otherwise, it will return a point that has fields "x" and "y".
+
+If, for some reason this link has been created without a source attribute,
+will return undefined.
+
+ * @preconditions The localLink exists
+ * @postconditions No change
+ * @returns {localLink} The source of the localLink
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getStartNode = function() {
+	return this.attributes.source;
+};
+
+
+/**
+ * Setter for localLink start node. Since this sets by using the cell's "id",
+the passed cell needs to be a valid cell.
+
+ * @preconditions The localLink exists.
+     souce : the cell exists and is in the graph
+ * @postconditions The source of the node has been set to the passed in source.
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setStartNodeFromCell = function(source) {
+	if (source){
+		if (graph.getCell(source.id)) {
+			this.set('source', source.id);
+		}
+		else {
+			console.log("There was an error when setting the source of a link by cell. The given cell was:");
+			console.log(source);
+		}
+	}
+	else {
+		console.log("There was an error when setting the source of a link by cell. The given cell was:");
+		console.log(source);
+	}
+};
+
+/**
+ * Setter for localLink source node. Since this sets by using a point in the
+ *   graph, source be a point with valid "x" and "y" fields.
+ * @param {coordinate} source the starting point with 'x' and 'y' fields 
+ * @preconditions The localLink exists
+ 	souce : a valid point with "x" and "y" fields
+ * @postconditions The source of the node has been set to the passed in source
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setStartNodeFromPoint = function(source) {
+	if (source){
+		this.set('source', { x: source.x, y: source.y });
+	}
+	else {
+		console.log("There was an error when setting the source of a link by point. The given point was:");
+		console.log(source);
+	}
+
+};
+
+/**
+ * Getter for localLink end node. Will return what the link is currently
+ *   attached to at the "target" end of the link.
+ *
+ * If the link is attached to a cell, the returned value will be that cell's
+ *   "id". Otherwise, it will return a point that has fields "x" and "y"
+ *
+ * If, for some reason this link has been created without a target attribute,
+ *   will return undefined
+ * @preconditions The localLink exists.
+ * @postconditions No change.
+ * @returns {node}
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getEndNode = function() {
+	return this.attributes.target;
+};
+
+/**
+ * Setter for localLink end node. Since this sets by using the cell's "id", the
+ *   passed cell needs to be a valid cell.
+ *
+ * @preconditions The localLink exists.
+ *  target : the cell exists and is in the graph
+ *  post: The target of the node has been set to the passed in target
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setEndNodeFromCell = function(target) {
+	this.set('target', target.id);
+};
+
+/**
+ * Setter for localLink target node. Since this sets by using a point in the
+ *   graph, source be a point with valid "x" and "y" fields.
+ * @param {coordinate} target a valid point with "x" and "y" fields
+ * @preconditions The localLink exists
+ * @postconditions The source of the node has been set to the passed in source
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setEndNodeFromPoint = function(target) {
+	this.set('target', { x: target.x, y: target.y });
+};
+
+
+/**
+ * Setter for localLink label text.
+ *
+ * pre: The localLink exists
+ text : a valid string of some kind
+post: The label
+ *   text of the node has been set to the passed in text
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setLabel = function(text) {
+	this.set('labels', [{ position: 0.5, attrs: { text: { text: text } } }]);
+
+	if (this.attributes.type == "QMLab.Flow")
+	{
+		var newLine = "\n\n";
+		this.set('labels', [{ position: 0.5, attrs: { text: { text: newLine.concat(text) }} , rect: { stroke: '#7c68fc', 'stroke-width': 2, rx: 0, ry: 0 , fill: "#ffffff"} },
+			{ position: 0.5, attrs: { text: { text: '\u29D6' } }, rect: { stroke: '#7c68fc', 'stroke-width': 2, rx: 0, ry: 0 , fill: "#ffffff"} }]);
+	}
+};
+
+/**
+ * Setter for localLink label text.
+ *
+ * pre: The localLink exists
+ text : a valid string of some kind
+post: The label
+ *   text of the node has been set to the passed in text
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setTextSize = function(textsize) {
+	var text = this.getLabel();
+	var colour = this.getTextColour();
+	this.set('labels', [
+		{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }
+
+	]);
+	this.attr('text/text-size', textsize);
+};
+
+/**
+ * Setter for localLink label text.
+ *
+ * pre: The localLink exists
+ text : a valid string of some kind
+post: The label
+ *   text of the node has been set to the passed in text
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getTextSize = function(textsize) {
+	return this.attr('text/text-size');
+};
+
+
+
+
+/**
+ * Getter for localLink label text. Will return what the link currently
+has written and displayed partway along itself. If nothing is currently
+set, returns an empty string. ""
+
+By design, there should never be more than one label attached to a cell.
+Therefore, it is perfectly safe to hardcode the index of the label we are
+searching.
+
+pre: The localLink exists
+post: No change
+return: The label text of the localLink
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getLabel = function(text) {
+	if (this.attributes.labels) {
+		if (this.attributes.labels[0]) {
+			return this.attributes.labels[0].attrs.text.text;
+		}
+	}
+	else {
+		return "";
+	}
+};
+
+/**
+ * 
+ * @todo Finish this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setColour = function(colour) {
+	this.prop('colour', colour);
+	this.attr( {
+		'.connection': { stroke: colour, fill: colour },
+		'.marker-target': {stroke: colour, fill: colour },
+		'.marker-source': {stroke: colour, fill: colour },
+	});
+};
+
+
+/**
+ * 
+ * @todo Finish this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getColour = function(colour) {
+	return this.attributes.colour;
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setTextColour = function(colour) {
+	var text = this.getLabel();
+	var textsize = this.getTextSize();
+	this.set('labels', [{ position: 0.5, attrs: { text: { text: text, 'font-size': textsize, fill: colour } } }]);
+	this.attr('text/text-colour', colour);
+};
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getTextColour = function() {
+	var retVal = this.attr('text/text-colour');
+	if (retVal) {
+		return retVal;
+	}
+	else {
+		return "#000000";
+	}
+
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getXSize = function() {
+	return "";
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.getYSize = function() {
+	return "";
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setWidth = function() {
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setHeight = function() {
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.attemptToParent = function() {
+	if (this.getSourceElement() != null &amp;&amp;
+		    this.getTargetElement() != null) {
+				if (this.getSourceElement().get('parent') !== this.getTargetElement().get('parent')) {
+					graph.getCell(this.get('parent')).unembed(this);
+				}
+			}
+};
+
+
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setSelected = function(value) {
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setPositiveTransition = function() {
+	this.attr({
+		'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z M 0 20 L 0 30 M -5 25 L 5 25 M 0 -20' },
+	});
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setNegativeTransition = function() {
+	this.attr({
+		'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z M -5 25 L 5 25 M 0 -15' },
+	});
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setAmbiguousTransition = function() {
+	this.attr({
+		'.marker-target': { d: 'M 18 0 L 8 5 L 18 10 z M 0 20 C 5 10 20 25 5 25 L 5 28 3 28 3 23  C 15 25 0 15 2 21 M 3 30 C 4 29 4 29 5 30 C 4 31 4 31 3 30M 0 -20 ' },
+	});
+};
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.setNoTransition = function() {
+	this.attr({
+		'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' },
+	});
+};
+
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.dia.Link.prototype.initialzeSourceAndTarget = function(localPos, source, target) {
+	//If a source was passed, set the link's source that
+	if (source) {
+		if (graph.getCell(source.id)) {
+			this.setStartNodeFromCell(source)
+		}
+	}
+	//Otherwise, use the passed in point
+	else {
+		this.set('source', { x: localPos.x, y: localPos.y });
+	}
+
+	//If a target was passed, set the link's target to that
+	if (target) {
+		if (graph.getCell(target.id)) {
+			this.setEndNodeFromCell(target)
+		}
+	}
+	//Otherwise, use the passed in point
+	else {
+		//For the moment, simply set the target to be a point to the right
+		localPos.x += 400;
+		this.setEndNodeFromPoint(localPos);
+	}
+};
+
+
+
+
+/*
+Initialzes the namespace for our custom shapes for use in the diagram.
+*/
+joint.shapes.QMLab = {};
+
+
+
+/*
+This is the shape definition of the "localLink" type. It extends joint.js' Link,
+allowing us to easily customize it.	By default, sets the Link to behave exactly
+link a default joint.js basic Link.
+
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.localLink = joint.dia.Link.extend({
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.localLink'
+
+	}, joint.dia.Link.prototype.defaults),
+});
+
+/*
+This is the shape definition of the "localLink" type. It extends joint.js' Link,
+allowing us to easily customize it.	By default, sets the Link to behave exactly
+link a default joint.js basic Link.
+
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Flow = joint.shapes.QMLab.localLink.extend({
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Flow',
+		/*Creates the arrow head at one end of the link*/
+		attrs: {
+			'.connection': { stroke: '#000000', 'stroke-width': 6},
+			'.connection2': { stroke: '#FFFFFF', 'stroke-width': 2},
+			'.marker-target': {stroke: '#000000', fill: '#000000', d: 'M 10 0 L 0 5 L 10 10 z'}
+		}
+	}, joint.dia.Link.prototype.defaults),
+});
+
+/*
+This is the shape definition of the "localLink" type. It extends joint.js' Link,
+allowing us to easily customize it.	By default, sets the Link to behave exactly
+link a default joint.js basic Link.
+
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Transition = joint.shapes.QMLab.localLink.extend({
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Transition'
+
+	}, joint.dia.Link.prototype.defaults),
+});
+
+
+/*
+This is the shape definition of the "localFlow" type. It extends joint.js' Link,
+allowing us to easily customize it.	By default, sets the Link to behave exactly
+like a default joint.js basic Link.
+
+'.connection2' is the white line drawn over the black line to give the visual effect of 2 lines.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Connection = joint.shapes.QMLab.localLink.extend({
+	
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Connection',
+		/*Creates the arrow head at one end of the link*/
+	}, joint.dia.Link.prototype.defaults),
+});
+
+
+
+
+/*
+This is the shape definition of the "localNode" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the Node to look a certain way. Override the visual in the constructor,
+or call the setter methods if another visual is desired.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Node = joint.shapes.basic.Rect.extend( {
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Node',
+		size: { width: 100, height: 30 },
+		attrs: {
+			rect: { fill: 'grey' },
+			text: { text: "Node", fill: 'white' }
+		}
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "Stock" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the Stock to look a certain way. Override the visual in the constructor,
+or call the setter methods if another visual is desired.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Stock = joint.shapes.basic.Rect.extend( {
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Stock',
+		attrs: {
+			rect: { fill: 'grey' },
+			text: { text: "Stock", fill: 'white' }
+		}
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "State" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the State to look a certain way. Override the visual in the constructor,
+or call the setter methods if another visual is desired.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.State = joint.shapes.basic.Rect.extend( {
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.State',
+		size: { width: 100, height: 30 },
+		attrs: {
+			rect: { fill: 'yellow', rx: 10, ry: 10 },
+			text: { text: "State", fill: 'black' }
+		}
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+/*
+This is the shape definition of the "Terminal State" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the Terminal State to look a certain way. Override the visual in the constructor,
+or call the setter methods if another visual is desired.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.TerminalState = joint.shapes.basic.Rect.extend( {
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.TerminalState',
+		size: { width: 100, height: 30 },
+		attrs: {
+			rect: { fill: "red", rx: 10, ry: 10 },
+			text: { text: "Terminal State", fill: 'black' }
+		}
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "Final State" type. It extends joint.js' Circle shape,
+allowing us to easily customize it.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.FinalState = joint.shapes.basic.Circle.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.FinalState',
+
+	}, joint.shapes.basic.Circle.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "Branch" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the Branch to look a certain way. Override the visual in the constructor,
+or call the setter methods if another visual is desired.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Branch = joint.shapes.basic.Rect.extend( {
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;/g>&lt;image/>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Branch',
+		size: { width: 25, height: 25 },
+		attrs: {
+			rect: { fill: 'white', height: 25, width: 25, transform: 'rotate(45)' },
+			text: { text: "", fill: 'black' }
+		}
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+
+
+
+
+
+
+
+
+/*
+This is the shape definition of the "ImageNode" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the ImageNode is set to hold a placeholder image, with text that states "Your Image Here".
+Override the visuals through either the constructor or the setter methods if another visual is desired.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.ImageNode = joint.shapes.basic.Rect.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;image/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.ImageNode',
+
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "Variable" type. It extends joint.js' Circle shape,
+allowing us to easily customize it.
+*/
+/**
+ * 
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Variable = joint.shapes.basic.Circle.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Variable',
+
+	}, joint.shapes.basic.Circle.prototype.defaults)
+});
+
+
+/*
+This is the shape definition of the "Parameter" type. It extends joint.js' Circle shape,
+allowing us to easily customize it.
+*/
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Parameter = joint.shapes.basic.Circle.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Parameter',
+
+	}, joint.shapes.basic.Circle.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "Agent" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, sets the Agent is set to hold a placeholder image, with text that states "Agent".
+Override the visuals through either the constructor or the setter methods if another visual is desired.
+*/
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Agent = joint.shapes.basic.Rect.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;image/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Agent',
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+/*
+This is the shape definition of the "Text Area" type. It extends joint.js' Rect shape,
+allowing us to easily customize it.
+
+By default, text area to look like a speach bubble.
+Override the visuals through either the constructor or the setter methods if another visual is desired.
+*/
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Text = joint.shapes.basic.Rect.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;rect/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Text',
+		size: { width: 100, height: 100 },
+
+		attrs: {
+			text: { text: '', ref: 'rect' },
+			rect: { 'fill-opacity': 0, 'stroke-opacity': 0 },
+			path: { fill: '#cccccc', d: 'M 0 20 C 0 0 0 0 20 0 L 80 0 C 100 0 100 0 100 10 L 100 80 C 100 100 100 100 80 100 L 20 100 -15 115 0 80 z' },
+			},
+
+	}, joint.shapes.basic.Rect.prototype.defaults)
+});
+
+
+
+/*
+This is the shape definition of the "Intervention" type. It extends joint.js' Circle shape,
+allowing us to easily customize it.
+*/
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Intervention = joint.shapes.basic.Circle.extend({
+
+	markup: '&lt;g class="rotatable">&lt;g class="scalable">&lt;circle/>&lt;path/>&lt;/g>&lt;text/>&lt;/g>',
+
+	defaults: joint.util.deepSupplement({
+
+		type: 'QMLab.Intervention',
+
+	}, joint.shapes.basic.Circle.prototype.defaults)
+});
+
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.ImageNode.prototype.setImage = function(url) {
+	this.setAttr('image/xlink:href', url);
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.ImageNode.prototype.getImage = function(url) {
+	return this.attr('image/xlink:href');
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Agent.prototype.setImage = function(url) {
+	this.setAttr('image/xlink:href', url);
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.Agent.prototype.getImage = function() {
+	return this.attr('image/xlink:href');
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+joint.shapes.QMLab.ImageNode.prototype.getImageURL = function() {
+	return this.attr("image/xlink:href");
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Resets the selectedEdge variable once an edge is let go of.
+ * @memberOf qm_lab_joint_classes
+ */
+function dropEdge(cellView, evt, x, y){
+	if(selected[0]){
+		selectedEdge = "";
+	}
+}
+/**
+ * Sets the selected edge to top and calls startResizing to add event listeners to the paper.
+ * @memberOf qm_lab_joint_classes
+ */
+function startResizingTop(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="top";
+		console.log("Got top edge");
+	}
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function startResizingBottom(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="bottom";
+		console.log("Got bottom edge");
+	}
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function startResizingLeft(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="left";
+		console.log("Got left edge");
+	}
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function startResizingRight(evt){
+	//makes sure selected is actually set
+	if(undefined!=selected[0]){
+		startResizing(evt); 
+		selectedEdge="right";
+		console.log("Got right edge");
+	}
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function startResizing(event){
+	document.getElementById("paperView").addEventListener("mousemove", dragResize);
+	document.getElementById("paperView").addEventListener("mouseup", stopResizing);
+	console.log("resizing started");
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function stopResizing(event){
+	console.log("resizing stopped");
+	document.getElementById("paperView").removeEventListener("mousemove", dragResize);
+	document.getElementById("paperView").removeEventListener("mouseup", stopResizing);
+	dropEdge();
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function dragResize(event){
+	if(selected[0]){
+		var point = paper.clientToLocalPoint({x: event.clientX, y: event.clientY});
+		if(selectedEdge == "left"){
+			console.log("resize left");
+			var newWidth = selected[0].getXSize() + selected[0].getXPos() - point.x;
+			var newHeight = selected[0].getYSize();
+			var newXPos = point.x;
+			var newYPos = selected[0].getYPos();
+			if(newWidth > 1 &amp;&amp; newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
+		}else if(selectedEdge == "right"){
+			console.log("resize right");
+			var newWidth = point.x - selected[0].getXPos();
+			var newHeight = selected[0].getYSize();
+			var newXPos = selected[0].getXPos();
+			var newYPos = selected[0].getYPos();
+			if(newWidth > 1 &amp;&amp; newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
+		}else if(selectedEdge == "top"){
+			console.log("resize top");
+			var newWidth = selected[0].getXSize();
+			var newHeight = selected[0].getYSize() + selected[0].getYPos() - point.y;
+			var newXPos = selected[0].getXPos();
+			var newYPos = point.y;
+			if(newWidth > 1 &amp;&amp; newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
+		}else if(selectedEdge == "bottom"){
+			console.log("resize bottom");
+			var newWidth = selected[0].getXSize();
+			var newHeight = point.y - selected[0].getYPos();
+			var newXPos = selected[0].getXPos();
+			var newYPos = selected[0].getYPos();
+			if(newWidth > 1 &amp;&amp; newHeight >1){
+				selected[0].setSize(newWidth, newHeight);
+				selected[0].position(newXPos, newYPos);
+			}
+		}else{
+			console.log("No valid edge grabbed");
+		}
+	}
+}
+
+/**
+ * Sets the initial HTML style, location and size of drag resizing handles in the views.
+ * @memberOf qm_lab_joint_classes
+ */
+function setInitialHTML(view){
+	var bbox = view.model.getBBox();
+	var newX = bbox.x*paperScale + paper.options.origin.x-5;
+	var newY = bbox.y*paperScale + paper.options.origin.y-5;
+			
+	view.$box.css({ 
+		width: bbox.width*paperScale +5, 
+		height: bbox.height*paperScale+5,
+		transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+	});
+	view.$box.find('.bottom').css({
+		width: bbox.width,
+		height: '20px',
+		top: bbox.height - 2
+	});
+	view.$box.find('.top').css({
+		width: bbox.width,
+		height: '20px'
+	});
+	view.$box.find('.left').css({
+		width: '20px',
+		height: bbox.height
+	});
+	view.$box.find('.right').css({
+		width: '20px',
+		height: bbox.height+20,
+		left: bbox.width
+	});
+	//If the element is off of the paper change display to none so it does not create scroll bars in the window
+	if(newX > paper.options.width || newY > paper.options.height){
+		view.$box.css({
+			display: 'none'
+		});
+	}else{
+		view.$box.css({
+			display: 'block'
+		});
+	}
+}
+
+
+/**
+ * Specialized version of setInitialHTML for TextBoxes which offsets the bounding box based on the 
+ * distance between the point on the text box and the main box.
+ * @memberOf qm_lab_joint_classes
+ */
+function setInitialHTMLText(view){
+	//Offset to compensate for the point of the text box
+	//The distance between the main box and the point is approx 12% of the total width
+	var pointOffset = 0.12;
+	var bbox = view.model.getBBox();
+	var newX = bbox.x*paperScale + paper.options.origin.x - bbox.width*paperScale*pointOffset;
+	var newY = bbox.y*paperScale + paper.options.origin.y;
+			
+	view.$box.css({ 
+		width: bbox.width*paperScale, 
+		height: bbox.height*paperScale,
+		transform: 'matrix(' + paperScale + ', ' + 0 + ', ' + 0 + ', ' + paperScale + ', ' + newX+ ', ' + newY+')',
+	});
+	view.$box.find('.bottom').css({
+		width: bbox.width,
+		height: '20px',
+		top: bbox.height - 2
+	});
+	view.$box.find('.top').css({
+		width: bbox.width,
+		height: '20px'
+	});
+	view.$box.find('.left').css({
+		width: '20px',
+		height: bbox.height
+	});
+	view.$box.find('.right').css({
+		width: '20px',
+		height: bbox.height+20,
+		left: bbox.width
+	});
+	if(newX > paper.options.width || newY > paper.options.height){
+		view.$box.css({
+			display: 'none'
+		});
+	}else{
+		view.$box.css({
+			display: 'block'
+		});
+	}
+}
+
+/**
+ * Modifies the style of the HTML and sets listeners for the drag resizing handles in the views for each element
+ * based on whether the element is the selected element or not.
+ * If it is the selected element then it gives the HTML a background, a border and adds the drag listeners to
+ * the appropriate HTML elements. If it is not the selected element it removes the background, border and all listeners attached to
+ * the HTML. This function is called when the view is updated, which happens as the mouse is moved so the HTML is guaranteed to 
+ * appear when selected and disappear when deselected.
+ * @preconditions the view exists.
+ * @postconditions The HTML style and listeners are updated
+ * @param {view} view The view that is associated with a QMLab object that contains the HTML used for outlining and resizing
+ * @memberOf qmlabjointclasses
+ */
+function setSelectedHTML(view){
+	if(view.model == selected[0]){
+		view.$box.find('.bottom').css({
+			cursor: 'ns-resize'
+		});
+		view.$box.find('.top').css({
+			cursor: 'ns-resize'
+		});
+		view.$box.find('.left').css({
+			cursor: 'ew-resize'
+		});
+		view.$box.find('.right').css({
+			cursor: 'ew-resize'
+		});
+		view.$box.find('.top').on('mousedown', startResizingTop);
+		view.$box.find('.left').on('mousedown', startResizingLeft);
+		view.$box.find('.right').on('mousedown', startResizingRight);
+		view.$box.find('.bottom').on('mousedown', startResizingBottom);
+	}else{
+		view.$box.find('.bottom').css({
+			cursor: 'default',
+			border: 'none',
+			background: 'none'
+		});
+		view.$box.find('.top').css({
+			cursor: 'default',
+			border: 'none',
+			background: 'none'
+		});
+		view.$box.find('.left').css({
+			cursor: 'default',
+			border: 'none',
+			background: 'none'
+		});
+		view.$box.find('.right').css({
+			cursor: 'default',
+			border: 'none',
+			background: 'none'
+		});
+		view.$box.find('.top').off('mousedown');
+		view.$box.find('.bottom').off('mousedown');
+		view.$box.find('.left').off('mousedown');
+		view.$box.find('.right').off('mousedown');
+	}
+}
+
+
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function initializeStockView(){
+	joint.shapes.QMLab.StockView = joint.dia.ElementView.extend({
+		template: [
+			'&lt;div class="html-element">',
+			'&lt;div class="top">&lt;/div>',
+			'&lt;div class="bottom">&lt;/div>',
+			'&lt;div class="left">&lt;/div>',
+			'&lt;div class="right">&lt;/div>',
+			'&lt;/div>'
+		].join(''),
+	
+		initialize: function() {
+			_.bindAll(this, 'updateBox');
+			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+			this.$box = $(_.template(this.template)());
+			//When zooming or moving mouse on page, make sure html is updated
+			paper.$el.on('wheel', this.updateBox);
+			paper.$el.on('mousemove', this.updateBox);
+			//Update box position whenever underlying joint is updated
+			this.model.on('change', this.updateBox, this);
+			//Remove box when model is removed
+			this.model.on('remove', this.removeBox, this);
+			this.updateBox();
+		},
+		render: function(){
+			joint.dia.ElementView.prototype.render.apply(this, arguments);
+			this.paper.$el.prepend(this.$box);
+			this.updateBox();
+			return this;
+		},
+		updateBox: function(){
+			setInitialHTML(this);
+			setSelectedHTML(this);
+		},
+		removeBox: function(evt){
+			this.$box.remove();
+		}
+	});
+}
+
+
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function initializeImageNodeView(){
+	joint.shapes.QMLab.ImageNodeView = joint.dia.ElementView.extend({
+		template: [
+			'&lt;div class="html-element">',
+			'&lt;div class="top">&lt;/div>',
+			'&lt;div class="bottom">&lt;/div>',
+			'&lt;div class="left">&lt;/div>',
+			'&lt;div class="right">&lt;/div>',
+			'&lt;/div>'
+		].join(''),
+	
+		initialize: function() {
+			_.bindAll(this, 'updateBox');
+			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+			this.$box = $(_.template(this.template)());
+			//When zooming or moving mouse on page, make sure html is updated
+			paper.$el.on('wheel', this.updateBox);
+			paper.$el.on('mousemove', this.updateBox);
+			//Update box position whenever underlying joint is updated
+			this.model.on('change', this.updateBox, this);
+			//Remove box when model is removed
+			this.model.on('remove', this.removeBox, this);
+			this.updateBox();
+		},
+		render: function(){
+			joint.dia.ElementView.prototype.render.apply(this, arguments);
+			this.paper.$el.prepend(this.$box);
+			this.updateBox();
+			return this;
+		},
+		updateBox: function(){
+			setInitialHTML(this);
+			setSelectedHTML(this);
+		},
+		removeBox: function(evt){
+			this.$box.remove();
+		}
+	});
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function initializeTextView(){
+	joint.shapes.QMLab.TextView = joint.dia.ElementView.extend({
+		template: [
+			'&lt;div class="html-element">',
+			'&lt;div class="top">&lt;/div>',
+			'&lt;div class="bottom">&lt;/div>',
+			'&lt;div class="left">&lt;/div>',
+			'&lt;div class="right">&lt;/div>',
+			'&lt;/div>'
+		].join(''),
+	
+		initialize: function() {
+			_.bindAll(this, 'updateBox');
+			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+			this.$box = $(_.template(this.template)());
+			//When zooming or moving mouse on page, make sure html is updated
+			paper.$el.on('wheel', this.updateBox);
+			paper.$el.on('mousemove', this.updateBox);
+			//Update box position whenever underlying joint is updated
+			this.model.on('change', this.updateBox, this);
+			//Remove box when model is removed
+			this.model.on('remove', this.removeBox, this);
+			this.updateBox();
+		},
+		render: function(){
+			joint.dia.ElementView.prototype.render.apply(this, arguments);
+			this.paper.$el.prepend(this.$box);
+			this.updateBox();
+			return this;
+		},
+		updateBox: function(){
+			setInitialHTMLText(this);
+			setSelectedHTML(this);
+		},
+		removeBox: function(evt){
+			this.$box.remove();
+		}
+	});
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function initializeAgentView(){
+	joint.shapes.QMLab.AgentView = joint.dia.ElementView.extend({
+		template: [
+			'&lt;div class="html-element">',
+			'&lt;div class="top">&lt;/div>',
+			'&lt;div class="bottom">&lt;/div>',
+			'&lt;div class="left">&lt;/div>',
+			'&lt;div class="right">&lt;/div>',
+			'&lt;/div>'
+		].join(''),
+	
+		initialize: function() {
+			_.bindAll(this, 'updateBox');
+			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+			this.$box = $(_.template(this.template)());
+			//When zooming or moving mouse on page, make sure html is updated
+			paper.$el.on('wheel', this.updateBox);
+			paper.$el.on('mousemove', this.updateBox);
+			//Update box position whenever underlying joint is updated
+			this.model.on('change', this.updateBox, this);
+			//Remove box when model is removed
+			this.model.on('remove', this.removeBox, this);
+			this.updateBox();
+		},
+		render: function(){
+			joint.dia.ElementView.prototype.render.apply(this, arguments);
+			this.paper.$el.prepend(this.$box);
+			this.updateBox();
+			return this;
+		},
+		updateBox: function(){
+			setInitialHTML(this);
+			setSelectedHTML(this);
+		},
+		removeBox: function(evt){
+			this.$box.remove();
+		}
+	});
+}
+/**
+ * @todo Format this header
+ * @memberOf qm_lab_joint_classes
+ */
+function initializeStateView(){
+	joint.shapes.QMLab.StateView = joint.dia.ElementView.extend({
+		template: [
+			'&lt;div class="html-element">',
+			'&lt;div class="top">&lt;/div>',
+			'&lt;div class="bottom">&lt;/div>',
+			'&lt;div class="left">&lt;/div>',
+			'&lt;div class="right">&lt;/div>',
+			'&lt;/div>'
+		].join(''),
+	
+		initialize: function() {
+			_.bindAll(this, 'updateBox');
+			joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+			this.$box = $(_.template(this.template)());
+			//When zooming or moving mouse on page, make sure html is updated
+			paper.$el.on('wheel', this.updateBox);
+			paper.$el.on('mousemove', this.updateBox);
+			//Update box position whenever underlying joint is updated
+			this.model.on('change', this.updateBox, this);
+			//Remove box when model is removed
+			this.model.on('remove', this.removeBox, this);
+			this.updateBox();
+		},
+		render: function(){
+			joint.dia.ElementView.prototype.render.apply(this, arguments);
+			this.paper.$el.prepend(this.$box);
+			this.updateBox();
+			return this;
+		},
+		updateBox: function(){
+			setInitialHTML(this);
+			setSelectedHTML(this);
+		},
+		removeBox: function(evt){
+			this.$box.remove();
+		}
+	});
+}
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="cell_parent_logic.html">cell_parent_logic</a></li><li><a href="check_collab_allowed.html">check_collab_allowed</a></li><li><a href="collab_object_setup.html">collab_object_setup</a></li><li><a href="connection_check.html">connection_check</a></li><li><a href="create_objects.html">create_objects</a></li><li><a href="element_prop_alter.html">element_prop_alter</a></li><li><a href="g_r_api_auth.html">g_r_api_auth</a></li><li><a href="gen_ui.html">gen_ui</a></li><li><a href="initialize_diagram.html">initialize_diagram</a></li><li><a href="initialize_web_page.html">initialize_web_page</a></li><li><a href="link_joining.html">link_joining</a></li><li><a href="loading_bar.html">loading_bar</a></li><li><a href="qm_lab_file_opened.html">qm_lab_file_opened</a></li><li><a href="qm_lab_joint_classes.html">qm_lab_joint_classes</a></li><li><a href="utility_functions_qm_lab.html">utility_functions_qm_lab</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 07 2016 23:12:21 GMT-0600 (Canada Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

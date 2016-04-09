@@ -27,9 +27,11 @@ before_script:
   - sudo npm install grunt --save-dev
   - sudo npm install grunt-contrib-qunit --save-dev
   - sudo npm install grunt-contrib-jshint --save-dev
+  - sudo npm install grunt-qunit-istanbul --save-dev
 
 
 script:
   - grunt syntax --verbose --force
-  - grunt test --verbose
+  - grunt test --verbose --force
+  - nohup java -jar selenium-server-standalone-2.53.0.jar -Dwebdriver.chrome.driver=src/Maven/src/test/resources/selenium_standalone_binaries/linux/googlechrome/64bit/chromedriver &
   - mvn test -f ./src/Maven/pom.xml

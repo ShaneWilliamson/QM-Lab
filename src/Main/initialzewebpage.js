@@ -21,6 +21,7 @@ var selected;
 var movingViewPort;
 var oldMousePos;
 var curMousePos;
+var selectedEdge;
 
 
 window.onload=onstartRun;

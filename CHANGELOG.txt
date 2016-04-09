@@ -1,3 +1,26 @@
+ID5
+
+New to ID5 
+	access the project through cmpt371g3.usask.ca
+	- drag resizing is live
+	- link reworks
+		- chaining works. The link will only terminate on a double click. 
+	- Flow improvements:
+		- flow appears as a pipe
+		- it contains a 'valve'
+	- connections:
+		- can only be labeled with +, -, or ?
+	- addition of intervention
+	- rework of final states
+		- they are now red with a dot in the middle
+	- touch ups on variables, parameters, and agent.
+		- variables are now orange with a v in the middle
+		- parameters are now blue with a p in the middle
+		- Agent now has no legs
+	- GUI imporovements:
+		- properties box has a single line of items, and is on the bottom of the screen visible
+			at any resolution (tested at 768p and up)
+	- much singificant testing and documentation thanks to the testing and design teams. 
 
 ID4
 

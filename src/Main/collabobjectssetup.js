@@ -71,7 +71,7 @@ function CollaborativeGraph(){
  */
 function doGraphInitialize(){
 	var model = gapi.drive.realtime.custom.getModel(this);
-	console.log("The graph was initialized.")
+	console.log("The graph was initialized.");
 }
 
 /**
@@ -107,7 +107,7 @@ function updateCollabGraph() {
 	}
 	else {
 		//This is where an error log should go
-		console.log("The graph doesn't exist in the collaborative map.")
+		console.log("The graph doesn't exist in the collaborative map.");
 	}
 
 }
@@ -123,12 +123,12 @@ function updateCollabGraph() {
  * @memberOf collab_object_setup
  */
 function updateGraph() {
-	graph.fromJSON(JSON.parse(colGraph.graph))
-	
-	graph.on('remove', function(cell) { 
+	graph.fromJSON(JSON.parse(colGraph.graph));
+
+	graph.on('remove', function(cell) {
 		rootModel.getRoot().get(cell.id).action = "remove";
 	})
-	
+
 	addCollabEventToAllCells();
 	console.log('Built new graph');
 }
